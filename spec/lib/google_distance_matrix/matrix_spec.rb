@@ -31,6 +31,4 @@ describe GoogleDistanceMatrix::Matrix do
       end
     end
   end
-
-
 end
