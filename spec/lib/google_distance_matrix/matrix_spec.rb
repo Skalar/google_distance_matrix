@@ -18,6 +18,8 @@ describe GoogleDistanceMatrix::Matrix do
   end
 
   %w[origins destinations].each do |attr|
+    let(:place) { GoogleDistanceMatrix::Place.new address: "My street" }
+
     describe "##{attr}" do
       it "can receive places" do
         subject.public_send(attr) << place

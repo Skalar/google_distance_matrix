@@ -7,6 +7,8 @@ class GoogleDistanceMatrix::UrlBuilder
 
   def initialize(matrix)
     @matrix = matrix
+
+    fail GoogleDistanceMatrix::InvalidMatrix.new matrix if matrix.invalid?
   end
 
   def url

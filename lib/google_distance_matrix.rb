@@ -1,6 +1,7 @@
 require "google_distance_matrix/version"
 
 require "cgi"
+require "active_model"
 require "active_support/core_ext/hash"
 
 require "google_distance_matrix/place"

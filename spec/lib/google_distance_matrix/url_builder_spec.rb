@@ -19,7 +19,17 @@ describe GoogleDistanceMatrix::UrlBuilder do
 
   subject { described_class.new matrix }
 
-  its(:matrix) { should eq matrix }
+  describe "#initialize" do
+    it "has a matrix" do
+      expect(described_class.new(matrix).matrix).to eq matrix
+    end
+
+    it "fails if matrix is invalid" do
+      expect {
+        described_class.new GoogleDistanceMatrix::Matrix.new
+      }.to raise_error GoogleDistanceMatrix::InvalidMatrix
+    end
+  end
 
 
   describe "#url" do
