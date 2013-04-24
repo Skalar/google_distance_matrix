@@ -11,13 +11,21 @@ class GoogleDistanceMatrix::Place
     validate_attributes
   end
 
+  def to_param
+    address.present? ? address : lat_lng.join(',')
+  end
+
 
   def eql?(other)
     if address.present?
       address == other.address
     else
-      lat == other.lat && lng == other.lng
+      lat_lng == other.lat_lng
     end
+  end
+
+  def lat_lng
+    [lat, lng]
   end
 
 
@@ -32,4 +40,5 @@ class GoogleDistanceMatrix::Place
       fail ArgumentError, "Cannot provide address, lat and lng."
     end
   end
+
 end

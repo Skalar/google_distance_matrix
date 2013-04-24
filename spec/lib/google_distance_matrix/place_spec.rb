@@ -2,8 +2,8 @@ require "spec_helper"
 
 describe GoogleDistanceMatrix::Place do
   let(:address) { "Karl Johans gate, Oslo" }
-  let(:lat) { 1 }
-  let(:lng) { 2 }
+  let(:lat) { 1.4 }
+  let(:lng) { 2.2 }
 
   describe "#initialize" do
     it "builds with an address" do
@@ -28,8 +28,21 @@ describe GoogleDistanceMatrix::Place do
     end
   end
 
-  describe "#equal?" do
+  describe "#to_param" do
+    context "with address" do
+      subject { described_class.new address: address }
 
+      its(:to_param) { should eq address }
+    end
+
+    context "with lat lng" do
+      subject { described_class.new lng: lng, lat: lat }
+
+      its(:to_param) { should eq "#{lat},#{lng}" }
+    end
+  end
+
+  describe "#equal?" do
     it "is considered equal when address is the same" do
       expect(described_class.new(address: address)).to be_eql described_class.new(address: address)
     end
