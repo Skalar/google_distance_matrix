@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe GoogleDistanceMatrix::Matrix do
-  subject { described_class.new }
-
   let(:place) { GoogleDistanceMatrix::Place.new address: "Karl Johans gate, Oslo" }
+
+  subject { described_class.new }
 
   %w[origins destinations].each do |attr|
     describe "##{attr}" do
@@ -19,4 +19,6 @@ describe GoogleDistanceMatrix::Matrix do
       end
     end
   end
+
+
 end
