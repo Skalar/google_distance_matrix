@@ -2,7 +2,7 @@ class GoogleDistanceMatrix::Place
   attr_accessor :address, :lat, :lng
 
   def initialize(attributes = {})
-    attributes = ActiveSupport::HashWithIndifferentAccess.new attributes
+    attributes = attributes.with_indifferent_access
 
     self.address = attributes[:address]
     self.lat = attributes[:lat]
