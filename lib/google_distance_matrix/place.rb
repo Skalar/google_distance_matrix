@@ -12,7 +12,7 @@ class GoogleDistanceMatrix::Place
   end
 
   def to_param
-    address.present? ? address : lat_lng.join(',')
+    address.present? ? CGI.escape(address) : lat_lng.join(',')
   end
 
 

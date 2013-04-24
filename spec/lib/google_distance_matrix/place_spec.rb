@@ -32,7 +32,7 @@ describe GoogleDistanceMatrix::Place do
     context "with address" do
       subject { described_class.new address: address }
 
-      its(:to_param) { should eq address }
+      its(:to_param) { should eq CGI.escape(address) }
     end
 
     context "with lat lng" do
