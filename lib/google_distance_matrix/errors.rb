@@ -28,15 +28,15 @@ module GoogleDistanceMatrix
   end
 
   class ClientError < Error
-    attr_reader :response, :status
+    attr_reader :response, :status_read_from_api_response
 
-    def initialize(response, status)
+    def initialize(response, status_read_from_api_response = nil)
       @response = response
-      @status = status
+      @status_read_from_api_response = status_read_from_api_response
     end
 
     def to_s
-      "GoogleDistanceMatrix::ClientError - #{status.inspect}."
+      "GoogleDistanceMatrix::ClientError - #{[response, status_read_from_api_response].compact.join('. ')}."
     end
   end
 end

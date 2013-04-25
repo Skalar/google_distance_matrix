@@ -17,6 +17,14 @@ describe GoogleDistanceMatrix::Client, :request_recordings do
   end
 
   describe "client errors" do
+    describe "server issues 4xx client error" do
+      before { stub_request(:get, URI.encode(url_builder.url)).to_return status: [400, "Client error"] }
+
+      it "wraps the error http response" do
+        expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::ClientError
+      end
+    end
+
     described_class::CLIENT_ERRORS.each do |error|
       it "wraps '#{error}' client error" do
         stub_request(:get, URI.encode(url_builder.url)).to_return body: JSON.generate({status: error})
@@ -39,6 +47,14 @@ describe GoogleDistanceMatrix::Client, :request_recordings do
 
       it "wraps the error from Net::HTTP" do
         expect { subject.get(url_builder.url).body }.to raise_error GoogleDistanceMatrix::RequestError
+      end
+    end
+
+    describe "server error" do
+      before { stub_request(:get, URI.encode(url_builder.url)).to_return status: [999, "Unknown"] }
+
+      it "wraps the error http response" do
+        expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::RequestError
       end
     end
   end

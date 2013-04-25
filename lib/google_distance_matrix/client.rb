@@ -14,7 +14,11 @@ class GoogleDistanceMatrix::Client
     case response
     when Net::HTTPSuccess
       inspect_for_client_errors! response
-    when Net::HTTPInternalServerError
+    when Net::HTTPClientError
+      fail GoogleDistanceMatrix::ClientError.new response
+    when Net::HTTPServerError
+      fail GoogleDistanceMatrix::RequestError.new response
+    else # Handle this as a request error for now. Maybe fine tune this more later.
       fail GoogleDistanceMatrix::RequestError.new response
     end
   rescue Timeout::Error => error
