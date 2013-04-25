@@ -30,7 +30,7 @@ module GoogleDistanceMatrix
   #
   # Query API and get the matrix back
   #
-  #   matrix.matrix # Returns a two dimensional array.
+  #   matrix.data   # Returns a two dimensional array.
   #                 # Rows are ordered according to the values in the origins.
   #                 # Each row corresponds to an origin, and each element within that row corresponds to
   #                 # a pairing of the origin with a destination.
@@ -54,8 +54,11 @@ module GoogleDistanceMatrix
     end
 
 
-    def matrix
-      @matrix ||= load_matrix
+    # Public: The data for this matrix.
+    #
+    # Returns a two dimensional array, the matrix's data
+    def data
+      @data ||= load_matrix
     end
 
 

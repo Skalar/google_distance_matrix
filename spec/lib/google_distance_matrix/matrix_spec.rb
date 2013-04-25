@@ -7,6 +7,9 @@ describe GoogleDistanceMatrix::Matrix do
   let(:destination_1) { GoogleDistanceMatrix::Place.new address: "Drammensveien 1, Oslo" }
   let(:destination_2) { GoogleDistanceMatrix::Place.new address: "Skjellestadhagen, Heggedal" }
 
+  let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new subject }
+  let(:encoded_url) { URI.encode url_builder.url }
+
   subject do
     described_class.new(
       origins: [origin_1, origin_2],
@@ -70,45 +73,42 @@ describe GoogleDistanceMatrix::Matrix do
   end
 
 
-  describe "#matrix", :request_recordings do
-    let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new subject }
-    let!(:api_request_stub) do
-      stub_request(:get, URI.encode(url_builder.url)).to_return body: recorded_request_for(:success)
-    end
+  describe "#data", :request_recordings do
+    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
 
     it "loads from Google's API" do
-      subject.matrix
+      subject.data
       api_request_stub.should have_been_requested
     end
 
     it "does not load twice" do
-      2.times { subject.matrix }
+      2.times { subject.data }
       api_request_stub.should have_been_requested
     end
 
     it "contains one row" do
-      expect(subject.matrix.length).to eq 2
+      expect(subject.data.length).to eq 2
     end
 
     it "contains two columns each row" do
-      expect(subject.matrix[0].length).to eq 2
-      expect(subject.matrix[1].length).to eq 2
+      expect(subject.data[0].length).to eq 2
+      expect(subject.data[1].length).to eq 2
     end
 
-    it "assigns correct origin on routes in the matrix" do
-      expect(subject.matrix[0][0].origin).to eq origin_1
-      expect(subject.matrix[0][1].origin).to eq origin_1
+    it "assigns correct origin on routes in the data" do
+      expect(subject.data[0][0].origin).to eq origin_1
+      expect(subject.data[0][1].origin).to eq origin_1
 
-      expect(subject.matrix[1][0].origin).to eq origin_2
-      expect(subject.matrix[1][1].origin).to eq origin_2
+      expect(subject.data[1][0].origin).to eq origin_2
+      expect(subject.data[1][1].origin).to eq origin_2
     end
 
-    it "assigns correct destination on routes in the matrix" do
-      expect(subject.matrix[0][0].destination).to eq destination_1
-      expect(subject.matrix[0][1].destination).to eq destination_2
+    it "assigns correct destination on routes in the data" do
+      expect(subject.data[0][0].destination).to eq destination_1
+      expect(subject.data[0][1].destination).to eq destination_2
 
-      expect(subject.matrix[1][0].destination).to eq destination_1
-      expect(subject.matrix[1][1].destination).to eq destination_2
+      expect(subject.data[1][0].destination).to eq destination_1
+      expect(subject.data[1][1].destination).to eq destination_2
     end
   end
 end
