@@ -94,5 +94,21 @@ describe GoogleDistanceMatrix::Matrix do
       expect(subject.matrix[0].length).to eq 2
       expect(subject.matrix[1].length).to eq 2
     end
+
+    it "assigns correct origin on routes in the matrix" do
+      expect(subject.matrix[0][0].origin).to eq origin_1
+      expect(subject.matrix[0][1].origin).to eq origin_1
+
+      expect(subject.matrix[1][0].origin).to eq origin_2
+      expect(subject.matrix[1][1].origin).to eq origin_2
+    end
+
+    it "assigns correct destination on routes in the matrix" do
+      expect(subject.matrix[0][0].destination).to eq destination_1
+      expect(subject.matrix[0][1].destination).to eq destination_2
+
+      expect(subject.matrix[1][0].destination).to eq destination_1
+      expect(subject.matrix[1][1].destination).to eq destination_2
+    end
   end
 end

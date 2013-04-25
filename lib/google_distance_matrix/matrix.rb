@@ -38,9 +38,12 @@ class GoogleDistanceMatrix::Matrix
     response = client.get url
     parsed = JSON.parse response.body
 
-    parsed["rows"].map do |row|
-      row["elements"].map do |element|
-        GoogleDistanceMatrix::Route.new element
+    parsed["rows"].each_with_index.map do |row, origin_index|
+      origin = origins[origin_index]
+
+      row["elements"].each_with_index.map do |element, destination_index|
+        route_attributes = element.merge(origin: origin, destination: destinations[destination_index])
+        GoogleDistanceMatrix::Route.new route_attributes
       end
     end
   end
