@@ -1,6 +1,6 @@
 module GoogleDistanceMatrix
   class UrlBuilder
-    BASE_URL = "http://maps.googleapis.com/maps/api/distancematrix/json"
+    BASE_URL = "maps.googleapis.com/maps/api/distancematrix/json"
     DELIMITER = "|"
     MAX_URL_SIZE = 2048
 
@@ -20,7 +20,7 @@ module GoogleDistanceMatrix
     private
 
     def build_url
-      [BASE_URL, "?", get_params_string].join.tap do |url|
+      [protocol, BASE_URL, "?", get_params_string].join.tap do |url|
         if url.length > MAX_URL_SIZE
           fail MatrixUrlTooLong, "Matrix API URL max size is: #{MAX_URL_SIZE}. Built URL was: #{url.length}"
         end
@@ -32,10 +32,14 @@ module GoogleDistanceMatrix
     end
 
     def params
-      matrix.configuration.to_hash.merge(
+      matrix.configuration.to_param.merge(
         origins: matrix.origins.map(&:to_param).join(DELIMITER),
         destinations: matrix.destinations.map(&:to_param).join(DELIMITER),
       )
+    end
+
+    def protocol
+      matrix.configuration.protocol + "://"
     end
   end
 end

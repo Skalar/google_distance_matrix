@@ -14,6 +14,8 @@ describe GoogleDistanceMatrix::Configuration do
 
     it { should ensure_inclusion_of(:units).in_array(["metric", "imperial"]) }
     it { should allow_value(nil).for(:units) }
+
+    it { should ensure_inclusion_of(:protocol).in_array(["http", "https"]) }
   end
 
 
@@ -22,19 +24,20 @@ describe GoogleDistanceMatrix::Configuration do
     its(:mode) { should be_nil }
     its(:avoid) { should be_nil }
     its(:units) { should be_nil }
+    its(:protocol) { should eq "http" }
   end
 
 
-  describe "#to_hash" do
+  describe "#to_param" do
     described_class::ATTRIBUTES.each do |attr|
       it "includes #{attr}" do
         subject.public_send "#{attr}=", "foo"
-        expect(subject.to_hash[attr]).to eq subject.public_send(attr)
+        expect(subject.to_param[attr]).to eq subject.public_send(attr)
       end
 
       it "dos not include #{attr} when it is blank" do
         subject.public_send "#{attr}=", nil
-        expect(subject.to_hash).to_not have_key attr
+        expect(subject.to_param).to_not have_key attr
       end
     end
   end

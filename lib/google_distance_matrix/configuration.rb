@@ -19,12 +19,15 @@ module GoogleDistanceMatrix
     validates :avoid, inclusion: {in: ["tolls", "highways"]}, allow_blank: true
     validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
 
+    validates :protocol, inclusion: {in: ["http", "https"]}, allow_blank: true
+
 
     def initialize
       self.sensor = false
+      self.protocol = "http"
     end
 
-    def to_hash
+    def to_param
       Hash[
         ATTRIBUTES.map { |attr| [attr, public_send(attr)] }.reject do |attr_and_value|
           attr_and_value[1].nil?
