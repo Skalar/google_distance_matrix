@@ -14,4 +14,29 @@ module GoogleDistanceMatrix
       @matrix.errors.full_messages.to_sentence
     end
   end
+
+  class RequestError < Error
+    attr_reader :error_or_response
+
+    def initialize(error_or_response)
+      @error_or_response = error_or_response
+    end
+
+    def to_s
+      "GoogleDistanceMatrix::RequestError - #{error_or_response.inspect}."
+    end
+  end
+
+  class ClientError < Error
+    attr_reader :response, :status
+
+    def initialize(response, status)
+      @response = response
+      @status = status
+    end
+
+    def to_s
+      "GoogleDistanceMatrix::ClientError - #{status.inspect}."
+    end
+  end
 end

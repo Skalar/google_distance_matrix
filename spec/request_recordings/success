@@ -1,0 +1,40 @@
+{
+   "destination_addresses" : [ "Drammensveien 1, 0271 Oslo, Norway" ],
+   "origin_addresses" : [
+      "Karl Johans gate 2, 0154 Oslo, Norway",
+      "Askerveien 1, 1384 Asker, Norway"
+   ],
+   "rows" : [
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "3.1 km",
+                  "value" : 3054
+               },
+               "duration" : {
+                  "text" : "7 mins",
+                  "value" : 415
+               },
+               "status" : "OK"
+            }
+         ]
+      },
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "21.2 km",
+                  "value" : 21246
+               },
+               "duration" : {
+                  "text" : "22 mins",
+                  "value" : 1315
+               },
+               "status" : "OK"
+            }
+         ]
+      }
+   ],
+   "status" : "OK"
+}
