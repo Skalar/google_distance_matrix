@@ -17,6 +17,10 @@ class GoogleDistanceMatrix::Configuration
   end
 
   def to_hash
-    Hash[ATTRIBUTES.map { |attr| [attr, public_send(attr)] }]
+    Hash[
+      ATTRIBUTES.map { |attr| [attr, public_send(attr)] }.reject do |attr_and_value|
+        attr_and_value[1].nil?
+      end
+    ]
   end
 end

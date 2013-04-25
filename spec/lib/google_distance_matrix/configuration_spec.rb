@@ -24,10 +24,17 @@ describe GoogleDistanceMatrix::Configuration do
     its(:units) { should be_nil }
   end
 
+
   describe "#to_hash" do
     described_class::ATTRIBUTES.each do |attr|
       it "includes #{attr}" do
+        subject.public_send "#{attr}=", "foo"
         expect(subject.to_hash[attr]).to eq subject.public_send(attr)
+      end
+
+      it "dos not include #{attr} when it is blank" do
+        subject.public_send "#{attr}=", nil
+        expect(subject.to_hash).to_not have_key attr
       end
     end
   end
