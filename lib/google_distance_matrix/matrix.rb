@@ -3,6 +3,7 @@ class GoogleDistanceMatrix::Matrix
 
   validates :origins, length: {minimum: 1, too_short: "must have at least one origin"}
   validates :destinations, length: {minimum: 1, too_short: "must have at least one destination"}
+  validate { errors.add(:configuration, "is invalid") if configuration.invalid? }
 
   attr_reader :origins, :destinations, :configuration
 

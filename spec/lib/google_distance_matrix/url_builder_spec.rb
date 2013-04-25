@@ -29,6 +29,13 @@ describe GoogleDistanceMatrix::UrlBuilder do
         described_class.new GoogleDistanceMatrix::Matrix.new
       }.to raise_error GoogleDistanceMatrix::InvalidMatrix
     end
+
+    it "fails if matrix's configuration is invalid" do
+      expect {
+        matrix.configure { |c| c.sensor = nil }
+        described_class.new matrix
+      }.to raise_error GoogleDistanceMatrix::InvalidMatrix
+    end
   end
 
 
