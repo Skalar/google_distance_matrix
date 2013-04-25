@@ -18,12 +18,15 @@ module GoogleDistanceMatrix
   #     destinations: [destination_1, destination_2]
   #   )
   #
-  # If you want to may configure the matrix. See GoogleDistanceMatrix::Configuration.
+  # You may configure the matrix. See GoogleDistanceMatrix::Configuration for options.
   #
   #   matrix.configure do |config|
   #     config.sensor = true
   #     config.mode = "walking"
   #   end
+  #
+  # You can set default configuration by doing: GoogleDistanceMatrix.configure_defaults { |c| c.sensor = true }
+  #
   #
   # Query API and get the matrix back
   #
