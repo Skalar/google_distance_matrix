@@ -1,20 +1,31 @@
 {
-   "destination_addresses" : [ "Drammensveien 1, 0271 Oslo, Norway" ],
-   "origin_addresses" : [
-      "Karl Johans gate 2, 0154 Oslo, Norway",
-      "Askerveien 1, 1384 Asker, Norway"
+   "destination_addresses" : [
+      "Drammensveien 1, 0271 Oslo, Norway",
+      "Skjellestadhagen, 1389 Heggedal, Norway"
    ],
+   "origin_addresses" : [ "Karl Johans gate, Oslo, Norway", "Askerveien 1, 1384 Asker, Norway" ],
    "rows" : [
       {
          "elements" : [
             {
                "distance" : {
-                  "text" : "3.1 km",
-                  "value" : 3054
+                  "text" : "2.0 km",
+                  "value" : 2032
                },
                "duration" : {
-                  "text" : "7 mins",
-                  "value" : 415
+                  "text" : "6 mins",
+                  "value" : 367
+               },
+               "status" : "OK"
+            },
+            {
+               "distance" : {
+                  "text" : "30.3 km",
+                  "value" : 30345
+               },
+               "duration" : {
+                  "text" : "32 mins",
+                  "value" : 1924
                },
                "status" : "OK"
             }
@@ -30,6 +41,17 @@
                "duration" : {
                   "text" : "22 mins",
                   "value" : 1315
+               },
+               "status" : "OK"
+            },
+            {
+               "distance" : {
+                  "text" : "9.1 km",
+                  "value" : 9103
+               },
+               "duration" : {
+                  "text" : "15 mins",
+                  "value" : 878
                },
                "status" : "OK"
             }

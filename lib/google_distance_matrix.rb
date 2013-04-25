@@ -11,6 +11,7 @@ require "google_distance_matrix/url_builder"
 require "google_distance_matrix/client"
 require "google_distance_matrix/matrix"
 require "google_distance_matrix/place"
+require "google_distance_matrix/route"
 
 module GoogleDistanceMatrix
   extend self
