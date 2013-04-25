@@ -53,5 +53,11 @@ describe GoogleDistanceMatrix::UrlBuilder do
     it "includes destinations" do
       expect(subject.url).to include "destinations=1,11|2,22"
     end
+
+    describe "configuration" do
+      it "includes sensor" do
+        expect(subject.url).to include "sensor=#{matrix.configuration.sensor}"
+      end
+    end
   end
 end

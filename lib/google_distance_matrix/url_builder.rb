@@ -31,9 +31,9 @@ class GoogleDistanceMatrix::UrlBuilder
   end
 
   def params
-    {
+    matrix.configuration.to_hash.merge(
       origins: matrix.origins.map(&:to_param).join(DELIMITER),
-      destinations: matrix.destinations.map(&:to_param).join(DELIMITER)
-    }
+      destinations: matrix.destinations.map(&:to_param).join(DELIMITER),
+    )
   end
 end
