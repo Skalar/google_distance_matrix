@@ -54,6 +54,59 @@ module GoogleDistanceMatrix
     end
 
 
+    def route_for(options = {})
+      options = options.with_indifferent_access
+
+      if options[:origin].nil? || options[:destination].nil?
+        fail ArgumentError, "Must provide origin and destination"
+      end
+
+      routes_for(options).first
+    end
+
+    def routes_for(options = {})
+      options = options.with_indifferent_access
+
+      origin = options[:origin]
+      destination = options[:destination]
+
+      if origin && destination
+        origin_index = origins.index origin
+        destination_index = destinations.index destination
+
+        if origin_index.nil? || destination_index.nil?
+          fail ArgumentError, "Given origin or destination is not i matrix."
+        end
+
+        [data[origin_index][destination_index]]
+      elsif origin
+        index = origins.index origin
+
+        if index.nil?
+          fail ArgumentError, "Given origin is not i matrix."
+        end
+
+        data[index]
+      elsif destination
+        index = destinations.index destination
+
+        if index.nil?
+          fail ArgumentError, "Given destination is not i matrix."
+        end
+
+        routes = []
+
+        data.each do |row|
+          routes << row[index]
+        end
+
+        routes
+      else
+        fail ArgumentError, "Must provide either origin, destination or both."
+      end
+    end
+
+
     # Public: The data for this matrix.
     #
     # Returns a two dimensional array, the matrix's data

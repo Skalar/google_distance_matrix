@@ -8,7 +8,7 @@ module GoogleDistanceMatrix
     end
 
 
-    delegate :each, :[], :length, to: :places
+    delegate :each, :[], :length, :index, to: :places
 
     [:<<, :concat].each do |method|
       define_method method do |*args|
