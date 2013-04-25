@@ -10,8 +10,8 @@ class GoogleDistanceMatrix::Matrix
   def initialize(attributes = {})
     attributes = attributes.with_indifferent_access
 
-    @origins = Set.new attributes[:origins]
-    @destinations = Set.new attributes[:destinations]
+    @origins = GoogleDistanceMatrix::Places.new attributes[:origins]
+    @destinations = GoogleDistanceMatrix::Places.new attributes[:destinations]
     @configuration = attributes[:configuration] || GoogleDistanceMatrix.default_configuration.dup
   end
 
