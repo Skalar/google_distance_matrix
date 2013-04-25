@@ -1,54 +1,55 @@
-class GoogleDistanceMatrix::Matrix
-  include ActiveModel::Validations
+module GoogleDistanceMatrix
+  class Matrix
+    include ActiveModel::Validations
 
-  validates :origins, length: {minimum: 1, too_short: "must have at least one origin"}
-  validates :destinations, length: {minimum: 1, too_short: "must have at least one destination"}
-  validate { errors.add(:configuration, "is invalid") if configuration.invalid? }
+    validates :origins, length: {minimum: 1, too_short: "must have at least one origin"}
+    validates :destinations, length: {minimum: 1, too_short: "must have at least one destination"}
+    validate { errors.add(:configuration, "is invalid") if configuration.invalid? }
 
-  attr_reader :origins, :destinations, :configuration
+    attr_reader :origins, :destinations, :configuration
 
-  def initialize(attributes = {})
-    attributes = attributes.with_indifferent_access
+    def initialize(attributes = {})
+      attributes = attributes.with_indifferent_access
 
-    @origins = GoogleDistanceMatrix::Places.new attributes[:origins]
-    @destinations = GoogleDistanceMatrix::Places.new attributes[:destinations]
-    @configuration = attributes[:configuration] || GoogleDistanceMatrix.default_configuration.dup
-  end
-
-
-  def matrix
-    @matrix ||= load_matrix
-  end
+      @origins = Places.new attributes[:origins]
+      @destinations = Places.new attributes[:destinations]
+      @configuration = attributes[:configuration] || GoogleDistanceMatrix.default_configuration.dup
+    end
 
 
-
-  def configure
-    yield configuration
-  end
-
-  def url
-    GoogleDistanceMatrix::UrlBuilder.new(self).url
-  end
+    def matrix
+      @matrix ||= load_matrix
+    end
 
 
 
-  private
+    def configure
+      yield configuration
+    end
 
-  def load_matrix
-    response = client.get url
-    parsed = JSON.parse response.body
+    def url
+      UrlBuilder.new(self).url
+    end
 
-    parsed["rows"].each_with_index.map do |row, origin_index|
-      origin = origins[origin_index]
 
-      row["elements"].each_with_index.map do |element, destination_index|
-        route_attributes = element.merge(origin: origin, destination: destinations[destination_index])
-        GoogleDistanceMatrix::Route.new route_attributes
+
+    private
+
+    def load_matrix
+      parsed = JSON.parse client.get(url).body
+
+      parsed["rows"].each_with_index.map do |row, origin_index|
+        origin = origins[origin_index]
+
+        row["elements"].each_with_index.map do |element, destination_index|
+          route_attributes = element.merge(origin: origin, destination: destinations[destination_index])
+          Route.new route_attributes
+        end
       end
     end
-  end
 
-  def client
-    @client ||= GoogleDistanceMatrix::Client.new
-  end
+    def client
+      @client ||= Client.new
+    end
+end
 end

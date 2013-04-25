@@ -1,26 +1,28 @@
-class GoogleDistanceMatrix::Configuration
-  include ActiveModel::Validations
+module GoogleDistanceMatrix
+  class Configuration
+    include ActiveModel::Validations
 
-  ATTRIBUTES = %w[sensor mode avoid units]
+    ATTRIBUTES = %w[sensor mode avoid units]
 
-  attr_accessor *ATTRIBUTES
-
-
-  validates :sensor, inclusion: {in: [true, false]}
-  validates :mode, inclusion: {in: ["driving", "walking", "bicycling"]}, allow_blank: true
-  validates :avoid, inclusion: {in: ["tolls", "highways"]}, allow_blank: true
-  validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
+    attr_accessor *ATTRIBUTES
 
 
-  def initialize
-    self.sensor = false
-  end
+    validates :sensor, inclusion: {in: [true, false]}
+    validates :mode, inclusion: {in: ["driving", "walking", "bicycling"]}, allow_blank: true
+    validates :avoid, inclusion: {in: ["tolls", "highways"]}, allow_blank: true
+    validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
 
-  def to_hash
-    Hash[
-      ATTRIBUTES.map { |attr| [attr, public_send(attr)] }.reject do |attr_and_value|
-        attr_and_value[1].nil?
-      end
-    ]
+
+    def initialize
+      self.sensor = false
+    end
+
+    def to_hash
+      Hash[
+        ATTRIBUTES.map { |attr| [attr, public_send(attr)] }.reject do |attr_and_value|
+          attr_and_value[1].nil?
+        end
+      ]
+    end
   end
 end
