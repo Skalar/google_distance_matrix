@@ -1,4 +1,38 @@
 module GoogleDistanceMatrix
+  # Public: Represents a distance matrix.
+  #
+  # Enables you to set up a origins and destinations and get
+  # a distance matrix from Google. For documentation see
+  # https://developers.google.com/maps/documentation/distancematrix
+  #
+  # Examples
+  #
+  #   origin_1 = GoogleDistanceMatrix::Place.new address: "Karl Johans gate, Oslo"
+  #   origin_2 = GoogleDistanceMatrix::Place.new address: "Askerveien 1, Asker"
+  #
+  #   destination_1 = GoogleDistanceMatrix::Place.new address: "Drammensveien 1, Oslo"
+  #   destination_2 = GoogleDistanceMatrix::Place.new lat: 1.4, lng: 1.3
+  #
+  #   matrix = GoogleDistanceMatrix::Matrix.new(
+  #     origins: [origin_1, origin_2],
+  #     destinations: [destination_1, destination_2]
+  #   )
+  #
+  # If you want to may configure the matrix. See GoogleDistanceMatrix::Configuration.
+  #
+  #   matrix.configure do |config|
+  #     config.sensor = true
+  #     config.mode = "walking"
+  #   end
+  #
+  # Query API and get the matrix back
+  #
+  #   matrix.matrix # Returns a two dimensional array.
+  #                 # Rows are ordered according to the values in the origins.
+  #                 # Each row corresponds to an origin, and each element within that row corresponds to
+  #                 # a pairing of the origin with a destination.
+  #
+  #
   class Matrix
     include ActiveModel::Validations
 

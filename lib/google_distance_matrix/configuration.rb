@@ -1,10 +1,17 @@
 module GoogleDistanceMatrix
+  # Public: Configuration of matrix and it's request.
+  #
+  # Holds configuration used when building API URL.
+  #
+  # See https://developers.google.com/maps/documentation/distancematrix/#RequestParameters
+  # for documentation on each configuration.
+  #
   class Configuration
     include ActiveModel::Validations
 
     ATTRIBUTES = %w[sensor mode avoid units]
 
-    attr_accessor *ATTRIBUTES
+    attr_accessor *ATTRIBUTES, :protocol
 
 
     validates :sensor, inclusion: {in: [true, false]}
