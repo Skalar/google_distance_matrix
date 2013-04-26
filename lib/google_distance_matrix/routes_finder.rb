@@ -20,7 +20,7 @@ module GoogleDistanceMatrix
     # destination   - A place representing the destination
     #
     # Routes for given origin or destination
-    def find(options = {})
+    def find_by_origin_destination(options = {})
       options = options.with_indifferent_access
 
       if options.has_key?(:origin) && options.has_key?(:destination)

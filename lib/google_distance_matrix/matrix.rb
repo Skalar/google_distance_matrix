@@ -67,7 +67,7 @@ module GoogleDistanceMatrix
         fail ArgumentError, "Must provide origin and destination"
       end
 
-      routes_finder.find(options).first
+      routes_finder.find_by_origin_destination(options).first
     end
 
     # Public: Finds routes for you based on an origin or a destination
@@ -80,7 +80,7 @@ module GoogleDistanceMatrix
     #
     # Routes for given origin or destination
     def routes_for(options = {})
-      routes_finder.find options
+      routes_finder.find_by_origin_destination options
     end
 
     # Public: The data for this matrix.

@@ -21,34 +21,34 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
 
 
 
-  describe "#find" do
+  describe "#find_by_origin_destination" do
     let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
 
     it "fails if no origin nor destination is given" do
-      expect { subject.find }. to raise_error ArgumentError
+      expect { subject.find_by_origin_destination }. to raise_error ArgumentError
     end
 
     it "returns routes given an origin" do
-      routes = subject.find origin: origin_1
+      routes = subject.find_by_origin_destination origin: origin_1
 
       expect(routes.length).to eq 2
       expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true
     end
 
     it "fails with argument error if matrix does not contain given origin" do
-      expect { subject.find origin: destination_1}. to raise_error ArgumentError
+      expect { subject.find_by_origin_destination origin: destination_1}. to raise_error ArgumentError
     end
 
 
     it "returns routes given an destination" do
-      routes = subject.find destination: destination_2
+      routes = subject.find_by_origin_destination destination: destination_2
 
       expect(routes.length).to eq 2
       expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
     end
 
     it "fails with argument error if matrix does not contain given destination" do
-      expect { subject.find destination: origin_1}. to raise_error ArgumentError
+      expect { subject.find_by_origin_destination destination: origin_1}. to raise_error ArgumentError
     end
   end
 end

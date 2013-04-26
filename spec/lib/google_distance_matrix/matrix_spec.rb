@@ -73,27 +73,27 @@ describe GoogleDistanceMatrix::Matrix do
   end
 
   describe "#routes_for" do
-    let(:finder) { mock find: [] }
+    let(:finder) { mock find_by_origin_destination: [] }
     let(:result) { [mock] }
     let(:instructions) { {origin: :here, destination: :there}.with_indifferent_access }
 
     before { subject.stub(:routes_finder).and_return finder }
 
     it "asks the routes finder" do
-      finder.should_receive(:find).with(instructions).and_return result
+      finder.should_receive(:find_by_origin_destination).with(instructions).and_return result
       expect(subject.routes_for(instructions)).to eq result
     end
   end
 
   describe "#route_for" do
-    let(:finder) { mock find: [] }
+    let(:finder) { mock find_by_origin_destination: [] }
     let(:result) { [mock] }
     let(:instructions) { {origin: :here, destination: :there}.with_indifferent_access }
 
     before { subject.stub(:routes_finder).and_return finder }
 
     it "asks the routes finder" do
-      finder.should_receive(:find).with(instructions).and_return result
+      finder.should_receive(:find_by_origin_destination).with(instructions).and_return result
       expect(subject.route_for(instructions)).to eq result.first
     end
 
