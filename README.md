@@ -41,8 +41,8 @@ but to solve it you may look at http://ai4r.org/.
     # a pairing of the origin with a destination.
     matrix.data
 
-    # Returns an array of Google::DistanceMatrix::Route, all having given destination
-    matrix.routes_for destination: dest_address
+    # Returns an array of Google::DistanceMatrix::Route, all having given origin or destination
+    matrix.routes_for dest_address
 
     # Returns Google::DistanceMatrix::Route with given origin and destination
     matrix.route_for origin: lat_lng, destination: dest_address

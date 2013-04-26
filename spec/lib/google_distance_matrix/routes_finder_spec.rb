@@ -22,34 +22,42 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
   let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
 
 
-  describe "#find_by_origin_destination" do
-    it "fails if no origin nor destination is given" do
-      expect { subject.find_by_origin_destination }. to raise_error ArgumentError
+  describe "#routes_for" do
+    it "fails if given place does not exist" do
+      expect { subject.routes_for "foo" }.to raise_error ArgumentError
     end
 
-    it "returns routes given an origin" do
-      routes = subject.find_by_origin_destination origin: origin_1
+    it "returns routes for given origin" do
+      routes = subject.routes_for origin_1
 
       expect(routes.length).to eq 2
       expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true
     end
 
-    it "fails with argument error if matrix does not contain given origin" do
-      expect { subject.find_by_origin_destination origin: destination_1}. to raise_error ArgumentError
-    end
-
-
-    it "returns routes given an destination" do
-      routes = subject.find_by_origin_destination destination: destination_2
+    it "returns routes for given destination" do
+      routes = subject.routes_for destination_2
 
       expect(routes.length).to eq 2
       expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
     end
+  end
 
-    it "fails with argument error if matrix does not contain given destination" do
-      expect { subject.find_by_origin_destination destination: origin_1}. to raise_error ArgumentError
+  describe "#route_for" do
+    it "returns route" do
+      route = subject.route_for(origin: origin_1, destination: destination_1)
+      expect(route.origin).to eq origin_1
+      expect(route.destination).to eq destination_1
+    end
+
+    it "fails with argument error if origin is missing" do
+      expect { subject.route_for destination: destination_2 }.to raise_error ArgumentError
+    end
+
+    it "fails with argument error if destination is missing" do
+      expect { subject.route_for origin: origin_1 }.to raise_error ArgumentError
     end
   end
+
 
   describe "#shortest_route_by_distance_to" do
     it "returns route representing shortest distance to given origin" do

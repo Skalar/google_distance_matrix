@@ -11,28 +11,6 @@ module GoogleDistanceMatrix
     end
 
 
-    # Public: Finds routes for you based on an origin or a destination
-    #
-    # You may give both origin and destination as well. You'll get one route
-    # back wrapped in an array. See route_for and use it instead.
-    #
-    # origin        - A place representing the origin
-    # destination   - A place representing the destination
-    #
-    # Routes for given origin or destination
-    def find_by_origin_destination(options = {})
-      options = options.with_indifferent_access
-
-      if options.has_key?(:origin) && options.has_key?(:destination)
-        find_route_for_origin_and_destination options[:origin], options[:destination]
-      elsif options.has_key? :origin
-        routes_for_origin options[:origin]
-      elsif options.has_key? :destination
-        routes_for_destination options[:destination]
-      else
-        fail ArgumentError, "Must provide either origin, destination or both."
-      end
-    end
 
     # Public: Finds routes for given place.
     #
@@ -47,6 +25,23 @@ module GoogleDistanceMatrix
       else
         fail ArgumentError, "Given place not an origin nor destination."
       end
+    end
+
+
+    # Public: Finds a route for you based on one origin and destination
+    #
+    # origin        - A place representing the origin
+    # destination   - A place representing the destination
+    #
+    # A Route for given origin and destination
+    def route_for(options = {})
+      options = options.with_indifferent_access
+
+      if options[:origin].nil? || options[:destination].nil?
+        fail ArgumentError, "Must provide origin and destination"
+      end
+
+      routes_for(options[:origin]).detect { |route| route.destination == options[:destination] }
     end
 
 
