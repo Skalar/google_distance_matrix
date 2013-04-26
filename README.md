@@ -50,8 +50,8 @@ but to solve it you may look at http://ai4r.org/.
 
 ### Not implemented, yet..
 
-    matrix.shortest_route_by_distance_to # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
-    matrix.shortest_route_by_duration_to # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
+    matrix.shortest_route_by_distance_to(dest_address) # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
+    matrix.shortest_route_by_duration_to(dest_address) # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
 
 
 

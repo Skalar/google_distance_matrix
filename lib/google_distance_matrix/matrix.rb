@@ -83,6 +83,9 @@ module GoogleDistanceMatrix
       routes_finder.find_by_origin_destination options
     end
 
+    delegate :shortest_route_by_distance_to, :shortest_route_by_duration_to, to: :routes_finder
+
+
     # Public: The data for this matrix.
     #
     # Returns a two dimensional array, the matrix's data

@@ -34,6 +34,30 @@ module GoogleDistanceMatrix
       end
     end
 
+    # Public: Finds routes for given place.
+    #
+    # place   -  Either an origin or destination
+    #
+    # Returns the place's routes
+    def routes_for(place)
+      if origins.include? place
+        routes_for_origin place
+      elsif destinations.include? place
+        routes_for_destination place
+      else
+        fail ArgumentError, "Given place not an origin nor destination."
+      end
+    end
+
+
+    def shortest_route_by_distance_to(place)
+      routes_for(place).min_by &:distance_value
+    end
+
+    def shortest_route_by_duration_to(place)
+      routes_for(place).min_by &:distance_value
+    end
+
 
 
 

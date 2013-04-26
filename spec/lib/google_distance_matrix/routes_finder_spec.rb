@@ -19,11 +19,10 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
 
   subject { described_class.new matrix }
 
+  let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
 
 
   describe "#find_by_origin_destination" do
-    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
-
     it "fails if no origin nor destination is given" do
       expect { subject.find_by_origin_destination }. to raise_error ArgumentError
     end
@@ -49,6 +48,26 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
 
     it "fails with argument error if matrix does not contain given destination" do
       expect { subject.find_by_origin_destination destination: origin_1}. to raise_error ArgumentError
+    end
+  end
+
+  describe "#shortest_route_by_distance_to" do
+    it "returns route representing shortest distance to given origin" do
+      expect(subject.shortest_route_by_distance_to(origin_1)).to eq matrix.data[0][0]
+    end
+
+    it "returns route representing shortest distance to given destination" do
+      expect(subject.shortest_route_by_distance_to(destination_2)).to eq matrix.data[1][1]
+    end
+  end
+
+  describe "#shortest_route_by_duration_to" do
+    it "returns route representing shortest duration to given origin" do
+      expect(subject.shortest_route_by_duration_to(origin_1)).to eq matrix.data[0][0]
+    end
+
+    it "returns route representing shortest duration to given destination" do
+      expect(subject.shortest_route_by_duration_to(destination_2)).to eq matrix.data[1][1]
     end
   end
 end

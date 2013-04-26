@@ -85,6 +85,18 @@ describe GoogleDistanceMatrix::Matrix do
     end
   end
 
+  %w[shortest_route_by_duration_to shortest_route_by_distance_to].each do |method|
+    it "delegates #{method} to routes_finder" do
+      finder = mock
+      result = mock
+
+      subject.stub(:routes_finder).and_return finder
+
+      finder.should_receive(method).and_return result
+      expect(subject.public_send(method)).to eq result
+    end
+  end
+
   describe "#route_for" do
     let(:finder) { mock find_by_origin_destination: [] }
     let(:result) { [mock] }
