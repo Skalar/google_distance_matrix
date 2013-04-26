@@ -15,4 +15,9 @@ describe GoogleDistanceMatrix::Places do
       subject << 5
     }.to_not change(subject, :length)
   end
+
+  it "has << which is chanable" do
+    subject << 6 << 8
+    expect(subject).to include 6, 8
+  end
 end

@@ -8,12 +8,13 @@ module GoogleDistanceMatrix
     end
 
 
-    delegate :each, :[], :length, :index, to: :places
+    delegate :each, :[], :length, :index, :pop, :shift, :delete_at, :compact, to: :places
 
-    [:<<, :concat].each do |method|
+    [:<<, :concat, :push, :unshift, :insert].each do |method|
       define_method method do |*args|
-        places.public_send method, *args
-        places.uniq!
+        places.public_send(method, *args).tap do
+          places.uniq!
+        end
       end
     end
 

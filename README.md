@@ -47,9 +47,6 @@ but to solve it you may look at http://ai4r.org/.
     # Returns Google::DistanceMatrix::Route with given origin and destination
     matrix.route_for origin: lat_lng, destination: dest_address
 
-
-### Not implemented, yet..
-
     matrix.shortest_route_by_distance_to(dest_address) # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
     matrix.shortest_route_by_duration_to(dest_address) # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
 
@@ -73,6 +70,12 @@ Or install it yourself as:
 
 
 
+
+## TODO
+
+* matrix.reload
+* Error handling in routes when status is not OK.
+*
 
 
 ## Contributing
