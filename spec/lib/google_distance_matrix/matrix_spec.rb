@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe GoogleDistanceMatrix::Matrix, :request_recordings do
+describe GoogleDistanceMatrix::Matrix do
   let(:origin_1) { GoogleDistanceMatrix::Place.new address: "Karl Johans gate, Oslo" }
   let(:origin_2) { GoogleDistanceMatrix::Place.new address: "Askerveien 1, Asker" }
 
@@ -73,44 +73,28 @@ describe GoogleDistanceMatrix::Matrix, :request_recordings do
   end
 
   describe "#routes_for" do
-    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
+    let(:finder) { mock find: [] }
+    let(:result) { [mock] }
+    let(:instructions) { {origin: :here, destination: :there}.with_indifferent_access }
 
-    it "fails if no origin nor destination is given" do
-      expect { subject.routes_for }. to raise_error ArgumentError
-    end
+    before { subject.stub(:routes_finder).and_return finder }
 
-    it "returns routes given an origin" do
-      routes = subject.routes_for origin: origin_1
-
-      expect(routes.length).to eq 2
-      expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true
-    end
-
-    it "fails with argument error if matrix does not contain given origin" do
-      expect { subject.routes_for origin: destination_1}. to raise_error ArgumentError
-    end
-
-
-    it "returns routes given an destination" do
-      routes = subject.routes_for destination: destination_2
-
-      expect(routes.length).to eq 2
-      expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
-    end
-
-    it "fails with argument error if matrix does not contain given destination" do
-      expect { subject.routes_for destination: origin_1}. to raise_error ArgumentError
+    it "asks the routes finder" do
+      finder.should_receive(:find).with(instructions).and_return result
+      expect(subject.routes_for(instructions)).to eq result
     end
   end
 
   describe "#route_for" do
-    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
+    let(:finder) { mock find: [] }
+    let(:result) { [mock] }
+    let(:instructions) { {origin: :here, destination: :there}.with_indifferent_access }
 
-    it "finds route for given origin and destination" do
-      route = subject.route_for origin: origin_1, destination: destination_2
+    before { subject.stub(:routes_finder).and_return finder }
 
-      expect(route.origin).to eq origin_1
-      expect(route.destination).to eq destination_2
+    it "asks the routes finder" do
+      finder.should_receive(:find).with(instructions).and_return result
+      expect(subject.route_for(instructions)).to eq result.first
     end
 
     it "fails with argument error if origin is missing" do
@@ -123,7 +107,7 @@ describe GoogleDistanceMatrix::Matrix, :request_recordings do
   end
 
 
-  describe "#data" do
+  describe "#data", :request_recordings do
     let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
 
     it "loads from Google's API" do

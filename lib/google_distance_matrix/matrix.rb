@@ -67,14 +67,7 @@ module GoogleDistanceMatrix
         fail ArgumentError, "Must provide origin and destination"
       end
 
-      origin_index = origins.index options[:origin]
-      destination_index = destinations.index options[:destination]
-
-      if origin_index.nil? || destination_index.nil?
-        fail ArgumentError, "Given origin or destination is not i matrix."
-      end
-
-      data[origin_index][destination_index]
+      routes_finder.find(options).first
     end
 
     # Public: Finds routes for you based on an origin or a destination
@@ -87,17 +80,7 @@ module GoogleDistanceMatrix
     #
     # Routes for given origin or destination
     def routes_for(options = {})
-      options = options.with_indifferent_access
-
-      if (options.keys & %w[origin destination]).length != 1
-        fail ArgumentError, "Must provide either origin or destination."
-      end
-
-      if options.has_key? :origin
-        routes_for_origin options[:origin]
-      elsif options.has_key? :destination
-        routes_for_destination options[:destination]
-      end
+      routes_finder.find options
     end
 
     # Public: The data for this matrix.
@@ -121,23 +104,9 @@ module GoogleDistanceMatrix
 
     private
 
-    def routes_for_origin(origin)
-      index = origins.index origin
-      fail ArgumentError, "Given origin is not i matrix."if index.nil?
-
-      data[index]
+    def routes_finder
+      @routes_finder ||= RoutesFinder.new self
     end
-
-    def routes_for_destination(destination)
-      index = destinations.index destination
-      fail ArgumentError, "Given destination is not i matrix." if index.nil?
-
-      [].tap do |routes|
-        data.each { |row| routes << row[index] }
-      end
-    end
-
-
 
     def load_matrix
       parsed = JSON.parse client.get(url).body
@@ -155,5 +124,5 @@ module GoogleDistanceMatrix
     def client
       @client ||= Client.new
     end
-end
+  end
 end
