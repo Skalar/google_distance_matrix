@@ -1,6 +1,7 @@
 require "spec_helper"
 
 describe GoogleDistanceMatrix::UrlBuilder do
+  let(:delimiter) { described_class::DELIMITER }
   let(:origin_1) { GoogleDistanceMatrix::Place.new address: "address_origin_1" }
   let(:origin_2) { GoogleDistanceMatrix::Place.new address: "address_origin_2" }
 
@@ -59,16 +60,33 @@ describe GoogleDistanceMatrix::UrlBuilder do
     end
 
     it "includes origins" do
-      expect(subject.url).to include "origins=address_origin_1|address_origin_2"
+      expect(subject.url).to include "origins=address_origin_1#{delimiter}address_origin_2"
     end
 
     it "includes destinations" do
-      expect(subject.url).to include "destinations=1,11|2,22"
+      expect(subject.url).to include "destinations=1,11#{delimiter}2,22"
     end
 
     describe "configuration" do
       it "includes sensor" do
         expect(subject.url).to include "sensor=#{matrix.configuration.sensor}"
+      end
+
+      context "with google business client id and private key set" do
+        before do
+          matrix.configure do |config|
+            config.google_business_api_client_id = "123"
+            config.google_business_api_private_key = "secret"
+          end
+        end
+
+        it "includes client" do
+          expect(subject.url).to include "client=#{matrix.configuration.google_business_api_client_id}"
+        end
+
+        it "has signature" do
+          expect(subject.url).to include "signature=CsB34Z0unaPImzUSGBivAWRsK-E="
+        end
       end
     end
   end

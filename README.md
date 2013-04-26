@@ -26,9 +26,13 @@ but to solve it you may look at http://ai4r.org/.
     matrix.origins << lat_lng << address
     matrix.destinations << dest_address
 
-    matrix.configure do |c|
-      c.mode = 'driving'
-      c.avoid = ['tolls']
+    matrix.configure do |config|
+      config.mode = 'driving'
+      config.avoid = ['tolls']
+
+      # To build signed URLs to use with a Google Business account
+      config.google_business_api_client_id = "123"
+      config.google_business_api_private_key = "your-secret-key"
     end
 
     # Returns the data, loaded from Google, for this matrix.

@@ -4,6 +4,7 @@ require "cgi"
 require "json"
 require "active_model"
 require "active_support/core_ext/hash"
+require "google_business_api_url_signer"
 
 require "google_distance_matrix/errors"
 require "google_distance_matrix/configuration"

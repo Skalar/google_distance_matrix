@@ -11,7 +11,7 @@ module GoogleDistanceMatrix
 
     ATTRIBUTES = %w[sensor mode avoid units]
 
-    attr_accessor *ATTRIBUTES, :protocol
+    attr_accessor *ATTRIBUTES, :protocol, :google_business_api_client_id, :google_business_api_private_key
 
 
     validates :sensor, inclusion: {in: [true, false]}
@@ -28,11 +28,22 @@ module GoogleDistanceMatrix
     end
 
     def to_param
-      Hash[
-        ATTRIBUTES.map { |attr| [attr, public_send(attr)] }.reject do |attr_and_value|
-          attr_and_value[1].nil?
-        end
-      ]
+      Hash[array_param]
+    end
+
+
+    private
+
+    def array_param
+      out = ATTRIBUTES.map { |attr| [attr, public_send(attr)] }.reject do |attr_and_value|
+        attr_and_value[1].nil?
+      end
+
+      if google_business_api_client_id.present?
+        out << ['client', google_business_api_client_id]
+      end
+
+      out
     end
   end
 end

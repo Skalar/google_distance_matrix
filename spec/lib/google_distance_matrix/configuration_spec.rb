@@ -25,6 +25,9 @@ describe GoogleDistanceMatrix::Configuration do
     its(:avoid) { should be_nil }
     its(:units) { should be_nil }
     its(:protocol) { should eq "http" }
+
+    its(:google_business_api_client_id) { should be_nil }
+    its(:google_business_api_private_key) { should be_nil }
   end
 
 
@@ -39,6 +42,11 @@ describe GoogleDistanceMatrix::Configuration do
         subject.public_send "#{attr}=", nil
         expect(subject.to_param).to_not have_key attr
       end
+    end
+
+    it "includes client if google_business_api_client_id has been set" do
+      subject.google_business_api_client_id = "123"
+      expect(subject.to_param['client']).to eq "123"
     end
   end
 end
