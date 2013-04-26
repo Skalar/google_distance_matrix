@@ -1,6 +1,21 @@
 # GoogleDistanceMatrix
 
-## Examples - WIP on how this might work
+Ruby client for The Google Distance Matrix API.
+
+This lib makes Google's distance matrix API easy to work with,
+allowing you to set up some origins and destinations and
+pull the distance matrix from Google.
+
+Once you have the matrix you can fetch all routes from a given
+origin or to a given destination.
+
+The matrix may also be used as a data set for traveling salesman problem,
+but to solve it you may look at http://ai4r.org/.
+
+
+
+
+## Examples
 
     matrix = GoogleDistanceMatrix::Matrix.new
 
@@ -16,10 +31,20 @@
       c.avoid = ['tolls']
     end
 
+    # Returns an array of Google::DistanceMatrix::Route, all having given destination
+    matrix.routes_for destination: dest_address
+
+    # Returns Google::DistanceMatrix::Route with given origin and destination
+    matrix.route_for origin: lat_lng, destination: dest_address
+
+
+### Not implemented, yet..
+
     matrix.shortest_route_by_distance # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
     matrix.shortest_route_by_duration # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
 
-    matrix.route_for origin: lat_lng, destination: dest_address # Returns Google::DistanceMatrix::Route, or fails when not found
+
+
 
 
 ## Installation
@@ -36,9 +61,9 @@ Or install it yourself as:
 
     $ gem install google_distance_matrix
 
-## Usage
 
-TODO: Write usage instructions here
+
+
 
 ## Contributing
 

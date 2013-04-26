@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = GoogleDistanceMatrix::VERSION
   spec.authors       = ["Thorbjørn Hermansen"]
   spec.email         = ["thhermansen@gmail.com"]
-  spec.description   = %q{Simple client for Google's Distance Matrix API}
-  spec.summary       = %q{Simple client for Google's Distance Matrix API}
+  spec.description   = %q{Ruby client for The Google Distance Matrix API}
+  spec.summary       = %q{Ruby client for The Google Distance Matrix API}
   spec.homepage      = ""
   spec.license       = "MIT"
 
