@@ -73,9 +73,7 @@ Or install it yourself as:
 
 ## TODO
 
-* matrix.reload
 * Error handling in routes when status is not OK.
-*
 
 
 ## Contributing

@@ -65,6 +65,11 @@ module GoogleDistanceMatrix
       @data ||= load_matrix
     end
 
+    def reload
+      @data = load_matrix
+      self
+    end
+
 
 
     def configure

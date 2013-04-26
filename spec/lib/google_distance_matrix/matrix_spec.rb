@@ -122,4 +122,21 @@ describe GoogleDistanceMatrix::Matrix do
       expect(subject.data[1][1].destination).to eq destination_2
     end
   end
+
+  describe "#reload" do
+    before do
+      subject.stub(:load_matrix).and_return { ['loaded'] }
+      subject.data.clear
+    end
+
+    it "reloads matrix' data from the API" do
+      expect {
+        subject.reload
+      }.to change(subject, :data).from([]).to ['loaded']
+    end
+
+    it "is chainable" do
+      expect(subject.reload.data).to eq ['loaded']
+    end
+  end
 end
