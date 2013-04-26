@@ -31,6 +31,12 @@ but to solve it you may look at http://ai4r.org/.
       c.avoid = ['tolls']
     end
 
+    # Returns the data, loaded from Google, for this matrix.
+    # It is a multi dimensional array. Rows are ordered according to the values in the origins.
+    # Each row corresponds to an origin, and each element within that row corresponds to
+    # a pairing of the origin with a destination.
+    matrix.data
+
     # Returns an array of Google::DistanceMatrix::Route, all having given destination
     matrix.routes_for destination: dest_address
 
