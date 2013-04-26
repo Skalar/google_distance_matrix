@@ -101,17 +101,6 @@ describe GoogleDistanceMatrix::Matrix, :request_recordings do
     it "fails with argument error if matrix does not contain given destination" do
       expect { subject.routes_for destination: origin_1}. to raise_error ArgumentError
     end
-
-    it "finds route for given origin and destination" do
-      routes = subject.routes_for origin: origin_1, destination: destination_2
-
-      expect(routes.length).to eq 1
-
-      route = routes.first
-
-      expect(route.origin).to eq origin_1
-      expect(route.destination).to eq destination_2
-    end
   end
 
   describe "#route_for" do
