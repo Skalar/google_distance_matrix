@@ -1,0 +1,14 @@
+module GoogleDistanceMatrix
+  class LogSubscriber < ActiveSupport::LogSubscriber
+    def self.logger
+      GoogleDistanceMatrix.logger
+    end
+
+    def client_request_matrix_data(event)
+      logger.info "(#{event.duration}ms) GET #{event.payload[:url]}", tag: :client
+    end
+  end
+end
+
+GoogleDistanceMatrix::LogSubscriber.attach_to "google_distance_matrix"
+

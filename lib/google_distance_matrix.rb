@@ -17,6 +17,9 @@ require "google_distance_matrix/places"
 require "google_distance_matrix/place"
 require "google_distance_matrix/route"
 
+require "google_distance_matrix/log_subscriber"
+
+
 module GoogleDistanceMatrix
   extend self
 
