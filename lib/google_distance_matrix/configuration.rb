@@ -11,7 +11,8 @@ module GoogleDistanceMatrix
 
     ATTRIBUTES = %w[sensor mode avoid units]
 
-    attr_accessor *ATTRIBUTES, :protocol, :google_business_api_client_id, :google_business_api_private_key
+    attr_accessor *ATTRIBUTES, :protocol, :logger
+    attr_accessor :google_business_api_client_id, :google_business_api_private_key
 
 
     validates :sensor, inclusion: {in: [true, false]}

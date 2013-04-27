@@ -6,6 +6,7 @@ require "active_model"
 require "active_support/core_ext/hash"
 require "google_business_api_url_signer"
 
+require "google_distance_matrix/logger"
 require "google_distance_matrix/errors"
 require "google_distance_matrix/configuration"
 require "google_distance_matrix/url_builder"
@@ -25,5 +26,9 @@ module GoogleDistanceMatrix
 
   def configure_defaults
     yield default_configuration
+  end
+
+  def logger
+    @logger ||= Logger.new default_configuration.logger
   end
 end

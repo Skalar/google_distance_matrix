@@ -28,6 +28,8 @@ describe GoogleDistanceMatrix::Configuration do
 
     its(:google_business_api_client_id) { should be_nil }
     its(:google_business_api_private_key) { should be_nil }
+
+    its(:logger) { should be_nil }
   end
 
 
