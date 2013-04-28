@@ -17,6 +17,28 @@ describe GoogleDistanceMatrix::Place do
       expect(place.lng).to eq lng
     end
 
+    it "builds with an object responding to lat and lng" do
+      point = mock lat: 1, lng: 2
+      place = described_class.new(point)
+      expect(place.lat).to eq point.lat
+      expect(place.lng).to eq point.lng
+    end
+
+    it "builds with an object responding to address" do
+      object = mock address: address
+      place = described_class.new(object)
+      expect(place.address).to eq object.address
+    end
+
+    it "builds with an object responding to lat, lng and address" do
+      object = mock lat: 1, lng:2, address: address
+      place = described_class.new(object)
+
+      expect(place.lat).to eq object.lat
+      expect(place.lng).to eq object.lng
+      expect(place.address).to be_nil
+    end
+
     it "fails if no valid attributes given" do
       expect { described_class.new }.to raise_error ArgumentError
       expect { described_class.new(lat: lat) }.to raise_error ArgumentError

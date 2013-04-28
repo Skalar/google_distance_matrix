@@ -17,14 +17,17 @@ but to solve it you may look at http://ai4r.org/.
 
 ## Examples
 
+    # Set up a matrix to work with
     matrix = GoogleDistanceMatrix::Matrix.new
 
+    # Create some places to be used as origins or destinations for the matrix
     lat_lng = GoogleDistanceMatrix::Place.new lng: 12, lat: 12
     address = GoogleDistanceMatrix::Place.new address: "My address, Oslo"
     dest_address = GoogleDistanceMatrix::Place.new address: "Home, Oppegaard"
+    dest_object = GoogleDistanceMatrix::Place.new object_responding_to_lat_lng_or_address
 
     matrix.origins << lat_lng << address
-    matrix.destinations << dest_address
+    matrix.destinations << dest_address << dest_object
 
     matrix.configure do |config|
       config.mode = 'driving'
