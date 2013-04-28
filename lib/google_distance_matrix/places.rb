@@ -10,12 +10,19 @@ module GoogleDistanceMatrix
 
     delegate :each, :[], :length, :index, :pop, :shift, :delete_at, :compact, to: :places
 
-    [:<<, :concat, :push, :unshift, :insert].each do |method|
+    [:<<, :push, :unshift].each do |method|
       define_method method do |*args|
-        places.public_send(method, *args).tap do
-          places.uniq!
-        end
+        args = ensure_args_are_places args
+
+        places.public_send(method, *args)
+
+        places.uniq!
+        self
       end
+    end
+
+    def concat(other)
+      push *other
     end
 
 
@@ -23,5 +30,15 @@ module GoogleDistanceMatrix
     private
 
     attr_reader :places
+
+    def ensure_args_are_places(args)
+      args.map do |arg|
+        if arg.is_a? Place
+          arg
+        else
+          Place.new arg
+        end
+      end
+    end
   end
 end

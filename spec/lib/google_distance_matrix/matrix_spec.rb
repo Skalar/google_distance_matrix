@@ -19,13 +19,13 @@ describe GoogleDistanceMatrix::Matrix do
 
   describe "#initialize" do
     it "takes a list of origins" do
-      matrix = described_class.new origins: [1, 2]
-      expect(matrix.origins).to include 1, 2
+      matrix = described_class.new origins: [origin_1, origin_2]
+      expect(matrix.origins).to include origin_1, origin_2
     end
 
     it "takes a list of destinations" do
-      matrix = described_class.new destinations: [3, 4]
-      expect(matrix.destinations).to include 3, 4
+      matrix = described_class.new destinations: [destination_1, destination_2]
+      expect(matrix.destinations).to include destination_1, destination_2
     end
 
     it "has a default configuration" do

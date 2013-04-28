@@ -19,8 +19,10 @@ module GoogleDistanceMatrix
     def initialize(attributes_or_object)
       if respond_to_needed_attributes? attributes_or_object
         extract_and_assign_attributes_from_object attributes_or_object
-      else
+      elsif attributes_or_object.is_a? Hash
         assign_attributes attributes_or_object
+      else
+        fail ArgumentError, "Must be either hash or object responding to lat, lng or address. "
       end
 
       validate_attributes

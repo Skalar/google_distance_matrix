@@ -24,11 +24,19 @@ but to solve it you may look at http://ai4r.org/.
     lat_lng = GoogleDistanceMatrix::Place.new lng: 12, lat: 12
     address = GoogleDistanceMatrix::Place.new address: "My address, Oslo"
     dest_address = GoogleDistanceMatrix::Place.new address: "Home, Oppegaard"
-    dest_object = GoogleDistanceMatrix::Place.new object_responding_to_lat_lng_or_address
 
+    point_dest = Point.new lat: 1, lng: 2
+    dest_object = GoogleDistanceMatrix::Place.new point_dest
+
+    # Add places to matrix's origins and destinations
     matrix.origins << lat_lng << address
     matrix.destinations << dest_address << dest_object
 
+    # Added objects will be wrapped in a place automatically, so you may skip manyally creating Places.
+    another_point = Point.new lat: 1, lng: 3
+    matrix.origins << another_point
+
+    # Do some configuration - see GoogleDistanceMatrix.default_configuration as well.
     matrix.configure do |config|
       config.mode = 'driving'
       config.avoid = ['tolls']
@@ -55,7 +63,7 @@ but to solve it you may look at http://ai4r.org/.
 
     # In cases you built the place with an object (not hash with attributes) you may provide that object
     # as well asking for routes. This is true for route_for and shortest_route_by_* as well.
-    matrix.routes_for object_responding_to_lat_lng_or_address # Returns routes for dest_object
+    matrix.routes_for point_dest # Returns routes for dest_object
 
 
 
