@@ -45,6 +45,11 @@ module GoogleDistanceMatrix
       [lat, lng]
     end
 
+    def inspect
+      inspection = ATTRIBUTES.reject { |a| public_send(a).blank? }.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
+
+      "#<#{self.class} #{inspection}>"
+    end
 
     private
 

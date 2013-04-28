@@ -70,6 +70,10 @@ module GoogleDistanceMatrix
       self
     end
 
+    def loaded?
+      @data.present?
+    end
+
 
 
     def configure
@@ -80,6 +84,14 @@ module GoogleDistanceMatrix
       UrlBuilder.new(self).url
     end
 
+
+    def inspect
+      attributes = %w[origins destinations]
+      attributes << "data" if loaded?
+      inspection = attributes.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
+
+      "#<#{self.class} #{inspection}>"
+    end
 
 
     private

@@ -5,8 +5,12 @@ module GoogleDistanceMatrix
   # it's origin and destination.
   #
   class Route
-    attr_reader :origin, :destination
-    attr_reader :status, :distance_text, :distance_value, :duration_text, :duration_value
+    ATTRIBUTES = %w[
+      origin destination
+      status distance_text distance_value duration_text duration_value
+    ]
+
+    attr_reader *ATTRIBUTES
 
     def initialize(attributes = {})
       attributes = attributes.with_indifferent_access
@@ -19,6 +23,12 @@ module GoogleDistanceMatrix
       @distance_value = attributes[:distance][:value]
       @duration_text = attributes[:duration][:text]
       @duration_value = attributes[:duration][:value]
+    end
+
+    def inspect
+      inspection = ATTRIBUTES.reject { |a| public_send(a).blank? }.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
+
+      "#<#{self.class} #{inspection}>"
     end
   end
 end

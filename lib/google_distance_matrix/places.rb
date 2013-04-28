@@ -8,7 +8,7 @@ module GoogleDistanceMatrix
     end
 
 
-    delegate :each, :[], :length, :index, :pop, :shift, :delete_at, :compact, to: :places
+    delegate :each, :[], :length, :index, :pop, :shift, :delete_at, :compact, :inspect, to: :places
 
     [:<<, :push, :unshift].each do |method|
       define_method method do |*args|
@@ -24,7 +24,6 @@ module GoogleDistanceMatrix
     def concat(other)
       push *other
     end
-
 
 
     private
