@@ -44,7 +44,7 @@ but to solve it you may look at http://ai4r.org/.
     # a pairing of the origin with a destination.
     matrix.data
 
-    # Returns an array of Google::DistanceMatrix::Route, all having given origin or destination
+    # Returns an array of Google::DistanceMatrix::Route, all having given origin or destination.
     matrix.routes_for dest_address
 
     # Returns Google::DistanceMatrix::Route with given origin and destination
@@ -52,6 +52,10 @@ but to solve it you may look at http://ai4r.org/.
 
     matrix.shortest_route_by_distance_to(dest_address) # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
     matrix.shortest_route_by_duration_to(dest_address) # returns Google::DistanceMatrix::Route with one origin and a destination, together with route data
+
+    # In cases you built the place with an object (not hash with attributes) you may provide that object
+    # as well asking for routes. This is true for route_for and shortest_route_by_* as well.
+    matrix.routes_for object_responding_to_lat_lng_or_address # Returns routes for dest_object
 
 
 

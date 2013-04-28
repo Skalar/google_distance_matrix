@@ -5,7 +5,9 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
   let(:origin_2) { GoogleDistanceMatrix::Place.new address: "Askerveien 1, Asker" }
 
   let(:destination_1) { GoogleDistanceMatrix::Place.new address: "Drammensveien 1, Oslo" }
-  let(:destination_2) { GoogleDistanceMatrix::Place.new address: "Skjellestadhagen, Heggedal" }
+
+  let(:destination_2_built_from) { mock address: "Skjellestadhagen, Heggedal" }
+  let(:destination_2) { GoogleDistanceMatrix::Place.new destination_2_built_from }
 
   let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new matrix }
   let(:encoded_url) { URI.encode url_builder.url }
@@ -40,6 +42,13 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
       expect(routes.length).to eq 2
       expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
     end
+
+    it "returns routes for given object a place was built from" do
+      routes = subject.routes_for destination_2_built_from
+
+      expect(routes.length).to eq 2
+      expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
+    end
   end
 
   describe "#route_for" do
@@ -49,12 +58,22 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
       expect(route.destination).to eq destination_1
     end
 
+    it "returns route when you give it the object a place was built from" do
+      route = subject.route_for(origin: origin_1, destination: destination_2_built_from)
+      expect(route.origin).to eq origin_1
+      expect(route.destination).to eq destination_2
+    end
+
     it "fails with argument error if origin is missing" do
       expect { subject.route_for destination: destination_2 }.to raise_error ArgumentError
     end
 
     it "fails with argument error if destination is missing" do
       expect { subject.route_for origin: origin_1 }.to raise_error ArgumentError
+    end
+
+    it "fails with argument error if sent in object is neither place nor something it was built from" do
+      expect { subject.route_for origin: origin_1, destination: mock }.to raise_error ArgumentError
     end
   end
 

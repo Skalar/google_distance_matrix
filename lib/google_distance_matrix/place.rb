@@ -13,7 +13,8 @@
 module GoogleDistanceMatrix
   class Place
     ATTRIBUTES = %w[address lat lng]
-    attr_reader *ATTRIBUTES
+
+    attr_reader *ATTRIBUTES, :extracted_attributes_from
 
     def initialize(attributes_or_object)
       if respond_to_needed_attributes? attributes_or_object
@@ -60,6 +61,7 @@ module GoogleDistanceMatrix
         attrs.delete 'address'
       end
 
+      @extracted_attributes_from = object
       assign_attributes attrs
     end
 

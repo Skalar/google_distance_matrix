@@ -14,10 +14,12 @@ module GoogleDistanceMatrix
 
     # Public: Finds routes for given place.
     #
-    # place   -  Either an origin or destination
+    # place   -  Either an origin or destination, or an object which you built the place from
     #
     # Returns the place's routes
-    def routes_for(place)
+    def routes_for(place_or_object_place_was_built_from)
+      place = ensure_place place_or_object_place_was_built_from
+
       if origins.include? place
         routes_for_origin place
       elsif destinations.include? place
@@ -30,33 +32,52 @@ module GoogleDistanceMatrix
 
     # Public: Finds a route for you based on one origin and destination
     #
-    # origin        - A place representing the origin
-    # destination   - A place representing the destination
+    # origin        - A place representing the origin, or an object which you built the origin from
+    # destination   - A place representing the destination, or an object which you built the destination from
     #
     # A Route for given origin and destination
     def route_for(options = {})
       options = options.with_indifferent_access
 
-      if options[:origin].nil? || options[:destination].nil?
+      origin = ensure_place options[:origin]
+      destination = ensure_place options[:destination]
+
+      if origin.nil? || destination.nil?
         fail ArgumentError, "Must provide origin and destination"
       end
 
-      routes_for(options[:origin]).detect { |route| route.destination == options[:destination] }
+      routes_for(origin).detect { |route| route.destination == destination }
     end
 
 
-    def shortest_route_by_distance_to(place)
-      routes_for(place).min_by &:distance_value
+    def shortest_route_by_distance_to(place_or_object_place_was_built_from)
+      routes_for(place_or_object_place_was_built_from).min_by &:distance_value
     end
 
-    def shortest_route_by_duration_to(place)
-      routes_for(place).min_by &:distance_value
+    def shortest_route_by_duration_to(place_or_object_place_was_built_from)
+      routes_for(place_or_object_place_was_built_from).min_by &:distance_value
     end
 
 
 
 
     private
+
+    def ensure_place(object)
+      if object.is_a? Place
+        object
+      else
+        find_place_for_object(origins, object) ||
+        find_place_for_object(destinations, object)
+      end
+    end
+
+    def find_place_for_object(collection, object)
+      collection.detect do |place|
+        place.extracted_attributes_from.present? &&
+        place.extracted_attributes_from == object
+      end
+    end
 
     def routes_for_origin(origin)
       index = origins.index origin
