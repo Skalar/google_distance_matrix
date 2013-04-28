@@ -23,7 +23,11 @@ module GoogleDistanceMatrix
     end
   end
 
-  # Public: Matrix has errors.
+  # Public: Route seems invalid
+  #
+  # Fails if a route is built, but it's status from
+  # Google isn't OK.
+  #
   class InvalidRoute < Error
     def initialize(route)
       @route = route
