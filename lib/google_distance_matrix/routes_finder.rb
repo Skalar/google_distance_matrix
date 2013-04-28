@@ -29,6 +29,18 @@ module GoogleDistanceMatrix
       end
     end
 
+    # Public: Finds routes for given place.
+    #
+    # Behaviour is same as without a bang, except it fails unless all routes are ok.
+    #
+    def routes_for!(place_or_object_place_was_built_from)
+      routes_for(place_or_object_place_was_built_from).tap do |routes|
+        routes.each do |route|
+          fail_unless_route_is_ok route
+        end
+      end
+    end
+
 
     # Public: Finds a route for you based on one origin and destination
     #
@@ -49,13 +61,33 @@ module GoogleDistanceMatrix
       routes_for(origin).detect { |route| route.destination == destination }
     end
 
+    # Public: Finds a route for you based on one origin and destination
+    #
+    # Behaviour is same as without a bang, except it fails unless route are ok.
+    #
+    def route_for!(options = {})
+      route_for(options).tap do |route|
+        fail_unless_route_is_ok route
+      end
+    end
+
 
     def shortest_route_by_distance_to(place_or_object_place_was_built_from)
-      routes_for(place_or_object_place_was_built_from).min_by &:distance_value
+      routes = routes_for place_or_object_place_was_built_from
+      select_ok_routes(routes).min_by &:distance_value
+    end
+
+    def shortest_route_by_distance_to!(place_or_object_place_was_built_from)
+      routes_for!(place_or_object_place_was_built_from).min_by &:distance_value
     end
 
     def shortest_route_by_duration_to(place_or_object_place_was_built_from)
-      routes_for(place_or_object_place_was_built_from).min_by &:distance_value
+      routes = routes_for place_or_object_place_was_built_from
+      select_ok_routes(routes).min_by &:duration_value
+    end
+
+    def shortest_route_by_duration_to!(place_or_object_place_was_built_from)
+      routes_for!(place_or_object_place_was_built_from).min_by &:duration_value
     end
 
 
@@ -104,6 +136,14 @@ module GoogleDistanceMatrix
       end
 
       [data[origin_index][destination_index]]
+    end
+
+    def fail_unless_route_is_ok(route)
+      fail InvalidRoute.new route unless route.ok?
+    end
+
+    def select_ok_routes(routes)
+      routes.select &:ok?
     end
   end
 end

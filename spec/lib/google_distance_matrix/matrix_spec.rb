@@ -85,41 +85,59 @@ describe GoogleDistanceMatrix::Matrix do
   end
 
   describe "#data", :request_recordings do
-    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
+    context "success" do
+      let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
 
-    it "loads from Google's API" do
-      subject.data
-      api_request_stub.should have_been_requested
+      it "loads from Google's API" do
+        subject.data
+        api_request_stub.should have_been_requested
+      end
+
+      it "does not load twice" do
+        2.times { subject.data }
+        api_request_stub.should have_been_requested
+      end
+
+      it "contains one row" do
+        expect(subject.data.length).to eq 2
+      end
+
+      it "contains two columns each row" do
+        expect(subject.data[0].length).to eq 2
+        expect(subject.data[1].length).to eq 2
+      end
+
+      it "assigns correct origin on routes in the data" do
+        expect(subject.data[0][0].origin).to eq origin_1
+        expect(subject.data[0][1].origin).to eq origin_1
+
+        expect(subject.data[1][0].origin).to eq origin_2
+        expect(subject.data[1][1].origin).to eq origin_2
+      end
+
+      it "assigns correct destination on routes in the data" do
+        expect(subject.data[0][0].destination).to eq destination_1
+        expect(subject.data[0][1].destination).to eq destination_2
+
+        expect(subject.data[1][0].destination).to eq destination_1
+        expect(subject.data[1][1].destination).to eq destination_2
+      end
     end
 
-    it "does not load twice" do
-      2.times { subject.data }
-      api_request_stub.should have_been_requested
-    end
+    context "some elements is not OK" do
+      let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:zero_results) }
 
-    it "contains one row" do
-      expect(subject.data.length).to eq 2
-    end
+      it "loads from Google's API" do
+        subject.data
+        api_request_stub.should have_been_requested
+      end
 
-    it "contains two columns each row" do
-      expect(subject.data[0].length).to eq 2
-      expect(subject.data[1].length).to eq 2
-    end
+      it "as loaded route with errors correctly" do
+        route = subject.data[0][1]
 
-    it "assigns correct origin on routes in the data" do
-      expect(subject.data[0][0].origin).to eq origin_1
-      expect(subject.data[0][1].origin).to eq origin_1
-
-      expect(subject.data[1][0].origin).to eq origin_2
-      expect(subject.data[1][1].origin).to eq origin_2
-    end
-
-    it "assigns correct destination on routes in the data" do
-      expect(subject.data[0][0].destination).to eq destination_1
-      expect(subject.data[0][1].destination).to eq destination_2
-
-      expect(subject.data[1][0].destination).to eq destination_1
-      expect(subject.data[1][1].destination).to eq destination_2
+        expect(route.status).to eq "zero_results"
+        expect(route.duration_value).to be_nil
+      end
     end
   end
 

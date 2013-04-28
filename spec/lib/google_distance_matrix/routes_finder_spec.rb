@@ -21,80 +21,170 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
 
   subject { described_class.new matrix }
 
-  let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
+  context "success" do
+    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
 
+    describe "#routes_for" do
+      it "fails if given place does not exist" do
+        expect { subject.routes_for "foo" }.to raise_error ArgumentError
+      end
 
-  describe "#routes_for" do
-    it "fails if given place does not exist" do
-      expect { subject.routes_for "foo" }.to raise_error ArgumentError
+      it "returns routes for given origin" do
+        routes = subject.routes_for origin_1
+
+        expect(routes.length).to eq 2
+        expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true
+      end
+
+      it "returns routes for given destination" do
+        routes = subject.routes_for destination_2
+
+        expect(routes.length).to eq 2
+        expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
+      end
+
+      it "returns routes for given object a place was built from" do
+        routes = subject.routes_for destination_2_built_from
+
+        expect(routes.length).to eq 2
+        expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
+      end
     end
 
-    it "returns routes for given origin" do
-      routes = subject.routes_for origin_1
-
-      expect(routes.length).to eq 2
-      expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true
+    describe "#routes_for!" do
+      it "returns the same as routes_for" do
+        expect(subject.routes_for! origin_1).to eq subject.routes_for(origin_1)
+      end
     end
 
-    it "returns routes for given destination" do
-      routes = subject.routes_for destination_2
+    describe "#route_for" do
+      it "returns route" do
+        route = subject.route_for(origin: origin_1, destination: destination_1)
+        expect(route.origin).to eq origin_1
+        expect(route.destination).to eq destination_1
+      end
 
-      expect(routes.length).to eq 2
-      expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
+      it "returns route when you give it the object a place was built from" do
+        route = subject.route_for(origin: origin_1, destination: destination_2_built_from)
+        expect(route.origin).to eq origin_1
+        expect(route.destination).to eq destination_2
+      end
+
+      it "fails with argument error if origin is missing" do
+        expect { subject.route_for destination: destination_2 }.to raise_error ArgumentError
+      end
+
+      it "fails with argument error if destination is missing" do
+        expect { subject.route_for origin: origin_1 }.to raise_error ArgumentError
+      end
+
+      it "fails with argument error if sent in object is neither place nor something it was built from" do
+        expect { subject.route_for origin: origin_1, destination: mock }.to raise_error ArgumentError
+      end
     end
 
-    it "returns routes for given object a place was built from" do
-      routes = subject.routes_for destination_2_built_from
+    describe "#route_for!" do
+      it "returns the same as route_for" do
+        route = subject.route_for(origin: origin_1, destination: destination_1)
+        route_bang = subject.route_for!(origin: origin_1, destination: destination_1)
 
-      expect(routes.length).to eq 2
-      expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
+        expect(route).to eq route_bang
+      end
+    end
+
+    describe "#shortest_route_by_distance_to" do
+      it "returns route representing shortest distance to given origin" do
+        expect(subject.shortest_route_by_distance_to(origin_1)).to eq matrix.data[0][0]
+      end
+
+      it "returns route representing shortest distance to given destination" do
+        expect(subject.shortest_route_by_distance_to(destination_2)).to eq matrix.data[1][1]
+      end
+    end
+
+    describe "#shortest_route_by_distance_to!" do
+      it "returns the same as shortest_route_by_distance_to" do
+        expect(subject.shortest_route_by_distance_to!(origin_1)).to eq subject.shortest_route_by_distance_to(origin_1)
+      end
+    end
+
+    describe "#shortest_route_by_duration_to" do
+      it "returns route representing shortest duration to given origin" do
+        expect(subject.shortest_route_by_duration_to(origin_1)).to eq matrix.data[0][0]
+      end
+
+      it "returns route representing shortest duration to given destination" do
+        expect(subject.shortest_route_by_duration_to(destination_2)).to eq matrix.data[1][1]
+      end
+    end
+
+    describe "#shortest_route_by_duration_to!" do
+      it "returns the same as shortest_route_by_duration_to" do
+        expect(subject.shortest_route_by_duration_to!(origin_1)).to eq subject.shortest_route_by_duration_to(origin_1)
+      end
     end
   end
 
-  describe "#route_for" do
-    it "returns route" do
-      route = subject.route_for(origin: origin_1, destination: destination_1)
-      expect(route.origin).to eq origin_1
-      expect(route.destination).to eq destination_1
+  context "routes mssing data" do
+    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:zero_results) }
+
+    describe "#routes_for" do
+      it "returns routes for given origin" do
+        routes = subject.routes_for origin_1
+
+        expect(routes.length).to eq 2
+        expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true
+      end
     end
 
-    it "returns route when you give it the object a place was built from" do
-      route = subject.route_for(origin: origin_1, destination: destination_2_built_from)
-      expect(route.origin).to eq origin_1
-      expect(route.destination).to eq destination_2
+    describe "#routes_for!" do
+      it "fails upon any non-ok route" do
+        expect {
+          subject.routes_for! origin_1
+        }.to raise_error GoogleDistanceMatrix::InvalidRoute
+      end
     end
 
-    it "fails with argument error if origin is missing" do
-      expect { subject.route_for destination: destination_2 }.to raise_error ArgumentError
+
+    describe "#route_for" do
+      it "returns route" do
+        route = subject.route_for origin: origin_1, destination: destination_2
+        expect(route.origin).to eq origin_1
+        expect(route.destination).to eq destination_2
+      end
     end
 
-    it "fails with argument error if destination is missing" do
-      expect { subject.route_for origin: origin_1 }.to raise_error ArgumentError
+    describe "#route_for!" do
+      it "fails upon non-ok route" do
+        expect {
+          subject.route_for! origin: origin_1, destination: destination_2
+        }.to raise_error GoogleDistanceMatrix::InvalidRoute
+      end
     end
 
-    it "fails with argument error if sent in object is neither place nor something it was built from" do
-      expect { subject.route_for origin: origin_1, destination: mock }.to raise_error ArgumentError
-    end
-  end
 
-
-  describe "#shortest_route_by_distance_to" do
-    it "returns route representing shortest distance to given origin" do
-      expect(subject.shortest_route_by_distance_to(origin_1)).to eq matrix.data[0][0]
+    describe "#shortest_route_by_distance_to" do
+      it "returns route representing shortest distance to given origin" do
+        expect(subject.shortest_route_by_distance_to(origin_1)).to eq matrix.data[0][0]
+      end
     end
 
-    it "returns route representing shortest distance to given destination" do
-      expect(subject.shortest_route_by_distance_to(destination_2)).to eq matrix.data[1][1]
-    end
-  end
-
-  describe "#shortest_route_by_duration_to" do
-    it "returns route representing shortest duration to given origin" do
-      expect(subject.shortest_route_by_duration_to(origin_1)).to eq matrix.data[0][0]
+    describe "#shortest_route_by_distance_to!" do
+      it "fails upon non-ok route" do
+        expect { subject.shortest_route_by_distance_to!(origin_1) }.to raise_error GoogleDistanceMatrix::InvalidRoute
+      end
     end
 
-    it "returns route representing shortest duration to given destination" do
-      expect(subject.shortest_route_by_duration_to(destination_2)).to eq matrix.data[1][1]
+    describe "#shortest_route_by_duration_to" do
+      it "returns route representing shortest distance to given origin" do
+        expect(subject.shortest_route_by_duration_to(origin_1)).to eq matrix.data[0][0]
+      end
+    end
+
+    describe "#shortest_route_by_duration_to!" do
+      it "fails upon non-ok route" do
+        expect { subject.shortest_route_by_duration_to!(origin_1) }.to raise_error GoogleDistanceMatrix::InvalidRoute
+      end
     end
   end
 end

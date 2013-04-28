@@ -23,6 +23,17 @@ module GoogleDistanceMatrix
     end
   end
 
+  # Public: Matrix has errors.
+  class InvalidRoute < Error
+    def initialize(route)
+      @route = route
+    end
+
+    def to_s
+      "API did not provide a complete answer for #{@route}."
+    end
+  end
+
   # Public: Got a request error back trying to do a request
   #
   # This includes wire errors like timeouts etc, and server errors

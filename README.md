@@ -17,10 +17,12 @@ but to solve it you may look at http://ai4r.org/.
 
 ## Examples
 
-    # Set up a matrix to work with
+### Set up a matrix to work with
+
     matrix = GoogleDistanceMatrix::Matrix.new
 
-    # Create some places to be used as origins or destinations for the matrix
+### Create some places to be used as origins or destinations for the matrix
+
     lat_lng = GoogleDistanceMatrix::Place.new lng: 12, lat: 12
     address = GoogleDistanceMatrix::Place.new address: "My address, Oslo"
     dest_address = GoogleDistanceMatrix::Place.new address: "Home, Oppegaard"
@@ -28,7 +30,8 @@ but to solve it you may look at http://ai4r.org/.
     point_dest = Point.new lat: 1, lng: 2
     dest_object = GoogleDistanceMatrix::Place.new point_dest
 
-    # Add places to matrix's origins and destinations
+### Add places to matrix's origins and destinations
+
     matrix.origins << lat_lng << address
     matrix.destinations << dest_address << dest_object
 
@@ -36,7 +39,8 @@ but to solve it you may look at http://ai4r.org/.
     another_point = Point.new lat: 1, lng: 3
     matrix.origins << another_point
 
-    # Do some configuration - see GoogleDistanceMatrix.default_configuration as well.
+### Do some configuration - see GoogleDistanceMatrix.default_configuration as well.
+
     matrix.configure do |config|
       config.mode = 'driving'
       config.avoid = ['tolls']
@@ -46,11 +50,15 @@ but to solve it you may look at http://ai4r.org/.
       config.google_business_api_private_key = "your-secret-key"
     end
 
+### Get the data for the matrix
+
     # Returns the data, loaded from Google, for this matrix.
     # It is a multi dimensional array. Rows are ordered according to the values in the origins.
     # Each row corresponds to an origin, and each element within that row corresponds to
     # a pairing of the origin with a destination.
     matrix.data
+
+### Query the matrix
 
     # Returns an array of Google::DistanceMatrix::Route, all having given origin or destination.
     matrix.routes_for dest_address
@@ -64,6 +72,8 @@ but to solve it you may look at http://ai4r.org/.
     # In cases you built the place with an object (not hash with attributes) you may provide that object
     # as well asking for routes. This is true for route_for and shortest_route_by_* as well.
     matrix.routes_for point_dest # Returns routes for dest_object
+
+You may call query methods with a bang, in which case it will fail with an error if noe all routes in your result set for the called method is ok.
 
 
 
@@ -85,10 +95,6 @@ Or install it yourself as:
 
 
 
-
-## TODO
-
-* Error handling in routes when status is not OK.
 
 
 ## Contributing

@@ -11,9 +11,11 @@ describe GoogleDistanceMatrix::Route do
 
   subject { described_class.new attributes }
 
-  its(:status) { should eq "OK" }
+  its(:status) { should eq "ok" }
   its(:distance_value) { should eq 2032 }
   its(:distance_text) { should eq "2.0 km" }
   its(:duration_value) { should eq 367 }
   its(:duration_text) { should eq "6 mins" }
+
+  it { should be_ok }
 end

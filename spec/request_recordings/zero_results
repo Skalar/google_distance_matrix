@@ -1,0 +1,57 @@
+{
+   "destination_addresses" : [
+      "Drammensveien 1, 0271 Oslo, Norway",
+      "Skjellestadhagen, 1389 Heggedal, Norway"
+   ],
+   "origin_addresses" : [
+      "Gate, White Springs, FL 32096, USA",
+      "Askerveien 1, 1384 Asker, Norway"
+   ],
+   "rows" : [
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "2.0 km",
+                  "value" : 2032
+               },
+               "duration" : {
+                  "text" : "6 mins",
+                  "value" : 367
+               },
+               "status" : "OK"
+            },
+            {
+               "status" : "ZERO_RESULTS"
+            }
+         ]
+      },
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "21.2 km",
+                  "value" : 21246
+               },
+               "duration" : {
+                  "text" : "22 mins",
+                  "value" : 1315
+               },
+               "status" : "OK"
+            },
+            {
+               "distance" : {
+                  "text" : "9.1 km",
+                  "value" : 9103
+               },
+               "duration" : {
+                  "text" : "15 mins",
+                  "value" : 878
+               },
+               "status" : "OK"
+            }
+         ]
+      }
+   ],
+   "status" : "OK"
+}
