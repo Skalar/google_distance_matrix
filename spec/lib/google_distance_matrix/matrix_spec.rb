@@ -72,7 +72,16 @@ describe GoogleDistanceMatrix::Matrix do
     end
   end
 
-  %w[route_for routes_for shortest_route_by_duration_to shortest_route_by_distance_to].each do |method|
+  %w[
+      route_for
+      route_for!
+      routes_for
+      routes_for!
+      shortest_route_by_duration_to
+      shortest_route_by_duration_to!
+      shortest_route_by_distance_to
+      shortest_route_by_distance_to!
+    ].each do |method|
     it "delegates #{method} to routes_finder" do
       finder = mock
       result = mock
