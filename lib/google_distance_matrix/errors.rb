@@ -10,6 +10,16 @@ module GoogleDistanceMatrix
   # "As some Distance Matrix API service URLs may involve many locations, be aware of this limit when constructing your URLs."
   #
   class MatrixUrlTooLong < Error
+    attr_reader :url, :max_url_size
+
+    def initialize(url, max_url_size)
+      @url = url
+      @max_url_size = max_url_size
+    end
+
+    def to_s
+      "Matrix API URL max size is: #{max_url_size}. Built URL was: #{url.length}. URL: '#{url}'."
+    end
   end
 
   # Public: Matrix has errors.

@@ -22,7 +22,7 @@ module GoogleDistanceMatrix
     def build_url
       url = [protocol, BASE_URL, "?", get_params_string].join.tap do |url|
         if url.length > MAX_URL_SIZE
-          fail MatrixUrlTooLong, "Matrix API URL max size is: #{MAX_URL_SIZE}. Built URL was: #{url.length}"
+          fail MatrixUrlTooLong.new url, MAX_URL_SIZE
         end
       end
 
