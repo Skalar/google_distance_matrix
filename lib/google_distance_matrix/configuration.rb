@@ -11,7 +11,7 @@ module GoogleDistanceMatrix
 
     ATTRIBUTES = %w[sensor mode avoid units]
 
-    attr_accessor *ATTRIBUTES, :protocol, :logger
+    attr_accessor *ATTRIBUTES, :protocol, :logger, :lat_lng_scale
     attr_accessor :google_business_api_client_id, :google_business_api_private_key
 
 
@@ -26,6 +26,7 @@ module GoogleDistanceMatrix
     def initialize
       self.sensor = false
       self.protocol = "http"
+      self.lat_lng_scale = 5
     end
 
     def to_param

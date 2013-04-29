@@ -24,6 +24,7 @@ describe GoogleDistanceMatrix::Configuration do
     its(:mode) { should be_nil }
     its(:avoid) { should be_nil }
     its(:units) { should be_nil }
+    its(:lat_lng_scale) { should eq 5 }
     its(:protocol) { should eq "http" }
 
     its(:google_business_api_client_id) { should be_nil }

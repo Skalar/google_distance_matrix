@@ -67,6 +67,16 @@ describe GoogleDistanceMatrix::UrlBuilder do
       expect(subject.url).to include "destinations=1,11#{delimiter}2,22"
     end
 
+    describe "lat lng scale" do
+      let(:destination_1) { GoogleDistanceMatrix::Place.new lat: 10.123456789, lng: "10.987654321" }
+
+      it "rounds lat and lng" do
+        subject.matrix.configure { |c| c.lat_lng_scale = 5 }
+
+        expect(subject.url).to include "destinations=10.12346,10.98765"
+      end
+    end
+
     describe "configuration" do
       it "includes sensor" do
         expect(subject.url).to include "sensor=#{matrix.configuration.sensor}"

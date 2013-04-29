@@ -28,8 +28,9 @@ module GoogleDistanceMatrix
       validate_attributes
     end
 
-    def to_param
-      address.present? ? CGI.escape(address) : lat_lng.join(',')
+    def to_param(options = {})
+      options = options.with_indifferent_access
+      address.present? ? CGI.escape(address) : lat_lng(options[:lat_lng_scale]).join(',')
     end
 
 
@@ -41,8 +42,15 @@ module GoogleDistanceMatrix
       end
     end
 
-    def lat_lng
-      [lat, lng]
+    def lat_lng(scale = nil)
+      [lat, lng].map do |v|
+        if scale
+          v = v.to_f.round scale
+          v == v.to_i ? v.to_i : v
+        else
+          v
+        end
+      end
     end
 
     def inspect
