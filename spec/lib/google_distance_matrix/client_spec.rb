@@ -18,10 +18,14 @@ describe GoogleDistanceMatrix::Client, :request_recordings do
 
   describe "client errors" do
     describe "server issues 4xx client error" do
-      before { stub_request(:get, URI.encode(url_builder.url)).to_return status: [400, "Client error"] }
-
       it "wraps the error http response" do
+        stub_request(:get, URI.encode(url_builder.url)).to_return status: [400, "Client error"]
         expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::ClientError
+      end
+
+      it "wraps uri too long error" do
+        stub_request(:get, URI.encode(url_builder.url)).to_return status: [414, "Client error"]
+        expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::MatrixUrlTooLong
       end
     end
 

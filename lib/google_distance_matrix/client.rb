@@ -18,6 +18,8 @@ module GoogleDistanceMatrix
       case response
       when Net::HTTPSuccess
         inspect_for_client_errors! response
+      when Net::HTTPRequestURITooLong
+        fail MatrixUrlTooLong.new url, UrlBuilder::MAX_URL_SIZE, response
       when Net::HTTPClientError
         fail ClientError.new response
       when Net::HTTPServerError

@@ -3,25 +3,6 @@ module GoogleDistanceMatrix
   class Error < StandardError
   end
 
-  # Public: API URL was too long
-  #
-  # See https://developers.google.com/maps/documentation/distancematrix/#Limits, which states:
-  # "Distance Matrix API URLs are restricted to 2048 characters, before URL encoding."
-  # "As some Distance Matrix API service URLs may involve many locations, be aware of this limit when constructing your URLs."
-  #
-  class MatrixUrlTooLong < Error
-    attr_reader :url, :max_url_size
-
-    def initialize(url, max_url_size)
-      @url = url
-      @max_url_size = max_url_size
-    end
-
-    def to_s
-      "Matrix API URL max size is: #{max_url_size}. Built URL was: #{url.length}. URL: '#{url}'."
-    end
-  end
-
   # Public: Matrix has errors.
   class InvalidMatrix < Error
     def initialize(matrix)
@@ -82,4 +63,26 @@ module GoogleDistanceMatrix
       "GoogleDistanceMatrix::ClientError - #{[response, status_read_from_api_response].compact.join('. ')}."
     end
   end
+
+  # Public: API URL was too long
+  #
+  # See https://developers.google.com/maps/documentation/distancematrix/#Limits, which states:
+  # "Distance Matrix API URLs are restricted to 2048 characters, before URL encoding."
+  # "As some Distance Matrix API service URLs may involve many locations, be aware of this limit when constructing your URLs."
+  #
+  class MatrixUrlTooLong < ClientError
+    attr_reader :url, :max_url_size
+
+    def initialize(url, max_url_size, response = nil)
+      super response
+
+      @url = url
+      @max_url_size = max_url_size
+    end
+
+    def to_s
+      "Matrix API URL max size is: #{max_url_size}. Built URL was: #{url.length}. URL: '#{url}'."
+    end
+  end
+
 end
