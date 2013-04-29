@@ -46,7 +46,7 @@ module GoogleDistanceMatrix
     end
 
     def inspect
-      inspection = ATTRIBUTES.reject { |a| public_send(a).blank? }.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
+      inspection = (ATTRIBUTES | [:extracted_attributes_from]).reject { |a| public_send(a).blank? }.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
 
       "#<#{self.class} #{inspection}>"
     end
