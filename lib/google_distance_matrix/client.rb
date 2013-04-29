@@ -9,7 +9,7 @@ module GoogleDistanceMatrix
     ]
 
     def get(url)
-      uri = URI.parse URI.encode(url)
+      uri = URI.parse url
 
       response = ActiveSupport::Notifications.instrument "client_request_matrix_data.google_distance_matrix", url: url do
         Net::HTTP.get_response uri

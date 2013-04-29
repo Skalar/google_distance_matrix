@@ -30,7 +30,7 @@ module GoogleDistanceMatrix
 
     def to_param(options = {})
       options = options.with_indifferent_access
-      address.present? ? CGI.escape(address) : lat_lng(options[:lat_lng_scale]).join(',')
+      address.present? ? address : lat_lng(options[:lat_lng_scale]).join(',')
     end
 
 

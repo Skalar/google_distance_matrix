@@ -47,13 +47,17 @@ module GoogleDistanceMatrix
       places_to_param_config = {lat_lng_scale: configuration.lat_lng_scale}
 
       matrix.configuration.to_param.merge(
-        origins: matrix.origins.map { |o| o.to_param places_to_param_config }.join(DELIMITER),
-        destinations: matrix.destinations.map { |d| d.to_param places_to_param_config }.join(DELIMITER),
+        origins: matrix.origins.map { |o| escape o.to_param(places_to_param_config) }.join(DELIMITER),
+        destinations: matrix.destinations.map { |d| escape d.to_param(places_to_param_config) }.join(DELIMITER),
       )
     end
 
     def protocol
       matrix.configuration.protocol + "://"
+    end
+
+    def escape(string)
+      CGI.escape string
     end
   end
 end

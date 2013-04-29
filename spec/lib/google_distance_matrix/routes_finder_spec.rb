@@ -10,7 +10,7 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
   let(:destination_2) { GoogleDistanceMatrix::Place.new destination_2_built_from }
 
   let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new matrix }
-  let(:encoded_url) { URI.encode url_builder.url }
+  let(:url) { url_builder.url }
 
   let(:matrix) do
     GoogleDistanceMatrix::Matrix.new(
@@ -22,7 +22,7 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
   subject { described_class.new matrix }
 
   context "success" do
-    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
+    let!(:api_request_stub) { stub_request(:get, url).to_return body: recorded_request_for(:success) }
 
     describe "#routes_for" do
       it "fails if given place does not exist" do
@@ -126,7 +126,7 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
   end
 
   context "routes mssing data" do
-    let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:zero_results) }
+    let!(:api_request_stub) { stub_request(:get, url).to_return body: recorded_request_for(:zero_results) }
 
     describe "#routes_for" do
       it "returns routes for given origin" do

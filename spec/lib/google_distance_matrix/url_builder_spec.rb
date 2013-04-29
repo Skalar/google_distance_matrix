@@ -2,6 +2,8 @@ require "spec_helper"
 
 describe GoogleDistanceMatrix::UrlBuilder do
   let(:delimiter) { described_class::DELIMITER }
+  let(:comma) { CGI.escape "," }
+
   let(:origin_1) { GoogleDistanceMatrix::Place.new address: "address_origin_1" }
   let(:origin_2) { GoogleDistanceMatrix::Place.new address: "address_origin_2" }
 
@@ -64,7 +66,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
     end
 
     it "includes destinations" do
-      expect(subject.url).to include "destinations=1,11#{delimiter}2,22"
+      expect(subject.url).to include "destinations=1#{comma}11#{delimiter}2#{comma}22"
     end
 
     describe "lat lng scale" do
@@ -73,7 +75,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
       it "rounds lat and lng" do
         subject.matrix.configure { |c| c.lat_lng_scale = 5 }
 
-        expect(subject.url).to include "destinations=10.12346,10.98765"
+        expect(subject.url).to include "destinations=10.12346#{comma}10.98765"
       end
     end
 
@@ -95,7 +97,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
         end
 
         it "has signature" do
-          expect(subject.url).to include "signature=CsB34Z0unaPImzUSGBivAWRsK-E="
+          expect(subject.url).to include "signature=gskXXJxOmPDXE1jAwafNGM2CVTI"
         end
       end
     end

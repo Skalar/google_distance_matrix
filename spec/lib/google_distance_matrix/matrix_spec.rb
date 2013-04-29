@@ -8,7 +8,7 @@ describe GoogleDistanceMatrix::Matrix do
   let(:destination_2) { GoogleDistanceMatrix::Place.new address: "Skjellestadhagen, Heggedal" }
 
   let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new subject }
-  let(:encoded_url) { URI.encode url_builder.url }
+  let(:url) { url_builder.url }
 
   subject do
     described_class.new(
@@ -95,7 +95,7 @@ describe GoogleDistanceMatrix::Matrix do
 
   describe "#data", :request_recordings do
     context "success" do
-      let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:success) }
+      let!(:api_request_stub) { stub_request(:get, url).to_return body: recorded_request_for(:success) }
 
       it "loads from Google's API" do
         subject.data
@@ -134,7 +134,7 @@ describe GoogleDistanceMatrix::Matrix do
     end
 
     context "some elements is not OK" do
-      let!(:api_request_stub) { stub_request(:get, encoded_url).to_return body: recorded_request_for(:zero_results) }
+      let!(:api_request_stub) { stub_request(:get, url).to_return body: recorded_request_for(:zero_results) }
 
       it "loads from Google's API" do
         subject.data
