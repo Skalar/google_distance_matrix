@@ -145,7 +145,7 @@ describe GoogleDistanceMatrix::Matrix do
         route = subject.data[0][1]
 
         expect(route.status).to eq "zero_results"
-        expect(route.duration_value).to be_nil
+        expect(route.duration_in_seconds).to be_nil
       end
     end
   end

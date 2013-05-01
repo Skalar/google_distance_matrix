@@ -9,7 +9,7 @@ module GoogleDistanceMatrix
 
     ATTRIBUTES = %w[
       origin destination
-      status distance_text distance_value duration_text duration_value
+      status distance_text distance_in_meters duration_text duration_in_seconds
     ]
 
     attr_reader *ATTRIBUTES
@@ -27,9 +27,16 @@ module GoogleDistanceMatrix
 
       if ok?
         @distance_text = attributes[:distance][:text]
-        @distance_value = attributes[:distance][:value]
+        @distance_in_meters = attributes[:distance][:value]
         @duration_text = attributes[:duration][:text]
-        @duration_value = attributes[:duration][:value]
+        @duration_in_seconds = attributes[:duration][:value]
+      end
+    end
+
+    {distance_value: :distance_in_meters, duration_value: :duration_in_seconds}.each_pair do |old_attr, new_attr|
+      define_method old_attr do
+        ActiveSupport::Deprecation.warn "#{old_attr} is being replaced by #{new_attr}. Please use #{new_attr}."
+        public_send new_attr
       end
     end
 

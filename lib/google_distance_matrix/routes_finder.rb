@@ -74,20 +74,20 @@ module GoogleDistanceMatrix
 
     def shortest_route_by_distance_to(place_or_object_place_was_built_from)
       routes = routes_for place_or_object_place_was_built_from
-      select_ok_routes(routes).min_by &:distance_value
+      select_ok_routes(routes).min_by &:distance_in_meters
     end
 
     def shortest_route_by_distance_to!(place_or_object_place_was_built_from)
-      routes_for!(place_or_object_place_was_built_from).min_by &:distance_value
+      routes_for!(place_or_object_place_was_built_from).min_by &:distance_in_meters
     end
 
     def shortest_route_by_duration_to(place_or_object_place_was_built_from)
       routes = routes_for place_or_object_place_was_built_from
-      select_ok_routes(routes).min_by &:duration_value
+      select_ok_routes(routes).min_by &:duration_in_seconds
     end
 
     def shortest_route_by_duration_to!(place_or_object_place_was_built_from)
-      routes_for!(place_or_object_place_was_built_from).min_by &:duration_value
+      routes_for!(place_or_object_place_was_built_from).min_by &:duration_in_seconds
     end
 
 
