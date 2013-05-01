@@ -11,6 +11,11 @@ module GoogleDistanceMatrix
 
     ATTRIBUTES = %w[sensor mode avoid units]
 
+    API_DEFAULTS = {
+      mode: "driving",
+      units: "metric"
+    }.with_indifferent_access
+
     attr_accessor *ATTRIBUTES, :protocol, :logger, :lat_lng_scale
     attr_accessor :google_business_api_client_id, :google_business_api_private_key
 
@@ -27,10 +32,18 @@ module GoogleDistanceMatrix
       self.sensor = false
       self.protocol = "http"
       self.lat_lng_scale = 5
+
+      API_DEFAULTS.each_pair do |attr_name, value|
+        self[attr_name] = value
+      end
     end
 
     def to_param
       Hash[array_param]
+    end
+
+    def []=(attr_name, value)
+      public_send "#{attr_name}=", value
     end
 
 
@@ -38,7 +51,7 @@ module GoogleDistanceMatrix
 
     def array_param
       out = ATTRIBUTES.map { |attr| [attr, public_send(attr)] }.reject do |attr_and_value|
-        attr_and_value[1].nil?
+        attr_and_value[1].nil? || param_same_as_api_default?(attr_and_value)
       end
 
       if google_business_api_client_id.present?
@@ -46,6 +59,10 @@ module GoogleDistanceMatrix
       end
 
       out
+    end
+
+    def param_same_as_api_default?(param)
+     API_DEFAULTS[param[0]] == param[1]
     end
   end
 end

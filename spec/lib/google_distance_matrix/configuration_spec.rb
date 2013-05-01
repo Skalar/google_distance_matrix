@@ -21,9 +21,9 @@ describe GoogleDistanceMatrix::Configuration do
 
   describe "defaults" do
     its(:sensor) { should be_false }
-    its(:mode) { should be_nil }
+    its(:mode) { should eq "driving" }
     its(:avoid) { should be_nil }
-    its(:units) { should be_nil }
+    its(:units) { should eq "metric" }
     its(:lat_lng_scale) { should eq 5 }
     its(:protocol) { should eq "http" }
 
@@ -37,13 +37,21 @@ describe GoogleDistanceMatrix::Configuration do
   describe "#to_param" do
     described_class::ATTRIBUTES.each do |attr|
       it "includes #{attr}" do
-        subject.public_send "#{attr}=", "foo"
+        subject[attr] = "foo"
         expect(subject.to_param[attr]).to eq subject.public_send(attr)
       end
 
-      it "dos not include #{attr} when it is blank" do
-        subject.public_send "#{attr}=", nil
-        expect(subject.to_param).to_not have_key attr
+      it "does not include #{attr} when it is blank" do
+        subject[attr] = nil
+        expect(subject.to_param.with_indifferent_access).to_not have_key attr
+      end
+    end
+
+    described_class::API_DEFAULTS.each_pair do |attr, default_value|
+      it "does not include #{attr} when it equals what is default for API" do
+        subject[attr] = default_value
+
+        expect(subject.to_param.with_indifferent_access).to_not have_key attr
       end
     end
 
