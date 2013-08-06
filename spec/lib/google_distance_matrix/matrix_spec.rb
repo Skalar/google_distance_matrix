@@ -125,6 +125,15 @@ describe GoogleDistanceMatrix::Matrix do
 
         stub.should have_been_requested.once
       end
+
+      it "clears the cache key on reload" do
+        stub = stub_request(:get, url).to_return body: recorded_request_for(:success)
+        subject.data
+        subject.reload
+        subject.data
+
+        stub.should have_been_requested.twice
+      end
     end
   end
 

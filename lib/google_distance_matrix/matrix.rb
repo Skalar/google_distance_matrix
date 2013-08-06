@@ -68,6 +68,7 @@ module GoogleDistanceMatrix
     end
 
     def reload
+      clear_from_cache!
       @data = load_matrix
       self
     end
@@ -126,6 +127,12 @@ module GoogleDistanceMatrix
         ClientCache.new client, configuration.cache
       else
         client
+      end
+    end
+
+    def clear_from_cache!
+      if configuration.cache
+        configuration.cache.delete ClientCache.key(url)
       end
     end
   end
