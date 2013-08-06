@@ -96,6 +96,25 @@ Or install it yourself as:
 
 
 
+## Configuration
+
+    Configuration is done directly on a matrix or via GoogleDistanceMatrix.default_configuration.
+    Apart from configuration on requests it is also possible to provide your own logger class and
+    set a cache.
+
+### Request cache
+
+    Given Google's limit to the service you may have the need to cache requests. This is done by simply
+    using URL as cache keys. Cache we'll accept should provide a default ActiveSupport::Chache::Store interface.
+
+    GoogleDistanceMatrix.default_configuration do |config|
+        config.cache = ActiveSupport::Cache.lookup_store :your_store, {
+            expires_in: 12.hours
+            # ..or other options you like for your store
+        }
+    end
+
+
 
 ## Contributing
 
