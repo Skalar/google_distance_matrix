@@ -31,6 +31,7 @@ describe GoogleDistanceMatrix::Configuration do
     its(:google_business_api_private_key) { should be_nil }
 
     its(:logger) { should be_nil }
+    its(:cache) { should be_nil }
   end
 
 

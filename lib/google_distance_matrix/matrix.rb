@@ -72,6 +72,10 @@ module GoogleDistanceMatrix
       self
     end
 
+    def reset!
+      @data = nil
+    end
+
     def loaded?
       @data.present?
     end
@@ -116,7 +120,13 @@ module GoogleDistanceMatrix
     end
 
     def client
-      @client ||= Client.new
+      client = Client.new
+
+      if configuration.cache
+        ClientCache.new client, configuration.cache
+      else
+        client
+      end
     end
   end
 end

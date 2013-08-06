@@ -18,6 +18,7 @@ module GoogleDistanceMatrix
 
     attr_accessor *ATTRIBUTES, :protocol, :logger, :lat_lng_scale
     attr_accessor :google_business_api_client_id, :google_business_api_private_key
+    attr_accessor :cache
 
 
     validates :sensor, inclusion: {in: [true, false]}

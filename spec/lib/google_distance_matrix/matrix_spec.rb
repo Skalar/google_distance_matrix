@@ -93,6 +93,41 @@ describe GoogleDistanceMatrix::Matrix do
     end
   end
 
+  describe "making API requests", :request_recordings do
+    it "loads correctly" do
+      stub_request(:get, url).to_return body: recorded_request_for(:success)
+      expect(subject.data[0][0].distance_in_meters).to eq 2032
+    end
+
+    context "no cache" do
+      it "makes multiple requests to same url" do
+        stub = stub_request(:get, url).to_return body: recorded_request_for(:success)
+        subject.data
+        subject.reset!
+        subject.data
+
+        stub.should have_been_requested.twice
+      end
+    end
+
+    context "with cache" do
+      before do
+        subject.configure do |config|
+          config.cache = ActiveSupport::Cache.lookup_store :memory_store
+        end
+      end
+
+      it "makes one requests to same url" do
+        stub = stub_request(:get, url).to_return body: recorded_request_for(:success)
+        subject.data
+        subject.reset!
+        subject.data
+
+        stub.should have_been_requested.once
+      end
+    end
+  end
+
   describe "#data", :request_recordings do
     context "success" do
       let!(:api_request_stub) { stub_request(:get, url).to_return body: recorded_request_for(:success) }
