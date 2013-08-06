@@ -103,7 +103,7 @@ module GoogleDistanceMatrix
     end
 
     def load_matrix
-      parsed = JSON.parse client.get(url).body
+      parsed = JSON.parse client.get(url, instrumentation: {elements: origins.length * destinations.length}).body
 
       parsed["rows"].each_with_index.map do |row, origin_index|
         origin = origins[origin_index]
