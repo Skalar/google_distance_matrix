@@ -44,7 +44,7 @@ describe GoogleDistanceMatrix::Client, :request_recordings do
       before { stub_request(:get, url).to_return status: [500, "Internal Server Error"] }
 
       it "wraps the error http response" do
-        expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::RequestError
+        expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::ServerError
       end
     end
 
@@ -52,7 +52,7 @@ describe GoogleDistanceMatrix::Client, :request_recordings do
       before { stub_request(:get, url).to_timeout }
 
       it "wraps the error from Net::HTTP" do
-        expect { subject.get(url_builder.url).body }.to raise_error GoogleDistanceMatrix::RequestError
+        expect { subject.get(url_builder.url).body }.to raise_error GoogleDistanceMatrix::ServerError
       end
     end
 
@@ -60,7 +60,7 @@ describe GoogleDistanceMatrix::Client, :request_recordings do
       before { stub_request(:get, url).to_return status: [999, "Unknown"] }
 
       it "wraps the error http response" do
-        expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::RequestError
+        expect { subject.get(url_builder.url) }.to raise_error GoogleDistanceMatrix::ServerError
       end
     end
   end

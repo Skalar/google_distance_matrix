@@ -24,12 +24,12 @@ module GoogleDistanceMatrix
       when Net::HTTPClientError
         fail ClientError.new response
       when Net::HTTPServerError
-        fail RequestError.new response
+        fail ServerError.new response
       else # Handle this as a request error for now. Maybe fine tune this more later.
-        fail RequestError.new response
+        fail ServerError.new response
       end
     rescue Timeout::Error => error
-      fail RequestError.new error
+      fail ServerError.new error
     end
 
 

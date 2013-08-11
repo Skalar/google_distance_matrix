@@ -34,7 +34,7 @@ module GoogleDistanceMatrix
   # This includes wire errors like timeouts etc, and server errors
   # like 5xx. Inspect error_or_response for more information.
   #
-  class RequestError < Error
+  class ServerError < Error
     attr_reader :error_or_response
 
     def initialize(error_or_response)
@@ -42,7 +42,7 @@ module GoogleDistanceMatrix
     end
 
     def to_s
-      "GoogleDistanceMatrix::RequestError - #{error_or_response.inspect}."
+      "GoogleDistanceMatrix::ServerError - #{error_or_response.inspect}."
     end
   end
 
