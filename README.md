@@ -105,7 +105,7 @@ Or install it yourself as:
 ### Request cache
 
     Given Google's limit to the service you may have the need to cache requests. This is done by simply
-    using URL as cache keys. Cache we'll accept should provide a default ActiveSupport::Chache::Store interface.
+    using URL as cache keys. Cache we'll accept should provide a default ActiveSupport::Cache::Store interface.
 
     GoogleDistanceMatrix.default_configuration do |config|
         config.cache = ActiveSupport::Cache.lookup_store :your_store, {
