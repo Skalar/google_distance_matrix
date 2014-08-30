@@ -1,3 +1,7 @@
+## Unreleased
+* Add language parameter to matrix configuration (by Iuri Fernandes)
+
+
 ## v.0.0.3
 * Bumped version of google_business_api_url_signer to get Ruby 2 support.
 
