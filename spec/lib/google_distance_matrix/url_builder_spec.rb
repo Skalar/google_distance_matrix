@@ -88,7 +88,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
         before do
           matrix.configure do |config|
             config.google_business_api_client_id = "123"
-            config.google_business_api_private_key = "secret"
+            config.google_business_api_private_key = "c2VjcmV0"
           end
         end
 
@@ -97,7 +97,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
         end
 
         it "has signature" do
-          expect(subject.url).to include "signature=gskXXJxOmPDXE1jAwafNGM2CVTI"
+          expect(subject.url).to include "signature=R6dKSHc7EZ7uzmpXKngJCX9i2_E="
         end
       end
     end
