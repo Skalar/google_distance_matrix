@@ -1,3 +1,6 @@
+## v.0.0.3
+* Bumped version of google_business_api_url_signer to get Ruby 2 support.
+
 ## v.0.0.2
 
 * Renamed RequestError to ServerError.
