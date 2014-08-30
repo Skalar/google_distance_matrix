@@ -33,12 +33,7 @@ module GoogleDistanceMatrix
       end
     end
 
-    {distance_value: :distance_in_meters, duration_value: :duration_in_seconds}.each_pair do |old_attr, new_attr|
-      define_method old_attr do
-        ActiveSupport::Deprecation.warn "#{old_attr} is being replaced by #{new_attr}. Please use #{new_attr}."
-        public_send new_attr
-      end
-    end
+
 
     def inspect
       inspection = ATTRIBUTES.reject { |a| public_send(a).blank? }.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '

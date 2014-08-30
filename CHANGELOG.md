@@ -1,5 +1,6 @@
 ## Unreleased
 * Add language parameter to matrix configuration (by Iuri Fernandes)
+* Removed Route#distance_value and Route#duration_value. Use distance_in_meters and duration_in_seconds.
 
 
 ## v.0.0.3
