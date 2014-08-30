@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activemodel", [">= 3.2.13", "<= 4.1"]
   spec.add_dependency "google_business_api_url_signer", "~> 0.1.0"
 
-  spec.add_development_dependency "bundler", "~> 1.7.2"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rspec", "~> 3.0.0"
   spec.add_development_dependency "shoulda-matchers", "~> 2.6.2"
   spec.add_development_dependency "webmock", "~> 1.18.0"
