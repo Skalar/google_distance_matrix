@@ -4,7 +4,25 @@ describe GoogleDistanceMatrix::Configuration do
   subject { described_class.new }
 
   describe "Validations" do
-    it { should ensure_inclusion_of(:sensor).in_array([true, false]) }
+    describe "sensor" do
+      it "is valid with true" do
+        subject.sensor = true
+        subject.valid?
+        expect(subject.errors[:sensor].length).to eq 0
+      end
+
+      it "is valid with false" do
+        subject.sensor = false
+        subject.valid?
+        expect(subject.errors[:sensor].length).to eq 0
+      end
+
+      it "is invalid with 'foo'" do
+        subject.sensor = 'foo'
+        subject.valid?
+        expect(subject.errors[:sensor].length).to eq 1
+      end
+    end
 
     it { should ensure_inclusion_of(:mode).in_array(["driving", "walking", "bicycling"]) }
     it { should allow_value(nil).for(:mode) }
