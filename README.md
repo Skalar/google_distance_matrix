@@ -1,5 +1,7 @@
 # GoogleDistanceMatrix
 
+[![Build Status](https://travis-ci.org/Skalar/google_distance_matrix.svg?branch=master)](https://travis-ci.org/Skalar/google_distance_matrix)
+
 Ruby client for The Google Distance Matrix API.
 
 This lib makes Google's distance matrix API easy to work with,
