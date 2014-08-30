@@ -35,7 +35,7 @@ describe GoogleDistanceMatrix::Matrix do
 
   describe "#configuration" do
     it "is by default set from default_configuration" do
-      config = mock
+      config = double
       config.stub(:dup).and_return config
       GoogleDistanceMatrix.should_receive(:default_configuration).and_return config
 
@@ -83,8 +83,8 @@ describe GoogleDistanceMatrix::Matrix do
       shortest_route_by_distance_to!
     ].each do |method|
     it "delegates #{method} to routes_finder" do
-      finder = mock
-      result = mock
+      finder = double
+      result = double
 
       subject.stub(:routes_finder).and_return finder
 
@@ -196,7 +196,7 @@ describe GoogleDistanceMatrix::Matrix do
 
   describe "#reload" do
     before do
-      subject.stub(:load_matrix).and_return { ['loaded'] }
+      subject.stub(:load_matrix) { ['loaded'] }
       subject.data.clear
     end
 

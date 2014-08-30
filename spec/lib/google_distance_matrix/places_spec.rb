@@ -39,8 +39,8 @@ describe GoogleDistanceMatrix::Places do
       it "wraps values in a Place" do
         subject.public_send attr, {address: "four"}
 
-        expect(subject.all? { |place| place.is_a? GoogleDistanceMatrix::Place }).to be_true
-        expect(subject.any? { |place| place.address == "four" }).to be_true
+        expect(subject.all? { |place| place.is_a? GoogleDistanceMatrix::Place }).to be true
+        expect(subject.any? { |place| place.address == "four" }).to be true
       end
     end
   end

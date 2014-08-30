@@ -4,8 +4,8 @@ describe GoogleDistanceMatrix::ClientCache do
   let(:url) { "http://www.example.com" }
   let(:options) { {hello: :options} }
 
-  let(:client) { mock get: "data" }
-  let(:cache) { mock }
+  let(:client) { double get: "data" }
+  let(:cache) { double }
 
   subject { described_class.new client, cache }
 

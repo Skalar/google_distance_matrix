@@ -20,18 +20,19 @@ describe GoogleDistanceMatrix::Configuration do
 
 
   describe "defaults" do
-    its(:sensor) { should be_false }
-    its(:mode) { should eq "driving" }
-    its(:avoid) { should be_nil }
-    its(:units) { should eq "metric" }
-    its(:lat_lng_scale) { should eq 5 }
-    its(:protocol) { should eq "http" }
+    it { expect(subject.sensor).to eq false }
+    it { expect(subject.mode).to eq "driving" }
+    it { expect(subject.avoid).to be_nil }
+    it { expect(subject.units).to eq "metric" }
+    it { expect(subject.lat_lng_scale).to eq 5 }
+    it { expect(subject.protocol).to eq 'http' }
+    it { expect(subject.language).to be_nil }
 
-    its(:google_business_api_client_id) { should be_nil }
-    its(:google_business_api_private_key) { should be_nil }
+    it { expect(subject.google_business_api_client_id).to be_nil }
+    it { expect(subject.google_business_api_private_key).to be_nil }
 
-    its(:logger) { should be_nil }
-    its(:cache) { should be_nil }
+    it { expect(subject.logger).to be_nil }
+    it { expect(subject.cache).to be_nil }
   end
 
 

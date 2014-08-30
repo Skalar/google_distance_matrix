@@ -18,7 +18,7 @@ describe GoogleDistanceMatrix::Place do
     end
 
     it "builds with an object responding to lat and lng" do
-      point = mock lat: 1, lng: 2
+      point = double lat: 1, lng: 2
       place = described_class.new(point)
 
       expect(place.lat).to eq point.lat
@@ -27,20 +27,20 @@ describe GoogleDistanceMatrix::Place do
 
 
     it "keeps a record of the object it built itself from" do
-      point = mock lat: 1, lng: 2
+      point = double lat: 1, lng: 2
       place = described_class.new(point)
 
       expect(place.extracted_attributes_from).to eq point
     end
     it "builds with an object responding to address" do
-      object = mock address: address
+      object = double address: address
       place = described_class.new(object)
 
       expect(place.address).to eq object.address
     end
 
     it "builds with an object responding to lat, lng and address" do
-      object = mock lat: 1, lng:2, address: address
+      object = double lat: 1, lng:2, address: address
       place = described_class.new(object)
 
       expect(place.lat).to eq object.lat
@@ -63,13 +63,13 @@ describe GoogleDistanceMatrix::Place do
     context "with address" do
       subject { described_class.new address: address }
 
-      its(:to_param) { should eq address }
+      it { expect(subject.to_param).to eq address }
     end
 
     context "with lat lng" do
       subject { described_class.new lng: lng, lat: lat }
 
-      its(:to_param) { should eq "#{lat},#{lng}" }
+      it { expect(subject.to_param).to eq "#{lat},#{lng}" }
     end
   end
 

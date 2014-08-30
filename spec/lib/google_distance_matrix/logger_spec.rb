@@ -12,7 +12,7 @@ describe GoogleDistanceMatrix::Logger do
   end
 
   context "with a logger backend" do
-    let(:backend) { mock }
+    let(:backend) { double }
 
     subject { described_class.new backend }
 

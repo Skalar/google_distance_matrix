@@ -6,7 +6,7 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
 
   let(:destination_1) { GoogleDistanceMatrix::Place.new address: "Drammensveien 1, Oslo" }
 
-  let(:destination_2_built_from) { mock address: "Skjellestadhagen, Heggedal" }
+  let(:destination_2_built_from) { double address: "Skjellestadhagen, Heggedal" }
   let(:destination_2) { GoogleDistanceMatrix::Place.new destination_2_built_from }
 
   let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new matrix }
@@ -79,7 +79,7 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
       end
 
       it "fails with argument error if sent in object is neither place nor something it was built from" do
-        expect { subject.route_for origin: origin_1, destination: mock }.to raise_error ArgumentError
+        expect { subject.route_for origin: origin_1, destination: double }.to raise_error ArgumentError
       end
     end
 

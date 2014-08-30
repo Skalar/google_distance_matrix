@@ -11,18 +11,11 @@ describe GoogleDistanceMatrix::Route do
 
   subject { described_class.new attributes }
 
-  its(:status) { should eq "ok" }
-  its(:distance_in_meters) { should eq 2032 }
-  its(:distance_text) { should eq "2.0 km" }
-  its(:duration_in_seconds) { should eq 367 }
-  its(:duration_text) { should eq "6 mins" }
+  it { expect(subject.status).to eq "ok" }
+  it { expect(subject.distance_in_meters).to eq 2032 }
+  it { expect(subject.distance_text).to eq "2.0 km" }
+  it { expect(subject.duration_in_seconds).to eq 367 }
+  it { expect(subject.duration_text).to eq "6 mins" }
 
-  describe "deprecations" do
-    around { |example| ActiveSupport::Deprecation.silence { example.run } }
-
-    its(:duration_value) { should eq 367 }
-    its(:distance_value) { should eq 2032 }
-  end
-
-  it { should be_ok }
+  it { is_expected.to be_ok }
 end
