@@ -9,7 +9,7 @@ module GoogleDistanceMatrix
   class Configuration
     include ActiveModel::Validations
 
-    ATTRIBUTES = %w[sensor mode avoid units]
+    ATTRIBUTES = %w[sensor mode avoid units language]
 
     API_DEFAULTS = {
       mode: "driving",
