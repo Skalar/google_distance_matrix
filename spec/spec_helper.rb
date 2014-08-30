@@ -5,6 +5,7 @@ require 'webmock/rspec'
 require 'shoulda-matchers'
 
 WebMock.disable_net_connect!
+I18n.enforce_available_locales = false
 
 module RecordedRequestHelpers
   def recorded_request_for(name)
