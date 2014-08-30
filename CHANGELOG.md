@@ -1,6 +1,7 @@
 ## Unreleased
-* Add language parameter to matrix configuration (by Iuri Fernandes)
+* Allowed for ActiveSupport and ActiveModel 4.1.
 * Removed Route#distance_value and Route#duration_value. Use distance_in_meters and duration_in_seconds.
+* Add language parameter to matrix configuration (by Iuri Fernandes)
 
 
 ## v.0.0.3
