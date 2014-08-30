@@ -11,13 +11,13 @@ describe GoogleDistanceMatrix::ClientCache do
 
   describe "#get" do
     it "returns from cache if it hits" do
-      cache.should_receive(:fetch).with(url).and_return "cached-data"
+      expect(cache).to receive(:fetch).with(url).and_return "cached-data"
       expect(subject.get(url, options)).to eq "cached-data"
     end
 
     it "asks client when cache miss" do
-      client.should_receive(:get).with(url, options).and_return "api-data"
-      cache.should_receive(:fetch) { |&block| block.call }
+      expect(client).to receive(:get).with(url, options).and_return "api-data"
+      expect(cache).to receive(:fetch) { |&block| block.call }
 
       expect(subject.get(url, options)).to eq "api-data"
     end

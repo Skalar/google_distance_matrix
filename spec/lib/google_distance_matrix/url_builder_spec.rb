@@ -47,7 +47,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
       long_string = ""
       2049.times { long_string << "a" }
 
-      subject.stub(:get_params_string).and_return long_string
+      allow(subject).to receive(:get_params_string).and_return long_string
 
       expect { subject.url }.to raise_error GoogleDistanceMatrix::MatrixUrlTooLong
     end

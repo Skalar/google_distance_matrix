@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "google_business_api_url_signer", "~> 0.0.2"
 
   spec.add_development_dependency "bundler", "~> 1.7.2"
-  spec.add_development_dependency "rspec", "~> 2.13"
+  spec.add_development_dependency "rspec", "~> 3.0.0"
   spec.add_development_dependency "shoulda-matchers", "~> 2.6.2"
   spec.add_development_dependency "webmock", "~> 1.18.0"
   spec.add_development_dependency "rake"

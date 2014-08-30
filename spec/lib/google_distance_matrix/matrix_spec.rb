@@ -36,8 +36,8 @@ describe GoogleDistanceMatrix::Matrix do
   describe "#configuration" do
     it "is by default set from default_configuration" do
       config = double
-      config.stub(:dup).and_return config
-      GoogleDistanceMatrix.should_receive(:default_configuration).and_return config
+      allow(config).to receive(:dup).and_return config
+      expect(GoogleDistanceMatrix).to receive(:default_configuration).and_return config
 
       expect(described_class.new.configuration).to eq config
     end
@@ -86,9 +86,9 @@ describe GoogleDistanceMatrix::Matrix do
       finder = double
       result = double
 
-      subject.stub(:routes_finder).and_return finder
+      allow(subject).to receive(:routes_finder).and_return finder
 
-      finder.should_receive(method).and_return result
+      expect(finder).to receive(method).and_return result
       expect(subject.public_send(method)).to eq result
     end
   end
@@ -106,7 +106,7 @@ describe GoogleDistanceMatrix::Matrix do
         subject.reset!
         subject.data
 
-        stub.should have_been_requested.twice
+        expect(stub).to have_been_requested.twice
       end
     end
 
@@ -123,7 +123,7 @@ describe GoogleDistanceMatrix::Matrix do
         subject.reset!
         subject.data
 
-        stub.should have_been_requested.once
+        expect(stub).to have_been_requested.once
       end
 
       it "clears the cache key on reload" do
@@ -132,7 +132,7 @@ describe GoogleDistanceMatrix::Matrix do
         subject.reload
         subject.data
 
-        stub.should have_been_requested.twice
+        expect(stub).to have_been_requested.twice
       end
     end
   end
@@ -143,12 +143,12 @@ describe GoogleDistanceMatrix::Matrix do
 
       it "loads from Google's API" do
         subject.data
-        api_request_stub.should have_been_requested
+        expect(api_request_stub).to have_been_requested
       end
 
       it "does not load twice" do
         2.times { subject.data }
-        api_request_stub.should have_been_requested
+        expect(api_request_stub).to have_been_requested
       end
 
       it "contains one row" do
@@ -182,7 +182,7 @@ describe GoogleDistanceMatrix::Matrix do
 
       it "loads from Google's API" do
         subject.data
-        api_request_stub.should have_been_requested
+        expect(api_request_stub).to have_been_requested
       end
 
       it "as loaded route with errors correctly" do
@@ -196,7 +196,7 @@ describe GoogleDistanceMatrix::Matrix do
 
   describe "#reload" do
     before do
-      subject.stub(:load_matrix) { ['loaded'] }
+      allow(subject).to receive(:load_matrix) { ['loaded'] }
       subject.data.clear
     end
 

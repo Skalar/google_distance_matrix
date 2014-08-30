@@ -19,17 +19,17 @@ describe GoogleDistanceMatrix::Logger do
     described_class::LEVELS.each do |level|
       describe level do
         it "sends log message to the backend" do
-          backend.should_receive(level).with("[google_distance_matrix] log msg")
+          expect(backend).to receive(level).with("[google_distance_matrix] log msg")
           subject.public_send level, "log msg"
         end
 
         it "supports sending in a tag" do
-          backend.should_receive(level).with("[google_distance_matrix] [client] log msg")
+          expect(backend).to receive(level).with("[google_distance_matrix] [client] log msg")
           subject.public_send level, "log msg", tag: :client
         end
 
         it "supports sending in multiple tags" do
-          backend.should_receive(level).with("[google_distance_matrix] [client] [request] log msg")
+          expect(backend).to receive(level).with("[google_distance_matrix] [client] [request] log msg")
           subject.public_send level, "log msg", tag: ['client', 'request']
         end
       end
