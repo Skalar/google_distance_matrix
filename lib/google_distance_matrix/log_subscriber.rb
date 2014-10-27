@@ -5,7 +5,7 @@ module GoogleDistanceMatrix
     end
 
     def client_request_matrix_data(event)
-      logger.info "(#{event.duration}ms) (elements: #{event.payload[:elements]}) GET #{event.payload[:url]}", tag: :client
+      logger.info "(#{event.duration}ms) (elements: #{event.payload[:elements]}) GET #{event.payload[:url]}"
     end
   end
 end
