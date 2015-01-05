@@ -1,3 +1,6 @@
+## v.0.1.2
+* Allowed for ActiveSupport and ActiveModel up 4.2.x.
+
 ## v.0.1.1
 * Allowed for ActiveSupport and ActiveModel up until 4.2. (by mask8)
 
