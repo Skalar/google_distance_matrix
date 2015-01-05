@@ -1,3 +1,8 @@
+## v.0.1.2
+* Allowed for ActiveSupport and ActiveModel up 4.2.x.
+* Fixed 'ArgumentError: wrong number of arguments (2 for 0..1)' when gem tried to log event to
+  log event via log subscriber with Rails 4.2.
+
 ## v.0.1.1
 * Allowed for ActiveSupport and ActiveModel up until 4.2. (by mask8)
 
