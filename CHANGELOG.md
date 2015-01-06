@@ -1,3 +1,6 @@
+## v.0.1.3
+* Be optimistic in regards to ActiveSupport and ActiveModel version we support.
+
 ## v.0.1.2
 * Allowed for ActiveSupport and ActiveModel up 4.2.x.
 * Fixed 'ArgumentError: wrong number of arguments (2 for 0..1)' when gem tried to log event to
