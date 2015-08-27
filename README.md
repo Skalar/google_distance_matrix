@@ -41,7 +41,7 @@ but to solve it you may look at http://ai4r.org/.
     another_point = Point.new lat: 1, lng: 3
     matrix.origins << another_point
 
-### Do some configuration - see GoogleDistanceMatrix.default_configuration as well.
+### Do some configuration - see GoogleDistanceMatrix.configure_defaults as well.
 
     matrix.configure do |config|
       config.mode = 'driving'
@@ -100,7 +100,7 @@ Or install it yourself as:
 
 ## Configuration
 
-    Configuration is done directly on a matrix or via GoogleDistanceMatrix.default_configuration.
+    Configuration is done directly on a matrix or via GoogleDistanceMatrix.configure_defaults.
     Apart from configuration on requests it is also possible to provide your own logger class and
     set a cache.
 
@@ -109,7 +109,7 @@ Or install it yourself as:
     Given Google's limit to the service you may have the need to cache requests. This is done by simply
     using URL as cache keys. Cache we'll accept should provide a default ActiveSupport::Cache::Store interface.
 
-    GoogleDistanceMatrix.default_configuration do |config|
+    GoogleDistanceMatrix.configure_defaults do |config|
         config.cache = ActiveSupport::Cache.lookup_store :your_store, {
             expires_in: 12.hours
             # ..or other options you like for your store
