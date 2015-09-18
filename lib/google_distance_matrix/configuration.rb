@@ -22,7 +22,7 @@ module GoogleDistanceMatrix
 
 
     validates :sensor, inclusion: {in: [true, false]}
-    validates :mode, inclusion: {in: ["driving", "walking", "bicycling"]}, allow_blank: true
+    validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: true
     validates :avoid, inclusion: {in: ["tolls", "highways"]}, allow_blank: true
     validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
 

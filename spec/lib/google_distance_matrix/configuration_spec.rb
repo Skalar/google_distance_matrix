@@ -24,7 +24,7 @@ describe GoogleDistanceMatrix::Configuration do
       end
     end
 
-    it { should ensure_inclusion_of(:mode).in_array(["driving", "walking", "bicycling"]) }
+    it { should ensure_inclusion_of(:mode).in_array(["driving", "walking", "bicycling", "transit"]) }
     it { should allow_value(nil).for(:mode) }
 
     it { should ensure_inclusion_of(:avoid).in_array(["tolls", "highways"]) }
