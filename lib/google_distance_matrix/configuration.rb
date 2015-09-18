@@ -17,7 +17,7 @@ module GoogleDistanceMatrix
     }.with_indifferent_access
 
     attr_accessor *ATTRIBUTES, :protocol, :logger, :lat_lng_scale
-    attr_accessor :google_business_api_client_id, :google_business_api_private_key
+    attr_accessor :google_business_api_client_id, :google_business_api_private_key, :google_api_key
     attr_accessor :cache
 
 
@@ -57,6 +57,10 @@ module GoogleDistanceMatrix
 
       if google_business_api_client_id.present?
         out << ['client', google_business_api_client_id]
+      end
+
+      if google_api_key.present?
+        out << ['key', google_api_key]
       end
 
       out

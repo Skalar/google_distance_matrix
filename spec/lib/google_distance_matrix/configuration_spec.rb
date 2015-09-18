@@ -48,6 +48,7 @@ describe GoogleDistanceMatrix::Configuration do
 
     it { expect(subject.google_business_api_client_id).to be_nil }
     it { expect(subject.google_business_api_private_key).to be_nil }
+    it { expect(subject.google_api_key).to be_nil }
 
     it { expect(subject.logger).to be_nil }
     it { expect(subject.cache).to be_nil }
@@ -78,6 +79,11 @@ describe GoogleDistanceMatrix::Configuration do
     it "includes client if google_business_api_client_id has been set" do
       subject.google_business_api_client_id = "123"
       expect(subject.to_param['client']).to eq "123"
+    end
+
+    it "includes key if google_api_key has been set" do
+      subject.google_api_key = "12345"
+      expect(subject.to_param['key']).to eq("12345")
     end
   end
 end

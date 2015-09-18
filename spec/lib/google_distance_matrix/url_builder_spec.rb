@@ -84,6 +84,18 @@ describe GoogleDistanceMatrix::UrlBuilder do
         expect(subject.url).to include "sensor=#{matrix.configuration.sensor}"
       end
 
+      context 'with google api key set' do
+        before do
+          matrix.configure do |config|
+            config.google_api_key = '12345'
+          end
+        end
+
+        it 'includes the api key' do
+          expect(subject.url).to include "key=#{matrix.configuration.google_api_key}"
+        end
+      end
+
       context "with google business client id and private key set" do
         before do
           matrix.configure do |config|

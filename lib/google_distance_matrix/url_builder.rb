@@ -39,6 +39,10 @@ module GoogleDistanceMatrix
       configuration.google_business_api_private_key.present?
     end
 
+    def include_api_key?
+      configuration.google_api_key.present?
+    end
+
     def get_params_string
       params.to_a.map { |key_value| key_value.join("=") }.join("&")
     end
