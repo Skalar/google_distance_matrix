@@ -24,6 +24,34 @@ describe GoogleDistanceMatrix::Configuration do
       end
     end
 
+    describe 'departure_time' do
+      it 'is valid with a timestamp' do
+        subject.departure_time = Time.now.to_i
+        subject.valid?
+        expect(subject.errors[:departure_time].length).to eq 0
+      end
+
+      it 'is invalid with something else' do
+        subject.departure_time = 'foo'
+        subject.valid?
+        expect(subject.errors[:departure_time].length).to eq 1
+      end
+    end
+
+    describe 'arrival_time' do
+      it 'is valid with a timestamp' do
+        subject.arrival_time = Time.now.to_i
+        subject.valid?
+        expect(subject.errors[:arrival_time].length).to eq 0
+      end
+
+      it 'is invalid with something else' do
+        subject.arrival_time = 'foo'
+        subject.valid?
+        expect(subject.errors[:arrival_time].length).to eq 1
+      end
+    end
+
     it { should ensure_inclusion_of(:mode).in_array(["driving", "walking", "bicycling", "transit"]) }
     it { should allow_value(nil).for(:mode) }
 
@@ -34,6 +62,8 @@ describe GoogleDistanceMatrix::Configuration do
     it { should allow_value(nil).for(:units) }
 
     it { should ensure_inclusion_of(:protocol).in_array(["http", "https"]) }
+
+    it { should ensure_inclusion_of(:transit_mode).in_array(["bus", "subway", "train", "tram", "rail"])}
   end
 
 
@@ -45,6 +75,10 @@ describe GoogleDistanceMatrix::Configuration do
     it { expect(subject.lat_lng_scale).to eq 5 }
     it { expect(subject.protocol).to eq 'http' }
     it { expect(subject.language).to be_nil }
+
+    it { expect(subject.departure_time).to be_nil }
+    it { expect(subject.arrival_time).to be_nil }
+    it { expect(subject.transit_mode).to be_nil }
 
     it { expect(subject.google_business_api_client_id).to be_nil }
     it { expect(subject.google_business_api_private_key).to be_nil }

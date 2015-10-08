@@ -9,7 +9,7 @@ module GoogleDistanceMatrix
   class Configuration
     include ActiveModel::Validations
 
-    ATTRIBUTES = %w[sensor mode avoid units language]
+    ATTRIBUTES = %w[sensor mode avoid units language departure_time arrival_time transit_mode]
 
     API_DEFAULTS = {
       mode: "driving",
@@ -25,6 +25,11 @@ module GoogleDistanceMatrix
     validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: true
     validates :avoid, inclusion: {in: ["tolls", "highways"]}, allow_blank: true
     validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
+
+    validates :departure_time, numericality: true, allow_blank: true
+    validates :arrival_time, numericality: true, allow_blank: true
+
+    validates :transit_mode, inclusion: {in: %w[bus subway train tram rail]}, allow_blank: true
 
     validates :protocol, inclusion: {in: ["http", "https"]}, allow_blank: true
 
