@@ -1,3 +1,7 @@
+## v.0.2.0
+* Dropped support for Ruby 1.9.X
+
+
 ## v.0.1.3
 * Be optimistic in regards to ActiveSupport and ActiveModel version we support.
 
