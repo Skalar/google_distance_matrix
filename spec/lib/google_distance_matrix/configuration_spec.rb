@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe GoogleDistanceMatrix::Configuration do
+  include Shoulda::Matchers::ActiveModel
+
   subject { described_class.new }
 
   describe "Validations" do
@@ -52,18 +54,20 @@ describe GoogleDistanceMatrix::Configuration do
       end
     end
 
-    it { should ensure_inclusion_of(:mode).in_array(["driving", "walking", "bicycling", "transit"]) }
+    it { should validate_inclusion_of(:mode).in_array(["driving", "walking", "bicycling", "transit"]) }
+
     it { should allow_value(nil).for(:mode) }
 
-    it { should ensure_inclusion_of(:avoid).in_array(["tolls", "highways"]) }
+    it { should validate_inclusion_of(:avoid).in_array(["tolls", "highways"]) }
     it { should allow_value(nil).for(:avoid) }
 
-    it { should ensure_inclusion_of(:units).in_array(["metric", "imperial"]) }
+    it { should validate_inclusion_of(:units).in_array(["metric", "imperial"]) }
     it { should allow_value(nil).for(:units) }
 
-    it { should ensure_inclusion_of(:protocol).in_array(["http", "https"]) }
 
-    it { should ensure_inclusion_of(:transit_mode).in_array(["bus", "subway", "train", "tram", "rail"])}
+    it { should validate_inclusion_of(:protocol).in_array(["http", "https"]) }
+
+    it { should validate_inclusion_of(:transit_mode).in_array(["bus", "subway", "train", "tram", "rail"])}
   end
 
 
