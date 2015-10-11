@@ -1,5 +1,7 @@
-## v.0.2.0
+## v.0.2.0 (To be released)
 * Dropped support for Ruby 1.9.X
+* Added new configuration options: google_api_key,
+  transit, transit_mode, arrival_time and departure_time. (by lsanwick)
 
 
 ## v.0.1.3
