@@ -47,7 +47,7 @@ but to solve it you may look at http://ai4r.org/.
       config.mode = 'driving'
       config.avoid = ['tolls']
 
-      # To build signed URLs to use with a Google Business account
+      # To build signed URLs to use with a Google Business account. You may also use google_api_key.
       config.google_business_api_client_id = "123"
       config.google_business_api_private_key = "your-secret-key"
     end
