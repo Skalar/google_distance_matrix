@@ -36,7 +36,7 @@ module GoogleDistanceMatrix
 
     def initialize
       self.sensor = false
-      self.protocol = "http"
+      self.protocol = "https"
       self.lat_lng_scale = 5
 
       API_DEFAULTS.each_pair do |attr_name, value|
