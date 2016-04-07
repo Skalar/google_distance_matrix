@@ -1,3 +1,6 @@
+## v.0.2.1
+* Made https be default (by almnes)
+
 ## v.0.2.0
 * Dropped support for Ruby 1.9.X
 * Added new configuration options: google_api_key,
