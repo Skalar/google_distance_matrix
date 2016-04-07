@@ -53,12 +53,12 @@ describe GoogleDistanceMatrix::UrlBuilder do
     end
 
     it "starts with the base URL" do
-      expect(subject.url).to start_with "http://" + described_class::BASE_URL
+      expect(subject.url).to start_with "https://" + described_class::BASE_URL
     end
 
     it "has a configurable protocol" do
-      matrix.configure { |c| c.protocol = "https" }
-      expect(subject.url).to start_with "https://"
+      matrix.configure { |c| c.protocol = "http" }
+      expect(subject.url).to start_with "http://"
     end
 
     it "includes origins" do
