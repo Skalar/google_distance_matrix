@@ -31,6 +31,9 @@ lat_lng = GoogleDistanceMatrix::Place.new lng: 12, lat: 12
 address = GoogleDistanceMatrix::Place.new address: "My address, Oslo"
 dest_address = GoogleDistanceMatrix::Place.new address: "Home, Oppegaard"
 
+# Just an example of an object responding to lat & lng.
+# Point class isn't included in this gem, but feel free to
+# create your own point class or use something like https://github.com/nofxx/georuby
 point_dest = Point.new lat: 1, lng: 2
 dest_object = GoogleDistanceMatrix::Place.new point_dest
 ```
