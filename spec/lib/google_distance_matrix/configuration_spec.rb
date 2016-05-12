@@ -68,6 +68,8 @@ describe GoogleDistanceMatrix::Configuration do
     it { should validate_inclusion_of(:protocol).in_array(["http", "https"]) }
 
     it { should validate_inclusion_of(:transit_mode).in_array(["bus", "subway", "train", "tram", "rail"])}
+    it { should validate_inclusion_of(:transit_routing_preference).in_array(["less_walking",  "fewer_transfers"])}
+    it { should validate_inclusion_of(:traffic_model).in_array(["best_guess", "pessimistic", "optimistic"])}
   end
 
 
@@ -83,6 +85,7 @@ describe GoogleDistanceMatrix::Configuration do
     it { expect(subject.departure_time).to be_nil }
     it { expect(subject.arrival_time).to be_nil }
     it { expect(subject.transit_mode).to be_nil }
+    it { expect(subject.traffic_model).to eq 'best_guess' }
 
     it { expect(subject.google_business_api_client_id).to be_nil }
     it { expect(subject.google_business_api_private_key).to be_nil }
