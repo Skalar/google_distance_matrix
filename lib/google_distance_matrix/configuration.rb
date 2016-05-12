@@ -3,7 +3,7 @@ module GoogleDistanceMatrix
   #
   # Holds configuration used when building API URL.
   #
-  # See https://developers.google.com/maps/documentation/distancematrix/#RequestParameters
+  # See https://developers.google.com/maps/documentation/distance-matrix/intro
   # for documentation on each configuration.
   #
   class Configuration
