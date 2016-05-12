@@ -50,7 +50,7 @@ matrix.origins << another_point
 ```ruby
 matrix.configure do |config|
   config.mode = 'driving'
-  config.avoid = ['tolls']
+  config.avoid = 'tolls'
 
   # To build signed URLs to use with a Google Business account.
   config.google_business_api_client_id = "123"
