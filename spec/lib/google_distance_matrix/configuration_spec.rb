@@ -58,7 +58,7 @@ describe GoogleDistanceMatrix::Configuration do
 
     it { should allow_value(nil).for(:mode) }
 
-    it { should validate_inclusion_of(:avoid).in_array(["tolls", "highways"]) }
+    it { should validate_inclusion_of(:avoid).in_array(["tolls", "highways", "ferries", "indoor"]) }
     it { should allow_value(nil).for(:avoid) }
 
     it { should validate_inclusion_of(:units).in_array(["metric", "imperial"]) }
