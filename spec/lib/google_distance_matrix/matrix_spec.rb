@@ -44,14 +44,14 @@ describe GoogleDistanceMatrix::Matrix do
 
     it "has it's own configuration" do
       expect {
-        subject.configure { |c| c.sensor = !GoogleDistanceMatrix.default_configuration.sensor }
-      }.to_not change(GoogleDistanceMatrix.default_configuration, :sensor)
+        subject.configure { |c| c.mode = !GoogleDistanceMatrix.default_configuration.mode }
+      }.to_not change(GoogleDistanceMatrix.default_configuration, :mode)
     end
 
     it "has a configurable configuration :-)" do
       expect {
-        subject.configure { |c| c.sensor = !GoogleDistanceMatrix.default_configuration.sensor }
-      }.to change(subject.configuration, :sensor).to !GoogleDistanceMatrix.default_configuration.sensor
+        subject.configure { |c| c.mode = !GoogleDistanceMatrix.default_configuration.mode }
+      }.to change(subject.configuration, :mode).to !GoogleDistanceMatrix.default_configuration.mode
     end
   end
 

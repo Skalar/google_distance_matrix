@@ -35,7 +35,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
 
     it "fails if matrix's configuration is invalid" do
       expect {
-        matrix.configure { |c| c.sensor = nil }
+        matrix.configure { |c| c.mode = nil }
         described_class.new matrix
       }.to raise_error GoogleDistanceMatrix::InvalidMatrix
     end
@@ -80,10 +80,6 @@ describe GoogleDistanceMatrix::UrlBuilder do
     end
 
     describe "configuration" do
-      it "includes sensor" do
-        expect(subject.url).to include "sensor=#{matrix.configuration.sensor}"
-      end
-
       context 'with google api key set' do
         before do
           matrix.configure do |config|

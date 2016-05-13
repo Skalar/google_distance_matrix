@@ -6,26 +6,6 @@ describe GoogleDistanceMatrix::Configuration do
   subject { described_class.new }
 
   describe "Validations" do
-    describe "sensor" do
-      it "is valid with true" do
-        subject.sensor = true
-        subject.valid?
-        expect(subject.errors[:sensor].length).to eq 0
-      end
-
-      it "is valid with false" do
-        subject.sensor = false
-        subject.valid?
-        expect(subject.errors[:sensor].length).to eq 0
-      end
-
-      it "is invalid with 'foo'" do
-        subject.sensor = 'foo'
-        subject.valid?
-        expect(subject.errors[:sensor].length).to eq 1
-      end
-    end
-
     describe 'departure_time' do
       it 'is valid with a timestamp' do
         subject.departure_time = Time.now.to_i
@@ -56,7 +36,7 @@ describe GoogleDistanceMatrix::Configuration do
 
     it { should validate_inclusion_of(:mode).in_array(["driving", "walking", "bicycling", "transit"]) }
 
-    it { should allow_value(nil).for(:mode) }
+    it { should_not allow_value(nil).for(:mode) }
 
     it { should validate_inclusion_of(:avoid).in_array(["tolls", "highways"]) }
     it { should allow_value(nil).for(:avoid) }
@@ -72,7 +52,6 @@ describe GoogleDistanceMatrix::Configuration do
 
 
   describe "defaults" do
-    it { expect(subject.sensor).to eq false }
     it { expect(subject.mode).to eq "driving" }
     it { expect(subject.avoid).to be_nil }
     it { expect(subject.units).to eq "metric" }
