@@ -105,7 +105,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
         end
 
         it "has signature" do
-          expect(subject.url).to include "signature=R6dKSHc7EZ7uzmpXKngJCX9i2_E="
+          expect(subject.url).to include "signature=DIUgkQ_BaVBJU6hwhzH3GLeMdeo="
         end
       end
     end
