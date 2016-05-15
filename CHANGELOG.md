@@ -1,3 +1,6 @@
+## v.0.3.0 (unreleased)
+* Added "ferries", "indoor" as valid avoid value. (by rpocklin)
+
 ## v.0.2.1
 * Made https be default (by almnes)
 

@@ -35,7 +35,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
 
     it "fails if matrix's configuration is invalid" do
       expect {
-        matrix.configure { |c| c.mode = nil }
+        matrix.configure { |c| c.mode = 'foobar' }
         described_class.new matrix
       }.to raise_error GoogleDistanceMatrix::InvalidMatrix
     end

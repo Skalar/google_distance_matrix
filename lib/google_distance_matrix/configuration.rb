@@ -3,17 +3,23 @@ module GoogleDistanceMatrix
   #
   # Holds configuration used when building API URL.
   #
-  # See https://developers.google.com/maps/documentation/distancematrix/#RequestParameters
+  # See https://developers.google.com/maps/documentation/distance-matrix/intro
   # for documentation on each configuration.
   #
   class Configuration
     include ActiveModel::Validations
 
-    ATTRIBUTES = %w[mode avoid units language departure_time arrival_time transit_mode]
+    ATTRIBUTES = %w[
+      mode avoid units language
+      departure_time arrival_time
+      transit_mode transit_routing_preference
+      traffic_model
+    ]
 
     API_DEFAULTS = {
       mode: "driving",
-      units: "metric"
+      units: "metric",
+      traffic_model: "best_guess"
     }.with_indifferent_access
 
     attr_accessor *ATTRIBUTES, :protocol, :logger, :lat_lng_scale
@@ -21,14 +27,16 @@ module GoogleDistanceMatrix
     attr_accessor :cache
 
 
-    validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: false
-    validates :avoid, inclusion: {in: ["tolls", "highways"]}, allow_blank: true
+    validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: true
+    validates :avoid, inclusion: {in: ["tolls", "highways", "ferries", "indoor"]}, allow_blank: true
     validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
 
     validates :departure_time, numericality: true, allow_blank: true
     validates :arrival_time, numericality: true, allow_blank: true
 
     validates :transit_mode, inclusion: {in: %w[bus subway train tram rail]}, allow_blank: true
+    validates :transit_routing_preference, inclusion: {in: %w[less_walking fewer_transfers]}, allow_blank: true
+    validates :traffic_model, inclusion: {in: %w[best_guess pessimistic optimistic]}, allow_blank: true
 
     validates :protocol, inclusion: {in: ["http", "https"]}, allow_blank: true
 
