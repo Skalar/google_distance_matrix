@@ -3,7 +3,7 @@ module GoogleDistanceMatrix
   #
   # Holds configuration used when building API URL.
   #
-  # See https://developers.google.com/maps/documentation/distancematrix/#RequestParameters
+  # See https://developers.google.com/maps/documentation/distance-matrix/intro
   # for documentation on each configuration.
   #
   class Configuration
@@ -23,7 +23,7 @@ module GoogleDistanceMatrix
 
     validates :sensor, inclusion: {in: [true, false]}
     validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: true
-    validates :avoid, inclusion: {in: ["tolls", "highways"]}, allow_blank: true
+    validates :avoid, inclusion: {in: ["tolls", "highways", "ferries", "indoor"]}, allow_blank: true
     validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
 
     validates :departure_time, numericality: true, allow_blank: true
