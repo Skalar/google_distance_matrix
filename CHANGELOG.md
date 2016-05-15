@@ -1,4 +1,10 @@
 ## v.0.3.0 (unreleased)
+This release includes one breaking change, the removal of sensor parameter.
+This parameter is no longer used - see:
+https://developers.google.com/maps/documentation/distance-matrix/intro#Sensor
+
+* Remove sensor attribute. (by rpocklin)
+* Added "transit_routing_preference" and "traffic_model" attributes to request. (by rpocklin)
 * Added "ferries", "indoor" as valid avoid value. (by rpocklin)
 
 ## v.0.2.1
