@@ -48,12 +48,37 @@ module GoogleDistanceMatrix
     end
 
     def params
-      places_to_param_config = {lat_lng_scale: configuration.lat_lng_scale}
 
       configuration.to_param.merge(
-        origins: matrix.origins.map { |o| escape o.to_param(places_to_param_config) }.join(DELIMITER),
-        destinations: matrix.destinations.map { |d| escape d.to_param(places_to_param_config) }.join(DELIMITER),
+        origins: places_to_param(matrix.origins),
+        destinations: places_to_param(matrix.destinations)
       )
+    end
+
+    def places_to_param(places)
+      places_to_param_config = {lat_lng_scale: configuration.lat_lng_scale}
+
+      out = []
+      encode_buffer = []
+
+      places.each do |place|
+        if place.lat_lng? && configuration.use_encoded_polylines
+          encode_buffer << place.lat_lng
+        else
+          if encode_buffer.any?
+            out << escape("enc:#{PolylineEncoder.encode encode_buffer}:")
+            encode_buffer.clear
+          end
+          out << escape(place.to_param places_to_param_config)
+        end
+      end
+
+      if encode_buffer.any?
+        out << escape("enc:#{PolylineEncoder.encode encode_buffer}:")
+        encode_buffer.clear
+      end
+
+      out.join(DELIMITER)
     end
 
     def protocol

@@ -56,14 +56,14 @@ matrix.configure do |config|
   config.google_business_api_client_id = "123"
   config.google_business_api_private_key = "your-secret-key"
 
-  # If you have an API key, you can specify that as well.	
+  # If you have an API key, you can specify that as well.
   config.google_api_key = "YOUR_API_KEY"
 end
 ```
 ### Get the data for the matrix
 
 `matrix.data` returns the data, loaded from Google, for this matrix.
- 
+
  It is a multi dimensional array. Rows are ordered according to the values in the origins.
  Each row corresponds to an origin, and each element within that row corresponds to a pairing of the origin with a destination.
 
@@ -81,9 +81,9 @@ Returns Google::DistanceMatrix::Route with given origin and destination
 ```ruby
 matrix.route_for origin: lat_lng, destination: dest_address
 # Google::DistanceMatrix::Route with one origin and a destination, together with route data
-matrix.shortest_route_by_distance_to(dest_address) 
+matrix.shortest_route_by_distance_to(dest_address)
 # Google::DistanceMatrix::Route with one origin and a destination, together with route data
-matrix.shortest_route_by_duration_to(dest_address) 
+matrix.shortest_route_by_duration_to(dest_address)
 ```
 
 In cases where you built the place with an object (not hash with attributes) you may provide that object as well asking for routes. This is true for `route_for` and `shortest_route_by_*` as well.
@@ -117,6 +117,19 @@ Configuration is done directly on a matrix or via `GoogleDistanceMatrix.configur
 Apart from configuration on requests it is also possible to provide your own logger class and
 set a cache.
 
+### Shorting the URL using encoded coordinates
+Instead of lat and lng values in the URL it is possible to use encoded set of coordinates
+using the Encoded Polyline Algorithm. This is particularly useful if you have a large
+number of origin points, because the URL is significantly shorter when
+using an encoded polyline.
+
+```ruby
+GoogleDistanceMatrix.configure_defaults do |config|
+  config.use_encoded_polylines = true
+end
+```
+
+
 ### Request cache
 
 Given Google's limit to the service you may have the need to cache requests. This is done by simply
@@ -124,10 +137,10 @@ using URL as cache keys. Cache we'll accept should provide a default ActiveSuppo
 
 ```ruby
 GoogleDistanceMatrix.configure_defaults do |config|
-    config.cache = ActiveSupport::Cache.lookup_store :your_store, {
-        expires_in: 12.hours
-        # ..or other options you like for your store
-    }
+  config.cache = ActiveSupport::Cache.lookup_store :your_store, {
+    expires_in: 12.hours
+    # ..or other options you like for your store
+  }
 end
 ```
 
