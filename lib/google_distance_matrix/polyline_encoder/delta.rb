@@ -8,43 +8,44 @@ module GoogleDistanceMatrix
     #
     # @see GoogleDistanceMatrix::PolylineEncoder
     class Delta
-      def initialize(array_of_lat_lng_pairs, precision: 1e5)
-        @array_of_lat_lng_pairs = array_of_lat_lng_pairs
+      def initialize(precision = 1e5)
         @precision = precision
-        @deltas = nil
       end
 
-      def deltas
-        return @deltas if @deltas
-
-        round_to_precision
-        calculate_deltas
-
-        @deltas
+      # Takes a set of lat/lng pairs and calculates delta
+      #
+      # Returns a flatten array where each lat/lng delta pair is put in order.
+      def deltas_rounded(array_of_lat_lng_pairs)
+        rounded = round_to_precision array_of_lat_lng_pairs
+        calculate_deltas rounded
       end
 
 
       private
 
-      def round_to_precision
-        @array_of_lat_lng_pairs.each do |pair|
-          pair[0] = (pair[0] * @precision).round
-          pair[1] = (pair[1] * @precision).round
+      def round_to_precision(array_of_lat_lng_pairs)
+        array_of_lat_lng_pairs.map do |(lat, lng)|
+          [
+            (lat * @precision).round,
+            (lng * @precision).round
+          ]
         end
       end
 
-      def calculate_deltas
-        @deltas = []
+      def calculate_deltas(rounded)
+        deltas = []
 
         delta_lat = 0
         delta_lng = 0
 
-        @array_of_lat_lng_pairs.each do |(lat, lng)|
-          @deltas << lat - delta_lat
-          @deltas << lng - delta_lng
+        rounded.each do |(lat, lng)|
+          deltas << lat - delta_lat
+          deltas << lng - delta_lng
 
           delta_lat, delta_lng = lat, lng
         end
+
+        deltas
       end
     end
   end
