@@ -17,6 +17,7 @@ require "google_distance_matrix/matrix"
 require "google_distance_matrix/places"
 require "google_distance_matrix/place"
 require "google_distance_matrix/route"
+require "google_distance_matrix/polyline_encoder"
 
 require "google_distance_matrix/log_subscriber"
 require 'google_distance_matrix/railtie' if defined? Rails
