@@ -6,7 +6,7 @@ module GoogleDistanceMatrix
     #
     # This is an internal helper class for PolylineEncoder.
     # This encoder expects that the value is rounded.
-    # 
+    #
     # @see GoogleDistanceMatrix::PolylineEncoder
     class ValueEncoder
       def encode(value)
@@ -32,7 +32,6 @@ module GoogleDistanceMatrix
           value >>= 5
         end
 
-        # TODO See if we can make a test for this
         chunks_of_5_bits << 0 if chunks_of_5_bits.empty?
 
         # Step 8, 9 and 10: OR each value with 0x20, unless last one. Add 63 to all values
