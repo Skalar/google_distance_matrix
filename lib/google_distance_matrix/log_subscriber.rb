@@ -1,11 +1,27 @@
 module GoogleDistanceMatrix
   class LogSubscriber < ActiveSupport::LogSubscriber
-    def client_request_matrix_data(event)
-      logger.info "(#{event.duration}ms) (elements: #{event.payload[:elements]}) GET #{event.payload[:url]}", tag: :client
+    attr_reader :logger, :config
+
+    def initialize(logger: GoogleDistanceMatrix.logger, config: GoogleDistanceMatrix.default_configuration)
+      super()
+
+      @logger = logger
+      @config = config
     end
 
-    def logger
-      GoogleDistanceMatrix.logger
+    def client_request_matrix_data(event)
+      url = filter_url! event.payload[:url]
+      logger.info "(#{event.duration}ms) (elements: #{event.payload[:elements]}) GET #{url}", tag: :client
+    end
+
+    private
+
+    def filter_url!(url)
+      config.filter_parameters_in_logged_url.each do |param|
+        url.sub! %r{(#{param})=.*?(&|$)}, '\1=[FILTERED]\2'
+      end
+
+      url
     end
   end
 end
