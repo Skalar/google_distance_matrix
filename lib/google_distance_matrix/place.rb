@@ -42,6 +42,10 @@ module GoogleDistanceMatrix
       end
     end
 
+    def lat_lng?
+      lat.present? && lng.present?
+    end
+
     def lat_lng(scale = nil)
       [lat, lng].map do |v|
         if scale

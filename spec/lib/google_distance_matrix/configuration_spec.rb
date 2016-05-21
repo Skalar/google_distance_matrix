@@ -57,6 +57,7 @@ describe GoogleDistanceMatrix::Configuration do
     it { expect(subject.avoid).to be_nil }
     it { expect(subject.units).to eq "metric" }
     it { expect(subject.lat_lng_scale).to eq 5 }
+    it { expect(subject.use_encoded_polylines).to eq false }
     it { expect(subject.protocol).to eq 'https' }
     it { expect(subject.language).to be_nil }
 

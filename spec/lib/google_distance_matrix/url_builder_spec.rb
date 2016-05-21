@@ -3,6 +3,7 @@ require "spec_helper"
 describe GoogleDistanceMatrix::UrlBuilder do
   let(:delimiter) { described_class::DELIMITER }
   let(:comma) { CGI.escape "," }
+  let(:colon) { CGI.escape ":" }
 
   let(:origin_1) { GoogleDistanceMatrix::Place.new address: "address_origin_1" }
   let(:origin_2) { GoogleDistanceMatrix::Place.new address: "address_origin_2" }
@@ -76,6 +77,31 @@ describe GoogleDistanceMatrix::UrlBuilder do
         subject.matrix.configure { |c| c.lat_lng_scale = 5 }
 
         expect(subject.url).to include "destinations=10.12346#{comma}10.98765"
+      end
+    end
+
+    describe "use encoded polylines" do
+      let(:destination_3) { GoogleDistanceMatrix::Place.new address: "address_destination_3" }
+      let(:destination_4) { GoogleDistanceMatrix::Place.new lat: 4, lng: 44 }
+      let(:destinations) { [destination_1, destination_2, destination_3, destination_4] }
+
+      before do
+        matrix.configure { |c| c.use_encoded_polylines = true }
+      end
+
+      it "includes places with addresses as addresses" do
+        expect(subject.url).to include "origins=address_origin_1#{delimiter}address_origin_2"
+      end
+
+      it "encodes places with lat/lng values togheter, broken up by addresses to keep places order" do
+        expect(subject.url).to include(
+          # 2 first places encoded togheter as they have lat lng values
+          "destinations=enc#{colon}_ibE_mcbA_ibE_mcbA#{colon}#{delimiter}" +
+          # encoded polyline broken off by a destination with address
+          "address_destination_3#{delimiter}" +
+          # We continue to encode the last destination as it's own ony point polyline
+          "enc#{colon}_glW_wpkG#{colon}"
+        )
       end
     end
 

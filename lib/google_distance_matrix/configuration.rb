@@ -9,6 +9,7 @@ module GoogleDistanceMatrix
   class Configuration
     include ActiveModel::Validations
 
+    # Attributes we'll include building URL for our matrix
     ATTRIBUTES = %w[
       mode avoid units language
       departure_time arrival_time
@@ -19,12 +20,31 @@ module GoogleDistanceMatrix
     API_DEFAULTS = {
       mode: "driving",
       units: "metric",
-      traffic_model: "best_guess"
+      traffic_model: "best_guess",
+      use_encoded_polylines: false,
+      protocol: 'https',
+      lat_lng_scale: 5
     }.with_indifferent_access
 
-    attr_accessor *ATTRIBUTES, :protocol, :logger, :lat_lng_scale
+    attr_accessor *ATTRIBUTES
+
+    # The protocol to use, either http or https
+    attr_accessor :protocol
+
+    # lat_lng_scale is used for each Place when we include it's lat and lng values in the URL.
+    # Defaults to 5 decimals, but you can set it lower to save characters in the URL.
+    #
+    # Speaking of saving characters. If you use_encoded_polylines all Places which has lat/lng
+    # will use encoded set of coordinates using the Encoded Polyline Algorithm.
+    # This is particularly useful if you have a large number of origin points,
+    # because the URL is significantly shorter when using an encoded polyline.
+    # See: https://developers.google.com/maps/documentation/distance-matrix/intro#RequestParameters
+    attr_accessor :lat_lng_scale, :use_encoded_polylines
+
+    # Google credentials
     attr_accessor :google_business_api_client_id, :google_business_api_private_key, :google_api_key
-    attr_accessor :cache
+
+    attr_accessor :cache, :logger
 
 
     validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: true
@@ -41,9 +61,6 @@ module GoogleDistanceMatrix
     validates :protocol, inclusion: {in: ["http", "https"]}, allow_blank: true
 
     def initialize
-      self.protocol = "https"
-      self.lat_lng_scale = 5
-
       API_DEFAULTS.each_pair do |attr_name, value|
         self[attr_name] = value
       end

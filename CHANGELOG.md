@@ -1,4 +1,8 @@
-## v.0.3.0 (unreleased)
+## v.0.4.0 (unreleased)
+* Added option to encode origins and destinations as polylines to save characters in the URL.
+* Dropped support for Ruby 2.0.0
+
+## v.0.3.0
 This release includes one breaking change, the removal of sensor parameter.
 This parameter is no longer used - see:
 https://developers.google.com/maps/documentation/distance-matrix/intro#Sensor
