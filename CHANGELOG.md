@@ -1,4 +1,4 @@
-## v.0.4.0
+## v.0.4.0 (unreleased)
 * Added option to encode origins and destinations as polylines to save characters in the URL.
 * Dropped support for Ruby 2.0.0
 
