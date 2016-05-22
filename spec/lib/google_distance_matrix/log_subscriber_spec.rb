@@ -70,11 +70,18 @@ module GoogleDistanceMatrix
         expect(mock_logger.logged.first).to include "https://example.com/?foo=bar&sensitive=[FILTERED]"
       end
 
-      it "filters key and signature" do
+      it "filters key and signature as defaul from configuration" do
         instrumentation = {url: 'https://example.com/?key=bar&signature=secret&other=foo'}
         notify instrumentation
 
         expect(mock_logger.logged.first).to include "https://example.com/?key=[FILTERED]&signature=[FILTERED]&other=foo"
+      end
+
+      it "filters all appearances of a param" do
+        instrumentation = {url: 'https://example.com/?key=bar&key=secret&other=foo'}
+        notify instrumentation
+
+        expect(mock_logger.logged.first).to include "https://example.com/?key=[FILTERED]&key=[FILTERED]&other=foo"
       end
     end
   end
