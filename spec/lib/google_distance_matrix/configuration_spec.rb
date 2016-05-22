@@ -13,6 +13,18 @@ describe GoogleDistanceMatrix::Configuration do
         expect(subject.errors[:departure_time].length).to eq 0
       end
 
+      it 'is valid with "now"' do
+        subject.departure_time = 'now'
+        subject.valid?
+        expect(subject.errors[:departure_time].length).to eq 0
+      end
+
+      it 'is invalid with "123now"' do
+        subject.departure_time = '123now'
+        subject.valid?
+        expect(subject.errors[:departure_time].length).to eq 1
+      end
+
       it 'is invalid with something else' do
         subject.departure_time = 'foo'
         subject.valid?

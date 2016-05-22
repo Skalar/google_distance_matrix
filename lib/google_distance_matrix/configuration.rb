@@ -54,7 +54,7 @@ module GoogleDistanceMatrix
     validates :avoid, inclusion: {in: ["tolls", "highways", "ferries", "indoor"]}, allow_blank: true
     validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
 
-    validates :departure_time, numericality: true, allow_blank: true
+    validates :departure_time, format: /\A(\d+|now)\Z/, allow_blank: true
     validates :arrival_time, numericality: true, allow_blank: true
 
     validates :transit_mode, inclusion: {in: %w[bus subway train tram rail]}, allow_blank: true
