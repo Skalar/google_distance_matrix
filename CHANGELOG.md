@@ -1,5 +1,6 @@
 ## v.0.4.0 (unreleased)
 * Added option to encode origins and destinations as polylines to save characters in the URL.
+* Filter sensitive GET params when logging the URL we query Google Matrix with.
 * Dropped support for Ruby 2.0.0
 
 ## v.0.3.0

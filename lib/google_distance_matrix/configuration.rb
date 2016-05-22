@@ -23,7 +23,8 @@ module GoogleDistanceMatrix
       traffic_model: "best_guess",
       use_encoded_polylines: false,
       protocol: 'https',
-      lat_lng_scale: 5
+      lat_lng_scale: 5,
+      filter_parameters_in_logged_url: ['key', 'signature'].freeze
     }.with_indifferent_access
 
     attr_accessor *ATTRIBUTES
@@ -46,6 +47,8 @@ module GoogleDistanceMatrix
 
     attr_accessor :cache, :logger
 
+    # When logging we filter sensitive parameters
+    attr_accessor :filter_parameters_in_logged_url
 
     validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: true
     validates :avoid, inclusion: {in: ["tolls", "highways", "ferries", "indoor"]}, allow_blank: true
@@ -62,7 +65,7 @@ module GoogleDistanceMatrix
 
     def initialize
       API_DEFAULTS.each_pair do |attr_name, value|
-        self[attr_name] = value
+        self[attr_name] = value.dup rescue value
       end
     end
 
