@@ -1,4 +1,7 @@
 ## v.0.4.0 (unreleased)
+* When mode is `driving` and `departure_time` is set all `route` objects will contain
+  `duration_in_traffic_in_seconds` and `duration_in_traffic_text`.
+  You can also query the matrix by `shortest_route_by_duration_in_traffic_to(place)`.
 * Added option to encode origins and destinations as polylines to save characters in the URL.
 * Filter sensitive GET params when logging the URL we query Google Matrix with.
 * departure_time can now be set to 'now'.
