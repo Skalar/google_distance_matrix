@@ -1,0 +1,48 @@
+{
+   "destination_addresses" : [ "Røykenveien, 1387 Asker, Norway" ],
+   "origin_addresses" : [
+      "Knud Askers vei 2840, 1384 Asker, Norway",
+      "Knud Askers vei 2840, 1384 Asker, Norway"
+   ],
+   "rows" : [
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "0.6 km",
+                  "value" : 619
+               },
+               "duration" : {
+                  "text" : "2 mins",
+                  "value" : 124
+               },
+               "duration_in_traffic" : {
+                  "text" : "2 mins",
+                  "value" : 118
+               },
+               "status" : "OK"
+            }
+         ]
+      },
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "0.6 km",
+                  "value" : 619
+               },
+               "duration" : {
+                  "text" : "2 mins",
+                  "value" : 124
+               },
+               "duration_in_traffic" : {
+                  "text" : "2 mins",
+                  "value" : 118
+               },
+               "status" : "OK"
+            }
+         ]
+      }
+   ],
+   "status" : "OK"
+}
