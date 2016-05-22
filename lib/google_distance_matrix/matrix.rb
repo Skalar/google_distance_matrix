@@ -54,10 +54,12 @@ module GoogleDistanceMatrix
     end
 
 
-    delegate :route_for, :routes_for, to: :routes_finder
+    delegate :route_for,  :routes_for,  to: :routes_finder
     delegate :route_for!, :routes_for!, to: :routes_finder
-    delegate :shortest_route_by_distance_to, :shortest_route_by_duration_to, to: :routes_finder
-    delegate :shortest_route_by_distance_to!, :shortest_route_by_duration_to!, to: :routes_finder
+    delegate :shortest_route_by_distance_to,  :shortest_route_by_duration_to,   to: :routes_finder
+    delegate :shortest_route_by_distance_to!, :shortest_route_by_duration_to!,  to: :routes_finder
+    delegate :shortest_route_by_duration_in_traffic_to,  to: :routes_finder
+    delegate :shortest_route_by_duration_in_traffic_to!, to: :routes_finder
 
 
     # Public: The data for this matrix.

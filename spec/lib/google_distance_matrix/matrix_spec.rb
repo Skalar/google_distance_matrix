@@ -81,6 +81,8 @@ describe GoogleDistanceMatrix::Matrix do
       shortest_route_by_duration_to!
       shortest_route_by_distance_to
       shortest_route_by_distance_to!
+      shortest_route_by_duration_in_traffic_to
+      shortest_route_by_duration_in_traffic_to!
     ].each do |method|
     it "delegates #{method} to routes_finder" do
       finder = double
