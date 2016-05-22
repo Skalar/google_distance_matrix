@@ -104,12 +104,12 @@ describe GoogleDistanceMatrix::Matrix do
 
     it "loads correctly API response data in to route objects when it includes in traffic data" do
       stub_request(:get, url).to_return body: recorded_request_for(:success_with_in_traffic)
-      expect(subject.data[0][0].distance_text).to eq '0.6 km'
-      expect(subject.data[0][0].distance_in_meters).to eq 619
-      expect(subject.data[0][0].duration_text).to eq '2 mins'
-      expect(subject.data[0][0].duration_in_seconds).to eq 124
-      expect(subject.data[0][0].duration_in_traffic_text).to eq '2 mins'
-      expect(subject.data[0][0].duration_in_traffic_in_seconds).to eq 118
+      expect(subject.data[0][0].distance_text).to eq '1.8 km'
+      expect(subject.data[0][0].distance_in_meters).to eq 1752
+      expect(subject.data[0][0].duration_text).to eq '7 mins'
+      expect(subject.data[0][0].duration_in_seconds).to eq 435
+      expect(subject.data[0][0].duration_in_traffic_text).to eq '7 mins'
+      expect(subject.data[0][0].duration_in_traffic_in_seconds).to eq 405
     end
 
     context "no cache" do
