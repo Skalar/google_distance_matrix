@@ -1,4 +1,4 @@
-## v.0.4.0 (unreleased)
+## v.0.4.0
 * When mode is `driving` and `departure_time` is set all `route` objects will contain
   `duration_in_traffic_in_seconds` and `duration_in_traffic_text`.
   You can also query the matrix by `shortest_route_by_duration_in_traffic_to(place)`.
