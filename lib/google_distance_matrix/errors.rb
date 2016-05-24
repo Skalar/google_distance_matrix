@@ -14,6 +14,13 @@ module GoogleDistanceMatrix
     end
   end
 
+  # Public: Raised when we query the matrix for something it cannot answer.
+  #
+  # Example: Asking it for shortest_route_by_duration_in_traffic when the
+  # matrix data has no such data.
+  class InvalidQuery < Error
+  end
+
   # Public: Route seems invalid
   #
   # Fails if a route is built, but it's status from

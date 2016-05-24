@@ -5,12 +5,15 @@ module GoogleDistanceMatrix
   # it's origin and destination.
   #
   class Route
-    STATUSES = %w[ok zero_results not_found]
+    STATUSES = %w[ok zero_results not_found].freeze
 
     ATTRIBUTES = %w[
       origin destination
-      status distance_text distance_in_meters duration_text duration_in_seconds
-    ]
+      status
+      distance_text distance_in_meters
+      duration_text duration_in_seconds
+      duration_in_traffic_text duration_in_traffic_in_seconds
+    ].freeze
 
     attr_reader *ATTRIBUTES
 
@@ -30,6 +33,11 @@ module GoogleDistanceMatrix
         @distance_in_meters = attributes[:distance][:value]
         @duration_text = attributes[:duration][:text]
         @duration_in_seconds = attributes[:duration][:value]
+
+        if attributes.key? :duration_in_traffic
+          @duration_in_traffic_text = attributes[:duration_in_traffic][:text]
+          @duration_in_traffic_in_seconds = attributes[:duration_in_traffic][:value]
+        end
       end
     end
 

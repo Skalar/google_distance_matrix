@@ -80,19 +80,25 @@ Returns Google::DistanceMatrix::Route with given origin and destination
 
 ```ruby
 matrix.route_for origin: lat_lng, destination: dest_address
-# Google::DistanceMatrix::Route with one origin and a destination, together with route data
+
+# Returns the shortest route to given destination, either by distance or duration
 matrix.shortest_route_by_distance_to(dest_address)
-# Google::DistanceMatrix::Route with one origin and a destination, together with route data
 matrix.shortest_route_by_duration_to(dest_address)
+
+# If your matrix is for driving and you provided a departure_time all Route objects within
+# the matrix will have duration_in_traffic_in_seconds. We can query the matrix for this data as well:
+matrix.shortest_route_by_duration_in_traffic_to(dest_address)
 ```
 
-In cases where you built the place with an object (not hash with attributes) you may provide that object as well asking for routes. This is true for `route_for` and `shortest_route_by_*` as well.
+In cases where you built the place with an object (not hash with attributes) you may provide that object
+as well asking for routes. This is true for `route_for` and `shortest_route_by_*` as well.
 
 ```ruby
 matrix.routes_for point_dest # Returns routes for dest_object
 ```
 
-You may call query methods with a bang, in which case it will fail with an error if not all of the routes in your result set for the called method are ok.
+You may call query methods with a bang, in which case it will fail with an error if not all of the
+routes in your result set for the called method are ok.
 
 
 ## Installation

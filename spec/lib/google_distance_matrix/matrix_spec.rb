@@ -81,6 +81,8 @@ describe GoogleDistanceMatrix::Matrix do
       shortest_route_by_duration_to!
       shortest_route_by_distance_to
       shortest_route_by_distance_to!
+      shortest_route_by_duration_in_traffic_to
+      shortest_route_by_duration_in_traffic_to!
     ].each do |method|
     it "delegates #{method} to routes_finder" do
       finder = double
@@ -94,9 +96,22 @@ describe GoogleDistanceMatrix::Matrix do
   end
 
   describe "making API requests", :request_recordings do
-    it "loads correctly" do
+    it "loads correctly API response data in to route objects" do
       stub_request(:get, url).to_return body: recorded_request_for(:success)
+      expect(subject.data[0][0].distance_text).to eq '2.0 km'
       expect(subject.data[0][0].distance_in_meters).to eq 2032
+      expect(subject.data[0][0].duration_text).to eq '6 mins'
+      expect(subject.data[0][0].duration_in_seconds).to eq 367
+    end
+
+    it "loads correctly API response data in to route objects when it includes in traffic data" do
+      stub_request(:get, url).to_return body: recorded_request_for(:success_with_in_traffic)
+      expect(subject.data[0][0].distance_text).to eq '1.8 km'
+      expect(subject.data[0][0].distance_in_meters).to eq 1752
+      expect(subject.data[0][0].duration_text).to eq '7 mins'
+      expect(subject.data[0][0].duration_in_seconds).to eq 435
+      expect(subject.data[0][0].duration_in_traffic_text).to eq '7 mins'
+      expect(subject.data[0][0].duration_in_traffic_in_seconds).to eq 405
     end
 
     context "no cache" do
@@ -185,7 +200,7 @@ describe GoogleDistanceMatrix::Matrix do
         expect(api_request_stub).to have_been_requested
       end
 
-      it "as loaded route with errors correctly" do
+      it "adds loaded route with errors correctly" do
         route = subject.data[0][1]
 
         expect(route.status).to eq "zero_results"

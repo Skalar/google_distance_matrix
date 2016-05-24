@@ -21,7 +21,33 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
 
   subject { described_class.new matrix }
 
-  context "success" do
+  context "success, with traffic data" do
+    before do
+      matrix.configure do |c|
+        c.departure_time = 'now'
+      end
+    end
+
+    let!(:api_request_stub) { stub_request(:get, url).to_return body: recorded_request_for(:success_with_in_traffic) }
+
+    describe "#shortest_route_by_duration_in_traffic_to" do
+      it "returns route representing shortest duration to given origin" do
+        expect(subject.shortest_route_by_duration_in_traffic_to(origin_1)).to eq matrix.data[0][0]
+      end
+
+      it "returns route representing shortest duration to given destination" do
+        expect(subject.shortest_route_by_duration_in_traffic_to(destination_2)).to eq matrix.data[1][1]
+      end
+    end
+
+    describe "#shortest_route_by_duration_in_traffic_to!" do
+      it "returns the same as shortest_route_by_duration_in_traffic_to" do
+        expect(subject.shortest_route_by_duration_in_traffic_to!(origin_1)).to eq subject.shortest_route_by_duration_in_traffic_to(origin_1)
+      end
+    end
+  end
+
+  context "success, without in traffic data" do
     let!(:api_request_stub) { stub_request(:get, url).to_return body: recorded_request_for(:success) }
 
     describe "#routes_for" do
@@ -121,6 +147,22 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
     describe "#shortest_route_by_duration_to!" do
       it "returns the same as shortest_route_by_duration_to" do
         expect(subject.shortest_route_by_duration_to!(origin_1)).to eq subject.shortest_route_by_duration_to(origin_1)
+      end
+    end
+
+    describe "#shortest_route_by_duration_in_traffic_to" do
+      it "returns route representing shortest duration to given origin" do
+        expect {
+          subject.shortest_route_by_duration_in_traffic_to(origin_1)
+        }.to raise_error GoogleDistanceMatrix::InvalidQuery
+      end
+    end
+
+    describe "#shortest_route_by_duration_in_traffic_to!" do
+      it "returns the same as shortest_route_by_duration_in_traffic_to" do
+        expect {
+          subject.shortest_route_by_duration_in_traffic_to!(origin_1)
+        }.to raise_error GoogleDistanceMatrix::InvalidQuery
       end
     end
   end

@@ -1,0 +1,78 @@
+{
+   "destination_addresses" : [
+      "Drammensveien 1, 0271 Oslo, Norway",
+      "Skjellestadhagen, 1389 Heggedal, Norway"
+   ],
+   "origin_addresses" : [ "Karl Johans gate, Oslo, Norway", "Askerveien 1, 1384 Asker, Norway" ],
+   "rows" : [
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "1.8 km",
+                  "value" : 1752
+               },
+               "duration" : {
+                  "text" : "7 mins",
+                  "value" : 435
+               },
+               "duration_in_traffic" : {
+                  "text" : "7 mins",
+                  "value" : 405
+               },
+               "status" : "OK"
+            },
+            {
+               "distance" : {
+                  "text" : "30.5 km",
+                  "value" : 30501
+               },
+               "duration" : {
+                  "text" : "38 mins",
+                  "value" : 2267
+               },
+               "duration_in_traffic" : {
+                  "text" : "36 mins",
+                  "value" : 2179
+               },
+               "status" : "OK"
+            }
+         ]
+      },
+      {
+         "elements" : [
+            {
+               "distance" : {
+                  "text" : "21.3 km",
+                  "value" : 21322
+               },
+               "duration" : {
+                  "text" : "24 mins",
+                  "value" : 1438
+               },
+               "duration_in_traffic" : {
+                  "text" : "23 mins",
+                  "value" : 1397
+               },
+               "status" : "OK"
+            },
+            {
+               "distance" : {
+                  "text" : "9.6 km",
+                  "value" : 9550
+               },
+               "duration" : {
+                  "text" : "18 mins",
+                  "value" : 1109
+               },
+               "duration_in_traffic" : {
+                  "text" : "18 mins",
+                  "value" : 1083
+               },
+               "status" : "OK"
+            }
+         ]
+      }
+   ],
+   "status" : "OK"
+}

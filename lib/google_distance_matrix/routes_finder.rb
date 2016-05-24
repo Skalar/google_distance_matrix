@@ -3,7 +3,7 @@ module GoogleDistanceMatrix
   class RoutesFinder
 
     attr_reader :matrix
-    delegate :data, :origins, :destinations, to: :matrix
+    delegate :data, :origins, :destinations, :configuration, to: :matrix
 
 
     def initialize(matrix)
@@ -110,6 +110,34 @@ module GoogleDistanceMatrix
       routes_for!(place_or_object_place_was_built_from).min_by &:duration_in_seconds
     end
 
+    # Public: Finds shortes route by duration in traffic to a place.
+    #
+    # NOTE  The matrix must be loaded with mode driving and a departure_time set to
+    #       get the matrix loaded with duration in traffic.
+    #
+    # place - The place, or object place was built from, you want the shortest route to
+    #
+    # Returns shortest route, or nil if no routes had status ok
+    def shortest_route_by_duration_in_traffic_to(place_or_object_place_was_built_from)
+      ensure_driving_and_departure_time_or_fail!
+
+      routes = routes_for place_or_object_place_was_built_from
+      select_ok_routes(routes).min_by &:duration_in_traffic_in_seconds
+    end
+
+    # Public: Finds shortes route by duration in traffic to a place.
+    #
+    # NOTE  The matrix must be loaded with mode driving and a departure_time set to
+    #       get the matrix loaded with duration in traffic.
+    #
+    # place - The place, or object place was built from, you want the shortest route to
+    #
+    # Returns shortest route, fails if any of the routes are not ok
+    def shortest_route_by_duration_in_traffic_to!(place_or_object_place_was_built_from)
+      ensure_driving_and_departure_time_or_fail!
+
+      routes_for!(place_or_object_place_was_built_from).min_by &:duration_in_traffic_in_seconds
+    end
 
 
 
@@ -164,6 +192,12 @@ module GoogleDistanceMatrix
 
     def select_ok_routes(routes)
       routes.select &:ok?
+    end
+
+    def ensure_driving_and_departure_time_or_fail!
+      if configuration.mode != 'driving' || configuration.departure_time.nil?
+        fail InvalidQuery, "Matrix must be in mode driving and a departure_time must be set"
+      end
     end
   end
 end
