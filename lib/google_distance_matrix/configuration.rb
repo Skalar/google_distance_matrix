@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
   # Public: Configuration of matrix and it's request.
   #
@@ -15,19 +17,19 @@ module GoogleDistanceMatrix
       departure_time arrival_time
       transit_mode transit_routing_preference
       traffic_model
-    ]
+    ].freeze
 
     API_DEFAULTS = {
-      mode: "driving",
-      units: "metric",
-      traffic_model: "best_guess",
+      mode: 'driving',
+      units: 'metric',
+      traffic_model: 'best_guess',
       use_encoded_polylines: false,
       protocol: 'https',
       lat_lng_scale: 5,
-      filter_parameters_in_logged_url: ['key', 'signature'].freeze
+      filter_parameters_in_logged_url: %w[key signature].freeze
     }.with_indifferent_access
 
-    attr_accessor *ATTRIBUTES
+    attr_accessor(*ATTRIBUTES)
 
     # The protocol to use, either http or https
     attr_accessor :protocol
@@ -50,22 +52,34 @@ module GoogleDistanceMatrix
     # When logging we filter sensitive parameters
     attr_accessor :filter_parameters_in_logged_url
 
-    validates :mode, inclusion: {in: ["driving", "walking", "bicycling", "transit"]}, allow_blank: true
-    validates :avoid, inclusion: {in: ["tolls", "highways", "ferries", "indoor"]}, allow_blank: true
-    validates :units, inclusion: {in: ["metric", "imperial"]}, allow_blank: true
+    validates :mode, inclusion: { in: %w[driving walking bicycling transit] }, allow_blank: true
+    validates :avoid, inclusion: { in: %w[tolls highways ferries indoor] }, allow_blank: true
+    validates :units, inclusion: { in: %w[metric imperial] }, allow_blank: true
 
     validates :departure_time, format: /\A(\d+|now)\Z/, allow_blank: true
     validates :arrival_time, numericality: true, allow_blank: true
 
-    validates :transit_mode, inclusion: {in: %w[bus subway train tram rail]}, allow_blank: true
-    validates :transit_routing_preference, inclusion: {in: %w[less_walking fewer_transfers]}, allow_blank: true
-    validates :traffic_model, inclusion: {in: %w[best_guess pessimistic optimistic]}, allow_blank: true
+    validates :transit_mode,
+              inclusion: { in: %w[bus subway train tram rail] },
+              allow_blank: true
 
-    validates :protocol, inclusion: {in: ["http", "https"]}, allow_blank: true
+    validates :transit_routing_preference,
+              inclusion: { in: %w[less_walking fewer_transfers] },
+              allow_blank: true
+
+    validates :traffic_model,
+              inclusion: { in: %w[best_guess pessimistic optimistic] },
+              allow_blank: true
+
+    validates :protocol, inclusion: { in: %w[http https] }, allow_blank: true
 
     def initialize
       API_DEFAULTS.each_pair do |attr_name, value|
-        self[attr_name] = value.dup rescue value
+        self[attr_name] = begin
+                            value.dup
+                          rescue
+                            value
+                          end
       end
     end
 
@@ -76,7 +90,6 @@ module GoogleDistanceMatrix
     def []=(attr_name, value)
       public_send "#{attr_name}=", value
     end
-
 
     private
 
@@ -89,15 +102,13 @@ module GoogleDistanceMatrix
         out << ['client', google_business_api_client_id]
       end
 
-      if google_api_key.present?
-        out << ['key', google_api_key]
-      end
+      out << ['key', google_api_key] if google_api_key.present?
 
       out
     end
 
     def param_same_as_api_default?(param)
-     API_DEFAULTS[param[0]] == param[1]
+      API_DEFAULTS[param[0]] == param[1]
     end
   end
 end
