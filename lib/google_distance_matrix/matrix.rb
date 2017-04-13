@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
   # Public: Represents a distance matrix.
   #
@@ -25,23 +27,25 @@ module GoogleDistanceMatrix
   #     config.mode = "walking"
   #   end
   #
-  # You can set default configuration by doing: GoogleDistanceMatrix.configure_defaults { |c| c.sensor = true }
+  # You can set default configuration by doing:
+  # GoogleDistanceMatrix.configure_defaults { |c| c.sensor = true }
   #
   #
   # Query API and get the matrix back
   #
   #   matrix.data   # Returns a two dimensional array.
   #                 # Rows are ordered according to the values in the origins.
-  #                 # Each row corresponds to an origin, and each element within that row corresponds to
+  #                 # Each row corresponds to an origin, and each element
+  #                 # within that row corresponds to
   #                 # a pairing of the origin with a destination.
   #
   #
   class Matrix
     include ActiveModel::Validations
 
-    validates :origins, length: {minimum: 1, too_short: "must have at least one origin"}
-    validates :destinations, length: {minimum: 1, too_short: "must have at least one destination"}
-    validate { errors.add(:configuration, "is invalid") if configuration.invalid? }
+    validates :origins, length: { minimum: 1, too_short: 'must have at least one origin' }
+    validates :destinations, length: { minimum: 1, too_short: 'must have at least one destination' }
+    validate { errors.add(:configuration, 'is invalid') if configuration.invalid? }
 
     attr_reader :origins, :destinations, :configuration
 
@@ -53,14 +57,12 @@ module GoogleDistanceMatrix
       @configuration = attributes[:configuration] || GoogleDistanceMatrix.default_configuration.dup
     end
 
-
     delegate :route_for,  :routes_for,  to: :routes_finder
     delegate :route_for!, :routes_for!, to: :routes_finder
     delegate :shortest_route_by_distance_to,  :shortest_route_by_duration_to,   to: :routes_finder
     delegate :shortest_route_by_distance_to!, :shortest_route_by_duration_to!,  to: :routes_finder
     delegate :shortest_route_by_duration_in_traffic_to,  to: :routes_finder
     delegate :shortest_route_by_duration_in_traffic_to!, to: :routes_finder
-
 
     # Public: The data for this matrix.
     #
@@ -83,8 +85,6 @@ module GoogleDistanceMatrix
       @data.present?
     end
 
-
-
     def configure
       yield configuration
     end
@@ -93,15 +93,13 @@ module GoogleDistanceMatrix
       UrlBuilder.new(self).url
     end
 
-
     def inspect
       attributes = %w[origins destinations]
-      attributes << "data" if loaded?
+      attributes << 'data' if loaded?
       inspection = attributes.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
 
       "#<#{self.class} #{inspection}>"
     end
-
 
     private
 
@@ -110,13 +108,21 @@ module GoogleDistanceMatrix
     end
 
     def load_matrix
-      parsed = JSON.parse client.get(url, instrumentation: {elements: origins.length * destinations.length}).body
+      parsed = JSON.parse(
+        client.get(url, instrumentation: { elements: origins.length * destinations.length }).body
+      )
 
-      parsed["rows"].each_with_index.map do |row, origin_index|
+      create_route_objects_for_parsed_data parsed
+    end
+
+    def create_route_objects_for_parsed_data(parsed)
+      parsed['rows'].each_with_index.map do |row, origin_index|
         origin = origins[origin_index]
 
-        row["elements"].each_with_index.map do |element, destination_index|
-          route_attributes = element.merge(origin: origin, destination: destinations[destination_index])
+        row['elements'].each_with_index.map do |element, destination_index|
+          route_attributes = element.merge(
+            origin: origin, destination: destinations[destination_index]
+          )
           Route.new route_attributes
         end
       end
@@ -133,9 +139,9 @@ module GoogleDistanceMatrix
     end
 
     def clear_from_cache!
-      if configuration.cache
-        configuration.cache.delete ClientCache.key(url)
-      end
+      return if configuration.cache.nil?
+
+      configuration.cache.delete ClientCache.key(url)
     end
   end
 end
