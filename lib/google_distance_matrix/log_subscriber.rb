@@ -28,7 +28,7 @@ module GoogleDistanceMatrix
 
     def filter_url!(url)
       config.filter_parameters_in_logged_url.each do |param|
-        url.gsub! %r{(#{param})=.*?(&|$)}, '\1=[FILTERED]\2'
+        url = url.gsub(/(#{param})=.*?(&|$)/, '\1=[FILTERED]\2')
       end
 
       url

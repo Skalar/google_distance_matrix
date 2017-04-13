@@ -138,11 +138,27 @@ describe GoogleDistanceMatrix::Matrix do
 
       it 'makes one requests to same url' do
         stub = stub_request(:get, url).to_return body: recorded_request_for(:success)
+
         subject.data
         subject.reset!
         subject.data
 
         expect(stub).to have_been_requested.once
+      end
+
+      it 'makes one request when filtered params to same url' do
+        was = GoogleDistanceMatrix.default_configuration.filter_parameters_in_logged_url
+        GoogleDistanceMatrix.default_configuration.filter_parameters_in_logged_url = ['origins']
+
+        stub = stub_request(:get, url).to_return body: recorded_request_for(:success)
+
+        subject.data
+        subject.reset!
+        subject.data
+
+        expect(stub).to have_been_requested.once
+
+        GoogleDistanceMatrix.default_configuration.filter_parameters_in_logged_url = was
       end
 
       it 'clears the cache key on reload' do
