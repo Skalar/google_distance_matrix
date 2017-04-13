@@ -73,6 +73,16 @@ module GoogleDistanceMatrix
         expect(mock_logger.logged.first).to include 'https://example.com/?foo=bar&sensitive=[FILTERED]'
       end
 
+      it 'filter sensitive GET param does not mutate the url' do
+        config.filter_parameters_in_logged_url << 'sensitive'
+        url = 'https://example.com/?foo=bar&sensitive=secret'
+
+        instrumentation = { url: url }
+        notify instrumentation
+
+        expect(url).to eq 'https://example.com/?foo=bar&sensitive=secret'
+      end
+
       it 'filters key and signature as defaul from configuration' do
         instrumentation = { url: 'https://example.com/?key=bar&signature=secret&other=foo' }
         notify instrumentation
