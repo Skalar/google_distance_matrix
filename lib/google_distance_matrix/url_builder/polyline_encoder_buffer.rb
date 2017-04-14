@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
   class UrlBuilder
+    # A buffer to contain Polyline Encoder
     class PolylineEncoderBuffer
       def initialize
         @buffer = []
