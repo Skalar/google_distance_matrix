@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
+  # HTTP client making request to Google's API
   class Client
     CLIENT_ERRORS = %w[
       INVALID_REQUEST
@@ -6,41 +9,44 @@ module GoogleDistanceMatrix
       OVER_QUERY_LIMIT
       REQUEST_DENIED
       UNKNOWN_ERROR
-    ]
+    ].freeze
 
     def get(url, options = {})
       uri = URI.parse url
-      instrumentation = {url: url}.merge(options[:instrumentation] || {})
+      instrumentation = { url: url }.merge(options[:instrumentation] || {})
 
-      response = ActiveSupport::Notifications.instrument "client_request_matrix_data.google_distance_matrix", instrumentation do
+      response = ActiveSupport::Notifications.instrument(
+        'client_request_matrix_data.google_distance_matrix', instrumentation
+      ) do
         Net::HTTP.get_response uri
       end
 
+      handle response, url
+    rescue Timeout::Error => error
+      raise ServerError, error
+    end
+
+    private
+
+    def handle(response, url) # rubocop:disable Metrics/MethodLength
       case response
       when Net::HTTPSuccess
         inspect_for_client_errors! response
       when Net::HTTPRequestURITooLong
-        fail MatrixUrlTooLong.new url, UrlBuilder::MAX_URL_SIZE, response
+        raise MatrixUrlTooLong.new url, UrlBuilder::MAX_URL_SIZE, response
       when Net::HTTPClientError
-        fail ClientError.new response
+        raise ClientError, response
       when Net::HTTPServerError
-        fail ServerError.new response
+        raise ServerError, response
       else # Handle this as a request error for now. Maybe fine tune this more later.
-        fail ServerError.new response
+        raise ServerError, response
       end
-    rescue Timeout::Error => error
-      fail ServerError.new error
     end
 
-
-    private
-
     def inspect_for_client_errors!(response)
-      status = JSON.parse(response.body).fetch "status"
+      status = JSON.parse(response.body).fetch 'status'
 
-      if CLIENT_ERRORS.include? status
-        fail ClientError.new response, status
-      end
+      raise ClientError.new response, status if CLIENT_ERRORS.include? status
 
       response
     end
