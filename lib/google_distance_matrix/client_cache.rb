@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
+  # Cached client, which takes care of caching data from Google API
   class ClientCache
     attr_reader :client, :cache
 

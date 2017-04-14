@@ -57,6 +57,8 @@ module GoogleDistanceMatrix
       @configuration = attributes[:configuration] || GoogleDistanceMatrix.default_configuration.dup
     end
 
+    delegate :sensitive_url, :filtered_url, to: :url_builder
+
     delegate :route_for,  :routes_for,  to: :routes_finder
     delegate :route_for!, :routes_for!, to: :routes_finder
     delegate :shortest_route_by_distance_to,  :shortest_route_by_duration_to,   to: :routes_finder
@@ -89,14 +91,6 @@ module GoogleDistanceMatrix
       yield configuration
     end
 
-    def url
-      url_builder.sensitive_url
-    end
-
-    def filtered_url
-      url_builder.filtered_url
-    end
-
     def inspect
       attributes = %w[origins destinations]
       attributes << 'data' if loaded?
@@ -117,7 +111,7 @@ module GoogleDistanceMatrix
 
     def load_matrix
       parsed = JSON.parse(
-        client.get(url, instrumentation: instrumentation_for_api_request).body
+        client.get(sensitive_url, instrumentation: instrumentation_for_api_request).body
       )
 
       create_route_objects_for_parsed_data parsed
@@ -126,7 +120,7 @@ module GoogleDistanceMatrix
     def instrumentation_for_api_request
       {
         elements: origins.length * destinations.length,
-        sensitive_url: url,
+        sensitive_url: sensitive_url,
         filtered_url: filtered_url
       }
     end
@@ -157,7 +151,7 @@ module GoogleDistanceMatrix
     def clear_from_cache!
       return if configuration.cache.nil?
 
-      configuration.cache.delete ClientCache.key(url)
+      configuration.cache.delete ClientCache.key(sensitive_url)
     end
   end
 end
