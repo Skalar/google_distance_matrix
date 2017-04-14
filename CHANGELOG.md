@@ -1,4 +1,8 @@
 ## v.0.5.0
+
+This release contains breaking change where `url` has been renamed to
+`sensitive_url`. A `filtered_url` method is added to make it clear that
+the URL returned is filtered according to configuration.
 * Fixed an issue where read/write to cache used url with sensitive data and
   and filtered url resulting in cache miss.
 * Instrumentation payload `url` renamed `sensitive_url`.
