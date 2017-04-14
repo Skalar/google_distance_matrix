@@ -16,10 +16,13 @@ describe GoogleDistanceMatrix::UrlBuilder do
   let(:origins) { [origin_1, origin_2] }
   let(:destinations) { [destination_1, destination_2] }
 
+  let(:config) { GoogleDistanceMatrix::Configuration.new }
+
   let(:matrix) do
     GoogleDistanceMatrix::Matrix.new(
       origins: origins,
-      destinations: destinations
+      destinations: destinations,
+      configuration: config
     )
   end
 
@@ -44,7 +47,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
     end
   end
 
-  describe '#url' do
+  describe '#sensitive_url' do
     it 'fails if the url is more than 2048 characters' do
       long_string = ''.dup
       2049.times { long_string << 'a' }
@@ -92,7 +95,8 @@ describe GoogleDistanceMatrix::UrlBuilder do
       end
 
       it 'includes places with addresses as addresses' do
-        expect(subject.sensitive_url).to include "origins=address_origin_1#{delimiter}address_origin_2"
+        expect(subject.sensitive_url)
+          .to include "origins=address_origin_1#{delimiter}address_origin_2"
       end
 
       it(
@@ -139,6 +143,46 @@ describe GoogleDistanceMatrix::UrlBuilder do
           expect(subject.sensitive_url).to include 'signature=DIUgkQ_BaVBJU6hwhzH3GLeMdeo='
         end
       end
+    end
+  end
+
+  describe '#filtered_url' do
+    it 'filters nothing if config has no keys to be filtered' do
+      config.filter_parameters_in_logged_url.clear
+
+      expect(subject)
+        .to receive(:sensitive_url)
+        .and_return 'https://example.com/?foo=bar&sensitive=secret'
+
+      expect(subject.filtered_url).to eq 'https://example.com/?foo=bar&sensitive=secret'
+    end
+
+    it 'filters sensitive GET param if config has it in list of params to filter' do
+      config.filter_parameters_in_logged_url << 'sensitive'
+
+      expect(subject)
+        .to receive(:sensitive_url)
+        .and_return 'https://example.com/?foo=bar&sensitive=secret'
+
+      expect(subject.filtered_url).to eq 'https://example.com/?foo=bar&sensitive=[FILTERED]'
+    end
+
+    it 'filters key and signature as defaul from configuration' do
+      expect(subject)
+        .to receive(:sensitive_url)
+        .and_return 'https://example.com/?key=bar&signature=secret&other=foo'
+
+      expect(subject.filtered_url)
+        .to eq 'https://example.com/?key=[FILTERED]&signature=[FILTERED]&other=foo'
+    end
+
+    it 'filters all appearances of a param' do
+      expect(subject)
+        .to receive(:sensitive_url)
+        .and_return 'https://example.com/?key=bar&key=secret&other=foo'
+
+      expect(subject.filtered_url)
+        .to eq 'https://example.com/?key=[FILTERED]&key=[FILTERED]&other=foo'
     end
   end
 end

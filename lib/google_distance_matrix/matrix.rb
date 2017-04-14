@@ -90,7 +90,11 @@ module GoogleDistanceMatrix
     end
 
     def url
-      UrlBuilder.new(self).sensitive_url
+      url_builder.sensitive_url
+    end
+
+    def filtered_url
+      url_builder.filtered_url
     end
 
     def inspect
@@ -103,16 +107,28 @@ module GoogleDistanceMatrix
 
     private
 
+    def url_builder
+      @url_builder ||= UrlBuilder.new self
+    end
+
     def routes_finder
       @routes_finder ||= RoutesFinder.new self
     end
 
     def load_matrix
       parsed = JSON.parse(
-        client.get(url, instrumentation: { elements: origins.length * destinations.length }).body
+        client.get(url, instrumentation: instrumentation_for_api_request).body
       )
 
       create_route_objects_for_parsed_data parsed
+    end
+
+    def instrumentation_for_api_request
+      {
+        elements: origins.length * destinations.length,
+        sensitive_url: url,
+        filtered_url: filtered_url
+      }
     end
 
     def create_route_objects_for_parsed_data(parsed)

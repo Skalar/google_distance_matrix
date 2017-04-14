@@ -11,9 +11,8 @@ module GoogleDistanceMatrix
       UNKNOWN_ERROR
     ].freeze
 
-    def get(url, options = {})
+    def get(url, instrumentation: {})
       uri = URI.parse url
-      instrumentation = { url: url }.merge(options[:instrumentation] || {})
 
       response = ActiveSupport::Notifications.instrument(
         'client_request_matrix_data.google_distance_matrix', instrumentation

@@ -47,55 +47,11 @@ module GoogleDistanceMatrix
 
     it 'logs the url and elements' do
       url = 'https://example.com'
-      instrumentation = { url: url, elements: 0 }
+      instrumentation = { filtered_url: url, elements: 0 }
 
       expect { notify instrumentation }.to change(mock_logger.logged, :length).from(0).to 1
 
       expect(mock_logger.logged.first).to include '(elements: 0) GET https://example.com'
-    end
-
-    describe 'filtering of logged url' do
-      it 'filters nothing if config has no keys to be filtered' do
-        config.filter_parameters_in_logged_url.clear
-
-        instrumentation = { url: 'https://example.com/?foo=bar&sensitive=secret' }
-        notify instrumentation
-
-        expect(mock_logger.logged.first).to include 'https://example.com/?foo=bar&sensitive=secret'
-      end
-
-      it 'filters sensitive GET param if config has it in list of params to filter' do
-        config.filter_parameters_in_logged_url << 'sensitive'
-
-        instrumentation = { url: 'https://example.com/?foo=bar&sensitive=secret' }
-        notify instrumentation
-
-        expect(mock_logger.logged.first).to include 'https://example.com/?foo=bar&sensitive=[FILTERED]'
-      end
-
-      it 'filter sensitive GET param does not mutate the url' do
-        config.filter_parameters_in_logged_url << 'sensitive'
-        url = 'https://example.com/?foo=bar&sensitive=secret'
-
-        instrumentation = { url: url }
-        notify instrumentation
-
-        expect(url).to eq 'https://example.com/?foo=bar&sensitive=secret'
-      end
-
-      it 'filters key and signature as defaul from configuration' do
-        instrumentation = { url: 'https://example.com/?key=bar&signature=secret&other=foo' }
-        notify instrumentation
-
-        expect(mock_logger.logged.first).to include 'https://example.com/?key=[FILTERED]&signature=[FILTERED]&other=foo'
-      end
-
-      it 'filters all appearances of a param' do
-        instrumentation = { url: 'https://example.com/?key=bar&key=secret&other=foo' }
-        notify instrumentation
-
-        expect(mock_logger.logged.first).to include 'https://example.com/?key=[FILTERED]&key=[FILTERED]&other=foo'
-      end
     end
   end
 end

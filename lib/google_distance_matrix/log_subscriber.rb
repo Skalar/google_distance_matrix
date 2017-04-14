@@ -19,19 +19,9 @@ module GoogleDistanceMatrix
     end
 
     def client_request_matrix_data(event)
-      url = filter_url! event.payload[:url]
+      url = event.payload[:filtered_url]
       logger.info "(#{event.duration}ms) (elements: #{event.payload[:elements]}) GET #{url}",
                   tag: :client
-    end
-
-    private
-
-    def filter_url!(url)
-      config.filter_parameters_in_logged_url.each do |param|
-        url = url.gsub(/(#{param})=.*?(&|$)/, '\1=[FILTERED]\2')
-      end
-
-      url
     end
   end
 end

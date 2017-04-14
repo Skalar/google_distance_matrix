@@ -1,3 +1,9 @@
+## v.0.5.0
+* Fixed an issue where read/write to cache used url with sensitive data and
+  and filtered url resulting in cache miss.
+* Instrumentation payload `url` renamed `sensitive_url`.
+* Instrumentation payload added `filtered_url`.
+
 ## v.0.4.0
 * When mode is `driving` and `departure_time` is set all `route` objects will contain
   `duration_in_traffic_in_seconds` and `duration_in_traffic_text`.

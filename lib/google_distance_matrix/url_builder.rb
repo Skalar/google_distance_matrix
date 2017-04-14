@@ -26,14 +26,14 @@ module GoogleDistanceMatrix
     # @return String
     # @see filtered_url
     def sensitive_url
-      @url ||= build_url
+      @sensitive_url ||= build_url
     end
 
     # Returns the URL filtered as the configuration of the matrix dictates
     #
     # @return String
     def filtered_url
-      raise 'Not implemented yet'
+      filter_url sensitive_url
     end
 
     private
@@ -48,6 +48,14 @@ module GoogleDistanceMatrix
       end
 
       raise MatrixUrlTooLong.new url, MAX_URL_SIZE if url.length > MAX_URL_SIZE
+
+      url
+    end
+
+    def filter_url(url)
+      configuration.filter_parameters_in_logged_url.each do |param|
+        url = url.gsub(/(#{param})=.*?(&|$)/, '\1=[FILTERED]\2')
+      end
 
       url
     end
