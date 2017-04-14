@@ -10,7 +10,7 @@ describe GoogleDistanceMatrix::Matrix do
   let(:destination_2) { GoogleDistanceMatrix::Place.new address: 'Skjellestadhagen, Heggedal' }
 
   let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new subject }
-  let(:url) { url_builder.url }
+  let(:url) { url_builder.sensitive_url }
 
   subject do
     described_class.new(

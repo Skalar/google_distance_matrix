@@ -18,8 +18,22 @@ module GoogleDistanceMatrix
       raise InvalidMatrix, matrix if matrix.invalid?
     end
 
-    def url
+    # Returns the URL we'll call Google API with
+    #
+    # This URL contains key and signature and is therefor
+    # sensitive.
+    #
+    # @return String
+    # @see filtered_url
+    def sensitive_url
       @url ||= build_url
+    end
+
+    # Returns the URL filtered as the configuration of the matrix dictates
+    #
+    # @return String
+    def filtered_url
+      raise 'Not implemented yet'
     end
 
     private

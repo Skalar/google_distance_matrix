@@ -51,24 +51,25 @@ describe GoogleDistanceMatrix::UrlBuilder do
 
       expect(subject).to receive(:query_params_string).and_return long_string
 
-      expect { subject.url }.to raise_error GoogleDistanceMatrix::MatrixUrlTooLong
+      expect { subject.sensitive_url }.to raise_error GoogleDistanceMatrix::MatrixUrlTooLong
     end
 
     it 'starts with the base URL' do
-      expect(subject.url).to start_with 'https://' + described_class::BASE_URL
+      expect(subject.sensitive_url).to start_with 'https://' + described_class::BASE_URL
     end
 
     it 'has a configurable protocol' do
       matrix.configure { |c| c.protocol = 'http' }
-      expect(subject.url).to start_with 'http://'
+      expect(subject.sensitive_url).to start_with 'http://'
     end
 
     it 'includes origins' do
-      expect(subject.url).to include "origins=address_origin_1#{delimiter}address_origin_2"
+      expect(subject.sensitive_url)
+        .to include "origins=address_origin_1#{delimiter}address_origin_2"
     end
 
     it 'includes destinations' do
-      expect(subject.url).to include "destinations=1#{comma}11#{delimiter}2#{comma}22"
+      expect(subject.sensitive_url).to include "destinations=1#{comma}11#{delimiter}2#{comma}22"
     end
 
     describe 'lat lng scale' do
@@ -77,7 +78,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
       it 'rounds lat and lng' do
         subject.matrix.configure { |c| c.lat_lng_scale = 5 }
 
-        expect(subject.url).to include "destinations=10.12346#{comma}10.98765"
+        expect(subject.sensitive_url).to include "destinations=10.12346#{comma}10.98765"
       end
     end
 
@@ -91,13 +92,13 @@ describe GoogleDistanceMatrix::UrlBuilder do
       end
 
       it 'includes places with addresses as addresses' do
-        expect(subject.url).to include "origins=address_origin_1#{delimiter}address_origin_2"
+        expect(subject.sensitive_url).to include "origins=address_origin_1#{delimiter}address_origin_2"
       end
 
       it(
         'encodes places with lat/lng values togheter, broken up by addresses to keep places order'
       ) do
-        expect(subject.url).to include(
+        expect(subject.sensitive_url).to include(
           # 2 first places encoded togheter as they have lat lng values
           "destinations=enc#{colon}_ibE_mcbA_ibE_mcbA#{colon}#{delimiter}" +
           # encoded polyline broken off by a destination with address
@@ -117,7 +118,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
         end
 
         it 'includes the api key' do
-          expect(subject.url).to include "key=#{matrix.configuration.google_api_key}"
+          expect(subject.sensitive_url).to include "key=#{matrix.configuration.google_api_key}"
         end
       end
 
@@ -130,12 +131,12 @@ describe GoogleDistanceMatrix::UrlBuilder do
         end
 
         it 'includes client' do
-          expect(subject.url)
+          expect(subject.sensitive_url)
             .to include "client=#{matrix.configuration.google_business_api_client_id}"
         end
 
         it 'has signature' do
-          expect(subject.url).to include 'signature=DIUgkQ_BaVBJU6hwhzH3GLeMdeo='
+          expect(subject.sensitive_url).to include 'signature=DIUgkQ_BaVBJU6hwhzH3GLeMdeo='
         end
       end
     end

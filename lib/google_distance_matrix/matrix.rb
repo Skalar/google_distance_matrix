@@ -90,7 +90,7 @@ module GoogleDistanceMatrix
     end
 
     def url
-      UrlBuilder.new(self).url
+      UrlBuilder.new(self).sensitive_url
     end
 
     def inspect
