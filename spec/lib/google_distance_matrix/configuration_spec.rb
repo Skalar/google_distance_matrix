@@ -1,11 +1,13 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 describe GoogleDistanceMatrix::Configuration do
   include Shoulda::Matchers::ActiveModel
 
   subject { described_class.new }
 
-  describe "Validations" do
+  describe 'Validations' do
     describe 'departure_time' do
       it 'is valid with a timestamp' do
         subject.departure_time = Time.now.to_i
@@ -46,28 +48,32 @@ describe GoogleDistanceMatrix::Configuration do
       end
     end
 
-    it { should validate_inclusion_of(:mode).in_array(["driving", "walking", "bicycling", "transit"]) }
+    it { should validate_inclusion_of(:mode).in_array(%w[driving walking bicycling transit]) }
     it { should allow_value(nil).for(:mode) }
 
-    it { should validate_inclusion_of(:avoid).in_array(["tolls", "highways", "ferries", "indoor"]) }
+    it { should validate_inclusion_of(:avoid).in_array(%w[tolls highways ferries indoor]) }
     it { should allow_value(nil).for(:avoid) }
 
-    it { should validate_inclusion_of(:units).in_array(["metric", "imperial"]) }
+    it { should validate_inclusion_of(:units).in_array(%w[metric imperial]) }
     it { should allow_value(nil).for(:units) }
 
+    it { should validate_inclusion_of(:protocol).in_array(%w[http https]) }
 
-    it { should validate_inclusion_of(:protocol).in_array(["http", "https"]) }
-
-    it { should validate_inclusion_of(:transit_mode).in_array(["bus", "subway", "train", "tram", "rail"])}
-    it { should validate_inclusion_of(:transit_routing_preference).in_array(["less_walking",  "fewer_transfers"])}
-    it { should validate_inclusion_of(:traffic_model).in_array(["best_guess", "pessimistic", "optimistic"])}
+    it { should validate_inclusion_of(:transit_mode).in_array(%w[bus subway train tram rail]) }
+    it {
+      should validate_inclusion_of(
+        :transit_routing_preference
+      ).in_array(%w[less_walking fewer_transfers])
+    }
+    it {
+      should validate_inclusion_of(:traffic_model).in_array(%w[best_guess pessimistic optimistic])
+    }
   end
 
-
-  describe "defaults" do
-    it { expect(subject.mode).to eq "driving" }
+  describe 'defaults' do
+    it { expect(subject.mode).to eq 'driving' }
     it { expect(subject.avoid).to be_nil }
-    it { expect(subject.units).to eq "metric" }
+    it { expect(subject.units).to eq 'metric' }
     it { expect(subject.lat_lng_scale).to eq 5 }
     it { expect(subject.use_encoded_polylines).to eq false }
     it { expect(subject.protocol).to eq 'https' }
@@ -84,13 +90,12 @@ describe GoogleDistanceMatrix::Configuration do
 
     it { expect(subject.logger).to be_nil }
     it { expect(subject.cache).to be_nil }
-  end
 
 
-  describe "#to_param" do
+  describe '#to_param' do
     described_class::ATTRIBUTES.each do |attr|
       it "includes #{attr}" do
-        subject[attr] = "foo"
+        subject[attr] = 'foo'
         expect(subject.to_param[attr]).to eq subject.public_send(attr)
       end
 
@@ -108,14 +113,14 @@ describe GoogleDistanceMatrix::Configuration do
       end
     end
 
-    it "includes client if google_business_api_client_id has been set" do
-      subject.google_business_api_client_id = "123"
-      expect(subject.to_param['client']).to eq "123"
+    it 'includes client if google_business_api_client_id has been set' do
+      subject.google_business_api_client_id = '123'
+      expect(subject.to_param['client']).to eq '123'
     end
 
-    it "includes key if google_api_key has been set" do
-      subject.google_api_key = "12345"
-      expect(subject.to_param['key']).to eq("12345")
+    it 'includes key if google_api_key has been set' do
+      subject.google_api_key = '12345'
+      expect(subject.to_param['key']).to eq('12345')
     end
   end
 end
