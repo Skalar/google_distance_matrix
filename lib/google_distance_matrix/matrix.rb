@@ -110,10 +110,13 @@ module GoogleDistanceMatrix
     end
 
     def load_matrix
-      parsed = JSON.parse(
-        client.get(sensitive_url, instrumentation: instrumentation_for_api_request).body
-      )
+      body = client.get(
+        sensitive_url,
+        instrumentation: instrumentation_for_api_request,
+        configuration: configuration
+      ).body
 
+      parsed = JSON.parse(body)
       create_route_objects_for_parsed_data parsed
     end
 
@@ -151,7 +154,7 @@ module GoogleDistanceMatrix
     def clear_from_cache!
       return if configuration.cache.nil?
 
-      configuration.cache.delete ClientCache.key(sensitive_url)
+      configuration.cache.delete ClientCache.key(sensitive_url, configuration)
     end
   end
 end

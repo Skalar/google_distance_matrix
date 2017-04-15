@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'digest'
-
 module GoogleDistanceMatrix
   # Cached client, which takes care of caching data from Google API
   class ClientCache
@@ -10,10 +8,8 @@ module GoogleDistanceMatrix
     # Returns a cache key for given URL
     #
     # @return String
-    def self.key(url)
-      digest = Digest::SHA512.new
-      digest << url
-      digest.to_s
+    def self.key(url, config)
+      config.cache_key_transform.call url
     end
 
     def initialize(client, cache)
@@ -22,7 +18,7 @@ module GoogleDistanceMatrix
     end
 
     def get(url, options = {})
-      cache.fetch self.class.key(url) do
+      cache.fetch self.class.key(url, options.fetch(:configuration)) do
         client.get url, options
       end
     end

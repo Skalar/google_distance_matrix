@@ -11,7 +11,16 @@ module GoogleDistanceMatrix
       UNKNOWN_ERROR
     ].freeze
 
-    def get(url, instrumentation: {})
+    # Make a GET request to given URL
+    #
+    # @param url              The URL to Google's API we'll make a request to
+    # @param instrumentation  A hash with instrumentation payload
+    # @param options          Other options we don't care about, for example we'll capture
+    #                         `configuration` option which we are not using, but the ClientCache
+    #                         is using.
+    #
+    # @return Hash with data from parsed response body
+    def get(url, instrumentation: {}, **_options)
       uri = URI.parse url
 
       response = ActiveSupport::Notifications.instrument(

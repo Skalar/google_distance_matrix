@@ -91,6 +91,13 @@ describe GoogleDistanceMatrix::Configuration do
     it { expect(subject.logger).to be_nil }
     it { expect(subject.cache).to be_nil }
 
+    # rubocop:disable Metrics/LineLength
+    it 'has a default expected cache_key_transform' do
+      key = subject.cache_key_transform.call('foo')
+      expect(key).to eq 'f7fbba6e0636f890e56fbbf3283e524c6fa3204ae298382d624741d0dc6638326e282c41be5e4254d8820772c5518a2c5a8c0c7f7eda19594a7eb539453e1ed7'
+    end
+    # rubocop:enable Metrics/LineLength
+  end
 
   describe '#to_param' do
     described_class::ATTRIBUTES.each do |attr|

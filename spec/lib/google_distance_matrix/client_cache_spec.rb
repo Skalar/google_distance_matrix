@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe GoogleDistanceMatrix::ClientCache do
+  let(:config) { GoogleDistanceMatrix::Configuration.new }
   let(:url) { 'http://www.example.com' }
-  let(:options) { { hello: :options } }
+  let(:options) { { hello: :options, configuration: config } }
 
   let(:client) { double get: 'data' }
   let(:cache) { double }
@@ -12,7 +15,7 @@ describe GoogleDistanceMatrix::ClientCache do
   # rubocop:disable Metrics/LineLength
   describe '::key' do
     it 'returns a digest of given URL' do
-      key = described_class.key 'some url with secret parts'
+      key = described_class.key 'some url with secret parts', config
       expect(key).to eq 'e90595434d4e321da6b01d2b99d77419ddaa8861d83c5971c4a119ee76bb80a7003915cc16e6966615f205b4a1d5411bb5d4a0d907f611b3fe4cc8d9049f4f9c'
     end
   end
