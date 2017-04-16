@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/NumericPredicate
 module GoogleDistanceMatrix
   class PolylineEncoder
     # Encodes a single value, like 17998321, in to encoded polyline value,
@@ -14,7 +15,7 @@ module GoogleDistanceMatrix
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/AbcSize
       def encode(value)
-        negative = value.negative?
+        negative = value < 0
         value = value.abs
 
         # Step 3: Two's complement when negative
@@ -31,7 +32,7 @@ module GoogleDistanceMatrix
         # Right shift bits to get rid of the ones we just put on the array.
         # Bits will end up in reverse order.
         chunks_of_5_bits = []
-        while value.positive?
+        while value > 0
           chunks_of_5_bits.push(value & 0x1f)
           value >>= 5
         end
