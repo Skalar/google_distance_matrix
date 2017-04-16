@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
   # Public: Thin wrapper class for an element in the matrix.
   #
@@ -15,10 +17,9 @@ module GoogleDistanceMatrix
       duration_in_traffic_text duration_in_traffic_in_seconds
     ].freeze
 
-    attr_reader *ATTRIBUTES
+    attr_reader(*ATTRIBUTES)
 
-    delegate *(STATUSES.map { |s| s + '?' }), to: :status, allow_nil: true
-
+    delegate(*(STATUSES.map { |s| s + '?' }), to: :status, allow_nil: true)
 
     def initialize(attributes = {})
       attributes = attributes.with_indifferent_access
@@ -28,25 +29,31 @@ module GoogleDistanceMatrix
 
       @status = ActiveSupport::StringInquirer.new attributes[:status].downcase
 
-      if ok?
-        @distance_text = attributes[:distance][:text]
-        @distance_in_meters = attributes[:distance][:value]
-        @duration_text = attributes[:duration][:text]
-        @duration_in_seconds = attributes[:duration][:value]
-
-        if attributes.key? :duration_in_traffic
-          @duration_in_traffic_text = attributes[:duration_in_traffic][:text]
-          @duration_in_traffic_in_seconds = attributes[:duration_in_traffic][:value]
-        end
-      end
+      assign attributes if ok?
     end
 
-
-
     def inspect
-      inspection = ATTRIBUTES.reject { |a| public_send(a).blank? }.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
+      attrs = ATTRIBUTES.reject do |a|
+        public_send(a).blank?
+      end
+
+      inspection = attrs.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
 
       "#<#{self.class} #{inspection}>"
+    end
+
+    private
+
+    def assign(attributes)
+      @distance_text = attributes[:distance][:text]
+      @distance_in_meters = attributes[:distance][:value]
+      @duration_text = attributes[:duration][:text]
+      @duration_in_seconds = attributes[:duration][:value]
+
+      return unless  attributes.key? :duration_in_traffic
+
+      @duration_in_traffic_text = attributes[:duration_in_traffic][:text]
+      @duration_in_traffic_in_seconds = attributes[:duration_in_traffic][:value]
     end
   end
 end

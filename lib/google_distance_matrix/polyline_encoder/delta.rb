@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
   class PolylineEncoder
     # Calculates deltas between lat_lng values, internal helper class for PolylineEncoder.
@@ -20,7 +22,6 @@ module GoogleDistanceMatrix
         calculate_deltas rounded
       end
 
-
       private
 
       def round_to_precision(array_of_lat_lng_pairs)
@@ -42,7 +43,8 @@ module GoogleDistanceMatrix
           deltas << lat - delta_lat
           deltas << lng - delta_lng
 
-          delta_lat, delta_lng = lat, lng
+          delta_lat = lat
+          delta_lng = lng
         end
 
         deltas

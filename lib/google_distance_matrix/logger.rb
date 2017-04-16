@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
+  # Logger class for Google Distance Matrix
   class Logger
-    PREFIXES = %w[google_distance_matrix]
-    LEVELS = %w[fatal error warn info debug]
+    PREFIXES = %w[google_distance_matrix].freeze
+    LEVELS = %w[fatal error warn info debug].freeze
 
     attr_reader :backend
 
@@ -20,13 +23,12 @@ module GoogleDistanceMatrix
       end
     end
 
-
     private
 
     def tag_msg(msg, tags)
       msg_buffer = tags.map { |tag| "[#{tag}]" }
       msg_buffer << msg
-      msg_buffer.join " "
+      msg_buffer.join ' '
     end
   end
 end

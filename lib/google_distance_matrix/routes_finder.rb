@@ -2,6 +2,8 @@
 
 module GoogleDistanceMatrix
   # Public: Has logic for doing finder operations on a matrix.
+  #
+  # rubocop:disable Metrics/ClassLength
   class RoutesFinder
     attr_reader :matrix
     delegate :data, :origins, :destinations, :configuration, to: :matrix

@@ -1,20 +1,22 @@
-# Public: Represents a place and knows how to convert it to param.
-#
-# Examples
-#
-#   GoogleDistanceMatrix::Place.new address: "My address"
-#   GoogleDistanceMatrix::Place.new lat: 1, lng: 3
-#
-#   You may also build places by other objects responding to lat and lng or address.
-#   If your object responds to all of the attributes we'll use lat and lng as data
-#   for the Place.
-#
-#   GoogleDistanceMatrix::Place.new object
-module GoogleDistanceMatrix
-  class Place
-    ATTRIBUTES = %w[address lat lng]
+# frozen_string_literal: true
 
-    attr_reader *ATTRIBUTES, :extracted_attributes_from
+module GoogleDistanceMatrix
+  # Public: Represents a place and knows how to convert it to param.
+  #
+  # Examples
+  #
+  #   GoogleDistanceMatrix::Place.new address: "My address"
+  #   GoogleDistanceMatrix::Place.new lat: 1, lng: 3
+  #
+  #   You may also build places by other objects responding to lat and lng or address.
+  #   If your object responds to all of the attributes we'll use lat and lng as data
+  #   for the Place.
+  #
+  #   GoogleDistanceMatrix::Place.new object
+  class Place
+    ATTRIBUTES = %w[address lat lng].freeze
+
+    attr_reader(*ATTRIBUTES, :extracted_attributes_from)
 
     def initialize(attributes_or_object)
       if respond_to_needed_attributes? attributes_or_object
@@ -22,7 +24,7 @@ module GoogleDistanceMatrix
       elsif attributes_or_object.is_a? Hash
         assign_attributes attributes_or_object
       else
-        fail ArgumentError, "Must be either hash or object responding to lat, lng or address. "
+        raise ArgumentError, 'Must be either hash or object responding to lat, lng or address. '
       end
 
       validate_attributes
@@ -32,7 +34,6 @@ module GoogleDistanceMatrix
       options = options.with_indifferent_access
       address.present? ? address : lat_lng(options[:lat_lng_scale]).join(',')
     end
-
 
     def eql?(other)
       if address.present?
@@ -58,7 +59,9 @@ module GoogleDistanceMatrix
     end
 
     def inspect
-      inspection = (ATTRIBUTES | [:extracted_attributes_from]).reject { |a| public_send(a).blank? }.map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
+      inspection =  (ATTRIBUTES | [:extracted_attributes_from])
+                    .reject { |a| public_send(a).blank? }
+                    .map { |a| "#{a}: #{public_send(a).inspect}" }.join ', '
 
       "#<#{self.class} #{inspection}>"
     end
@@ -66,19 +69,17 @@ module GoogleDistanceMatrix
     private
 
     def respond_to_needed_attributes?(object)
-      (object.respond_to?(:lat) &&  object.respond_to?(:lng)) || object.respond_to?(:address)
+      (object.respond_to?(:lat) && object.respond_to?(:lng)) || object.respond_to?(:address)
     end
 
     def extract_and_assign_attributes_from_object(object)
-      attrs =  Hash[ATTRIBUTES.map do |attr_name|
+      attrs = Hash[ATTRIBUTES.map do |attr_name|
         if object.respond_to? attr_name
           [attr_name, object.public_send(attr_name)]
         end
       end.compact]
 
-      if attrs.has_key?('lat') || attrs.has_key?('lng')
-        attrs.delete 'address'
-      end
+      attrs.delete 'address' if attrs.key?('lat') || attrs.key?('lng')
 
       @extracted_attributes_from = object
       assign_attributes attrs
@@ -92,14 +93,20 @@ module GoogleDistanceMatrix
       @lng = attributes[:lng]
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Style/GuardClause
     def validate_attributes
-     unless address.present? || (lat.present? && lng.present?)
-        fail ArgumentError, "Must provide an address, or lat and lng."
+      unless address.present? || (lat.present? && lng.present?)
+        raise ArgumentError, 'Must provide an address, or lat and lng.'
       end
 
       if address.present? && lat.present? && lng.present?
-        fail ArgumentError, "Cannot provide address, lat and lng."
+        raise ArgumentError, 'Cannot provide address, lat and lng.'
       end
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Style/GuardClause
   end
 end
