@@ -1,29 +1,31 @@
-require "google_distance_matrix/version"
+# frozen_string_literal: true
 
-require "cgi"
-require "json"
-require "active_model"
-require "active_support/core_ext/hash"
-require "google_business_api_url_signer"
+require 'google_distance_matrix/version'
 
-require "google_distance_matrix/logger"
-require "google_distance_matrix/errors"
-require "google_distance_matrix/configuration"
-require "google_distance_matrix/url_builder"
-require "google_distance_matrix/client"
-require "google_distance_matrix/client_cache"
-require "google_distance_matrix/routes_finder"
-require "google_distance_matrix/matrix"
-require "google_distance_matrix/places"
-require "google_distance_matrix/place"
-require "google_distance_matrix/route"
-require "google_distance_matrix/polyline_encoder"
+require 'cgi'
+require 'json'
+require 'active_model'
+require 'active_support/core_ext/hash'
+require 'google_business_api_url_signer'
+
+require 'google_distance_matrix/logger'
+require 'google_distance_matrix/errors'
+require 'google_distance_matrix/configuration'
+require 'google_distance_matrix/url_builder'
+require 'google_distance_matrix/client'
+require 'google_distance_matrix/client_cache'
+require 'google_distance_matrix/routes_finder'
+require 'google_distance_matrix/matrix'
+require 'google_distance_matrix/places'
+require 'google_distance_matrix/place'
+require 'google_distance_matrix/route'
+require 'google_distance_matrix/polyline_encoder'
 
 require 'google_distance_matrix/railtie' if defined? Rails
 
-
+# Main module for the GoogleDistanceMatrix
 module GoogleDistanceMatrix
-  extend self
+  module_function
 
   def default_configuration
     @default_configuration ||= Configuration.new
@@ -38,4 +40,4 @@ module GoogleDistanceMatrix
   end
 end
 
-require "google_distance_matrix/log_subscriber"
+require 'google_distance_matrix/log_subscriber'

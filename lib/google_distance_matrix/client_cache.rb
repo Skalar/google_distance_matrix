@@ -1,9 +1,15 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
+  # Cached client, which takes care of caching data from Google API
   class ClientCache
     attr_reader :client, :cache
 
-    def self.key(url)
-      url
+    # Returns a cache key for given URL
+    #
+    # @return String
+    def self.key(url, config)
+      config.cache_key_transform.call url
     end
 
     def initialize(client, cache)
@@ -12,7 +18,7 @@ module GoogleDistanceMatrix
     end
 
     def get(url, options = {})
-      cache.fetch self.class.key(url) do
+      cache.fetch self.class.key(url, options.fetch(:configuration)) do
         client.get url, options
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
   # Public: Error class for lib.
   class Error < StandardError
@@ -67,7 +69,8 @@ module GoogleDistanceMatrix
     end
 
     def to_s
-      "GoogleDistanceMatrix::ClientError - #{[response, status_read_from_api_response].compact.join('. ')}."
+      "GoogleDistanceMatrix::ClientError - \
+        #{[response, status_read_from_api_response].compact.join('. ')}."
     end
   end
 
@@ -75,7 +78,8 @@ module GoogleDistanceMatrix
   #
   # See https://developers.google.com/maps/documentation/distancematrix/#Limits, which states:
   # "Distance Matrix API URLs are restricted to 2048 characters, before URL encoding."
-  # "As some Distance Matrix API service URLs may involve many locations, be aware of this limit when constructing your URLs."
+  # "As some Distance Matrix API service URLs may involve many locations,
+  # be aware of this limit when constructing your URLs."
   #
   class MatrixUrlTooLong < ClientError
     attr_reader :url, :max_url_size
@@ -91,5 +95,4 @@ module GoogleDistanceMatrix
       "Matrix API URL max size is: #{max_url_size}. Built URL was: #{url.length}. URL: '#{url}'."
     end
   end
-
 end

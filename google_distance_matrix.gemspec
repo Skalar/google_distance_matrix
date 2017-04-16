@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rspec', '~> 3.5.0'
+  spec.add_development_dependency 'rubocop', '~> 0.48'
   spec.add_development_dependency 'shoulda-matchers', '~> 3.1.1'
   spec.add_development_dependency 'webmock', '~> 3.0.1'
   spec.add_development_dependency 'rake'

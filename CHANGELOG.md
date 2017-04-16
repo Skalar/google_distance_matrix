@@ -1,3 +1,23 @@
+## v.0.5.0 (unreleased)
+
+This release contains breaking change where `url` has been renamed to
+`sensitive_url`. A `filtered_url` method is added to make it clear that
+the URL returned is filtered according to configuration while the other one
+will contain sensitive information like key and signature.
+
+The cache key is changed so it no longer uses the URL, but a digest of the URL
+as key. You may set `config.cache_key_transform` to a block passing given url
+through if you don't want this.
+
+* Fixed an issue where read/write to cache used url with sensitive data and
+  and filtered url resulting in cache miss.
+* Instrumentation payload `url` renamed `sensitive_url`.
+* Instrumentation payload added `filtered_url`.
+* Cache key is a digest of the `sensitive_url` so we don't store in cache the
+  sensitive parts of the URL.
+* Digesting cache key is configurable with `cache_key_transform`. It's a callable
+  object expected to take the url and transform it to the key you want.
+
 ## v.0.4.0
 * When mode is `driving` and `departure_time` is set all `route` objects will contain
   `duration_in_traffic_in_seconds` and `duration_in_traffic_text`.

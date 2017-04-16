@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'digest'
+
 module GoogleDistanceMatrix
   # Public: Configuration of matrix and it's request.
   #
@@ -26,7 +28,8 @@ module GoogleDistanceMatrix
       use_encoded_polylines: false,
       protocol: 'https',
       lat_lng_scale: 5,
-      filter_parameters_in_logged_url: %w[key signature].freeze
+      filter_parameters_in_logged_url: %w[key signature].freeze,
+      cache_key_transform: ->(url) { Digest::SHA512.new.update(url).to_s }
     }.with_indifferent_access
 
     attr_accessor(*ATTRIBUTES)
@@ -51,6 +54,10 @@ module GoogleDistanceMatrix
 
     # When logging we filter sensitive parameters
     attr_accessor :filter_parameters_in_logged_url
+
+    # Callable object which transform given url to key used in cache
+    # @see ClientCache
+    attr_accessor :cache_key_transform
 
     validates :mode, inclusion: { in: %w[driving walking bicycling transit] }, allow_blank: true
     validates :avoid, inclusion: { in: %w[tolls highways ferries indoor] }, allow_blank: true

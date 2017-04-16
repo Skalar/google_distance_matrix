@@ -57,6 +57,8 @@ module GoogleDistanceMatrix
       @configuration = attributes[:configuration] || GoogleDistanceMatrix.default_configuration.dup
     end
 
+    delegate :sensitive_url, :filtered_url, to: :url_builder
+
     delegate :route_for,  :routes_for,  to: :routes_finder
     delegate :route_for!, :routes_for!, to: :routes_finder
     delegate :shortest_route_by_distance_to,  :shortest_route_by_duration_to,   to: :routes_finder
@@ -89,10 +91,6 @@ module GoogleDistanceMatrix
       yield configuration
     end
 
-    def url
-      UrlBuilder.new(self).url
-    end
-
     def inspect
       attributes = %w[origins destinations]
       attributes << 'data' if loaded?
@@ -103,16 +101,35 @@ module GoogleDistanceMatrix
 
     private
 
+    def url_builder
+      # We do not keep url builder as an instance variable as origins and destinations
+      # may be added after URL is being built for the first time. We should either
+      # make our matrix immutable or reset if origins/destinations are added after data (and
+      # the url) first being built and data fetched.
+      UrlBuilder.new self
+    end
+
     def routes_finder
       @routes_finder ||= RoutesFinder.new self
     end
 
     def load_matrix
-      parsed = JSON.parse(
-        client.get(url, instrumentation: { elements: origins.length * destinations.length }).body
-      )
+      body = client.get(
+        sensitive_url,
+        instrumentation: instrumentation_for_api_request,
+        configuration: configuration
+      ).body
 
+      parsed = JSON.parse(body)
       create_route_objects_for_parsed_data parsed
+    end
+
+    def instrumentation_for_api_request
+      {
+        elements: origins.length * destinations.length,
+        sensitive_url: sensitive_url,
+        filtered_url: filtered_url
+      }
     end
 
     def create_route_objects_for_parsed_data(parsed)
@@ -141,7 +158,7 @@ module GoogleDistanceMatrix
     def clear_from_cache!
       return if configuration.cache.nil?
 
-      configuration.cache.delete ClientCache.key(url)
+      configuration.cache.delete ClientCache.key(sensitive_url, configuration)
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'polyline_encoder/delta'
 require_relative 'polyline_encoder/value_encoder'
 
@@ -7,7 +9,6 @@ module GoogleDistanceMatrix
   #
   # See https://developers.google.com/maps/documentation/utilities/polylinealgorithm
   class PolylineEncoder
-
     # Encodes a set of lat/lng pairs
     #
     # Example
@@ -15,7 +16,6 @@ module GoogleDistanceMatrix
     def self.encode(array_of_lat_lng_pairs)
       new(array_of_lat_lng_pairs).encode
     end
-
 
     # Initialize a new encoder
     #

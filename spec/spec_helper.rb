@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler/setup'
 require 'google_distance_matrix'
 
@@ -15,7 +17,7 @@ module RecordedRequestHelpers
   private
 
   def path_to(name)
-    File.join File.dirname(__FILE__), "request_recordings", name.to_s
+    File.join File.dirname(__FILE__), 'request_recordings', name.to_s
   end
 end
 

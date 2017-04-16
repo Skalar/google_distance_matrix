@@ -10,7 +10,7 @@ describe GoogleDistanceMatrix::Matrix do
   let(:destination_2) { GoogleDistanceMatrix::Place.new address: 'Skjellestadhagen, Heggedal' }
 
   let(:url_builder) { GoogleDistanceMatrix::UrlBuilder.new subject }
-  let(:url) { url_builder.url }
+  let(:url) { url_builder.sensitive_url }
 
   subject do
     described_class.new(
@@ -61,6 +61,7 @@ describe GoogleDistanceMatrix::Matrix do
 
   %w[origins destinations].each do |attr|
     let(:place) { GoogleDistanceMatrix::Place.new address: 'My street' }
+    let(:place_2) { GoogleDistanceMatrix::Place.new address: 'Some other street' }
 
     describe "##{attr}" do
       it 'can receive places' do
@@ -72,6 +73,14 @@ describe GoogleDistanceMatrix::Matrix do
         expect do
           2.times { subject.public_send(attr) << place }
         end.to change(subject.public_send(attr), :length).by 1
+      end
+
+      it 'updates the url when adding places' do
+        subject.public_send(attr) << place
+        expect(subject.sensitive_url).to include CGI.escape('My street')
+
+        subject.public_send(attr) << place_2
+        expect(subject.sensitive_url).to include CGI.escape('Some other street')
       end
     end
   end
@@ -138,11 +147,27 @@ describe GoogleDistanceMatrix::Matrix do
 
       it 'makes one requests to same url' do
         stub = stub_request(:get, url).to_return body: recorded_request_for(:success)
+
         subject.data
         subject.reset!
         subject.data
 
         expect(stub).to have_been_requested.once
+      end
+
+      it 'makes one request when filtered params to same url' do
+        was = GoogleDistanceMatrix.default_configuration.filter_parameters_in_logged_url
+        GoogleDistanceMatrix.default_configuration.filter_parameters_in_logged_url = ['origins']
+
+        stub = stub_request(:get, url).to_return body: recorded_request_for(:success)
+
+        subject.data
+        subject.reset!
+        subject.data
+
+        expect(stub).to have_been_requested.once
+
+        GoogleDistanceMatrix.default_configuration.filter_parameters_in_logged_url = was
       end
 
       it 'clears the cache key on reload' do

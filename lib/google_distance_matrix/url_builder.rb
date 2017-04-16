@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'url_builder/polyline_encoder_buffer'
 
 module GoogleDistanceMatrix
+  # Takes care of building the url for given matrix
   class UrlBuilder
-    BASE_URL = "maps.googleapis.com/maps/api/distancematrix/json"
-    DELIMITER = CGI.escape("|")
+    BASE_URL = 'maps.googleapis.com/maps/api/distancematrix/json'
+    DELIMITER = CGI.escape('|')
     MAX_URL_SIZE = 2048
 
     attr_reader :matrix
@@ -12,41 +15,62 @@ module GoogleDistanceMatrix
     def initialize(matrix)
       @matrix = matrix
 
-      fail InvalidMatrix.new matrix if matrix.invalid?
+      raise InvalidMatrix, matrix if matrix.invalid?
     end
 
-    def url
-      @url ||= build_url
+    # Returns the URL we'll call Google API with
+    #
+    # This URL contains key and signature and is therefor
+    # sensitive.
+    #
+    # @return String
+    # @see filtered_url
+    def sensitive_url
+      @sensitive_url ||= build_url
     end
 
+    # Returns the URL filtered as the configuration of the matrix dictates
+    #
+    # @return String
+    def filtered_url
+      filter_url sensitive_url
+    end
 
     private
 
     def build_url
-      url = [protocol, BASE_URL, "?", get_params_string].join
+      url = [protocol, BASE_URL, '?', query_params_string].join
 
       if sign_url?
-        url = GoogleBusinessApiUrlSigner.add_signature(url, configuration.google_business_api_private_key)
+        url = GoogleBusinessApiUrlSigner.add_signature(
+          url, configuration.google_business_api_private_key
+        )
       end
 
-      if url.length > MAX_URL_SIZE
-        fail MatrixUrlTooLong.new url, MAX_URL_SIZE
+      raise MatrixUrlTooLong.new url, MAX_URL_SIZE if url.length > MAX_URL_SIZE
+
+      url
+    end
+
+    def filter_url(url)
+      configuration.filter_parameters_in_logged_url.each do |param|
+        url = url.gsub(/(#{param})=.*?(&|$)/, '\1=[FILTERED]\2')
       end
 
       url
     end
 
     def sign_url?
-      configuration.google_business_api_client_id.present? and
-      configuration.google_business_api_private_key.present?
+      configuration.google_business_api_client_id.present? &&
+        configuration.google_business_api_private_key.present?
     end
 
     def include_api_key?
       configuration.google_api_key.present?
     end
 
-    def get_params_string
-      params.to_a.map { |key_value| key_value.join("=") }.join("&")
+    def query_params_string
+      params.to_a.map { |key_value| key_value.join('=') }.join('&')
     end
 
     def params
@@ -56,8 +80,10 @@ module GoogleDistanceMatrix
       )
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def places_to_param(places)
-      places_to_param_config = {lat_lng_scale: configuration.lat_lng_scale}
+      places_to_param_config = { lat_lng_scale: configuration.lat_lng_scale }
 
       out = []
       polyline_encode_buffer = PolylineEncoderBuffer.new
@@ -67,7 +93,7 @@ module GoogleDistanceMatrix
           polyline_encode_buffer << place.lat_lng
         else
           polyline_encode_buffer.flush to: out
-          out << escape(place.to_param places_to_param_config)
+          out << escape(place.to_param(places_to_param_config))
         end
       end
 
@@ -75,9 +101,11 @@ module GoogleDistanceMatrix
 
       out.join(DELIMITER)
     end
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
 
     def protocol
-      configuration.protocol + "://"
+      configuration.protocol + '://'
     end
 
     def escape(string)
