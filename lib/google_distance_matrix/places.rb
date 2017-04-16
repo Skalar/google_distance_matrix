@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module GoogleDistanceMatrix
+  # Represents a collection of places
   class Places
     include Enumerable
 
@@ -7,10 +10,9 @@ module GoogleDistanceMatrix
       concat Array.wrap(places)
     end
 
-
     delegate :each, :[], :length, :index, :pop, :shift, :delete_at, :compact, :inspect, to: :places
 
-    [:<<, :push, :unshift].each do |method|
+    %i[<< push unshift].each do |method|
       define_method method do |*args|
         args = ensure_args_are_places args
 
@@ -22,9 +24,8 @@ module GoogleDistanceMatrix
     end
 
     def concat(other)
-      push *other
+      push(*other)
     end
-
 
     private
 
