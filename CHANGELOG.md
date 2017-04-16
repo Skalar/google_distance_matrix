@@ -1,4 +1,4 @@
-## v.0.5.0
+## v.0.5.0 (unreleased)
 
 This release contains breaking change where `url` has been renamed to
 `sensitive_url`. A `filtered_url` method is added to make it clear that
