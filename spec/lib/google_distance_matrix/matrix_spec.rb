@@ -61,6 +61,7 @@ describe GoogleDistanceMatrix::Matrix do
 
   %w[origins destinations].each do |attr|
     let(:place) { GoogleDistanceMatrix::Place.new address: 'My street' }
+    let(:place_2) { GoogleDistanceMatrix::Place.new address: 'Some other street' }
 
     describe "##{attr}" do
       it 'can receive places' do
@@ -72,6 +73,14 @@ describe GoogleDistanceMatrix::Matrix do
         expect do
           2.times { subject.public_send(attr) << place }
         end.to change(subject.public_send(attr), :length).by 1
+      end
+
+      it 'updates the url when adding places' do
+        subject.public_send(attr) << place
+        expect(subject.sensitive_url).to include CGI.escape('My street')
+
+        subject.public_send(attr) << place_2
+        expect(subject.sensitive_url).to include CGI.escape('Some other street')
       end
     end
   end

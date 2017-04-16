@@ -102,7 +102,11 @@ module GoogleDistanceMatrix
     private
 
     def url_builder
-      @url_builder ||= UrlBuilder.new self
+      # We do not keep url builder as an instance variable as origins and destinations
+      # may be added after URL is being built for the first time. We should either
+      # make our matrix immutable or reset if origins/destinations are added after data (and
+      # the url) first being built and data fetched.
+      UrlBuilder.new self
     end
 
     def routes_finder
