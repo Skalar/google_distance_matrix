@@ -18,7 +18,7 @@ module GoogleDistanceMatrix
       mode avoid units language
       departure_time arrival_time
       transit_mode transit_routing_preference
-      traffic_model
+      traffic_model channel
     ].freeze
 
     API_DEFAULTS = {
