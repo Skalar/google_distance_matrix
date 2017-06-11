@@ -1,3 +1,7 @@
+## v.0.6.0 (to be released)
+
+* Added support for `channel` (by michaelgpearce)
+
 ## v.0.5.0
 
 This release contains breaking change where `url` has been renamed to
