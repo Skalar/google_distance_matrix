@@ -89,6 +89,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
           matrix.configure do |config|
             config.google_business_api_client_id = "123"
             config.google_business_api_private_key = "c2VjcmV0"
+            config.api_key = "AA857c2VjcmV0"
           end
         end
 
