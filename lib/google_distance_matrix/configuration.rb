@@ -59,7 +59,11 @@ module GoogleDistanceMatrix
         out << ['client', google_business_api_client_id]
       end
 
-      out
+     if google_business_api_private_key.present?
+       out << ['key', google_business_api_private_key]
+     end
+
+     out
     end
 
     def param_same_as_api_default?(param)
