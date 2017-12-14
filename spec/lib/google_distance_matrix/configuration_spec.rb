@@ -90,6 +90,7 @@ describe GoogleDistanceMatrix::Configuration do
 
     it { expect(subject.logger).to be_nil }
     it { expect(subject.cache).to be_nil }
+    it { expect(subject.timeout).to be_nil }
 
     # rubocop:disable Metrics/LineLength
     it 'has a default expected cache_key_transform' do

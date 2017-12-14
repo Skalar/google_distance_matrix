@@ -18,7 +18,7 @@ module GoogleDistanceMatrix
       mode avoid units language
       departure_time arrival_time
       transit_mode transit_routing_preference
-      traffic_model channel
+      traffic_model channel timeout
     ].freeze
 
     API_DEFAULTS = {
@@ -79,6 +79,8 @@ module GoogleDistanceMatrix
               allow_blank: true
 
     validates :protocol, inclusion: { in: %w[http https] }, allow_blank: true
+
+    validates :timeout, numericality: true, allow_blank: true
 
     def initialize
       API_DEFAULTS.each_pair do |attr_name, value|

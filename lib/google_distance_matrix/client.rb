@@ -15,18 +15,27 @@ module GoogleDistanceMatrix
     #
     # @param url              The URL to Google's API we'll make a request to
     # @param instrumentation  A hash with instrumentation payload
-    # @param options          Other options we don't care about, for example we'll capture
-    #                         `configuration` option which we are not using, but the ClientCache
-    #                         is using.
+    # @param configuration    Instance of Configuration telling us what timeout
+    #                         to use, for instance
     #
     # @return Hash with data from parsed response body
-    def get(url, instrumentation: {}, **_options)
+    def get(url, instrumentation: {}, configuration: nil)
       uri = URI.parse url
+      http = Net::HTTP.new uri.host, uri.port
+
+      http.use_ssl = uri.scheme == "https"
+
+      if timeout = configuration && configuration.timeout
+        http.read_timeout = timeout
+        http.open_timeout = timeout
+      end
 
       response = ActiveSupport::Notifications.instrument(
         'client_request_matrix_data.google_distance_matrix', instrumentation
       ) do
-        Net::HTTP.get_response uri
+        http.start do |client|
+          client.request_get uri
+        end
       end
 
       handle response, url
