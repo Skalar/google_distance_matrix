@@ -74,9 +74,7 @@ module GoogleDistanceMatrix
 
     def extract_and_assign_attributes_from_object(object)
       attrs = Hash[ATTRIBUTES.map do |attr_name|
-        if object.respond_to? attr_name
-          [attr_name, object.public_send(attr_name)]
-        end
+        [attr_name, object.public_send(attr_name)] if object.respond_to? attr_name
       end.compact]
 
       attrs.delete 'address' if attrs.key?('lat') || attrs.key?('lng')

@@ -19,7 +19,7 @@ module GoogleDistanceMatrix
         msg = args.first
         tags = PREFIXES.dup.concat Array.wrap(options[:tag])
 
-        backend.public_send level, tag_msg(msg, tags) if backend
+        backend&.public_send level, tag_msg(msg, tags)
       end
     end
 

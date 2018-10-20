@@ -29,6 +29,7 @@ describe GoogleDistanceMatrix::ClientCache do
 
       expect(subject.get(url, options)).to eq 'cached-data'
     end
+    # rubocop:enable Metrics/LineLength
 
     it 'asks client when cache miss' do
       expect(client).to receive(:get).with(url, options).and_return 'api-data'

@@ -49,7 +49,7 @@ describe GoogleDistanceMatrix::UrlBuilder do
 
   describe '#sensitive_url' do
     it 'fails if the url is more than 2048 characters' do
-      long_string = ''.dup
+      long_string = +''
       2049.times { long_string << 'a' }
 
       expect(subject).to receive(:query_params_string).and_return long_string

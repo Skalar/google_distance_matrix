@@ -58,11 +58,12 @@ module GoogleDistanceMatrix
       #
       # Example of usage
       #   p d 17998321 # => "00000001 00010010 10100001 11110001"
-      def d(v, bits = 32, chunk_size = 8)
+      def d(val, bits = 32, chunk_size = 8)
         (bits - 1).downto(0)
-                  .map { |n| v[n] }
+                  .map { |n| val[n] }
                   .each_slice(chunk_size).map(&:join).join ' '
       end
     end
   end
 end
+# rubocop:enable Style/NumericPredicate
