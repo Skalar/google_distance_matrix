@@ -1,5 +1,7 @@
 ## v.0.6.0 (to be released)
 
+* Tested with Ruby 2.5.
+* Dropped support for Ruby 2.2 and below.
 * Added support for `channel` (by michaelgpearce)
 
 ## v.0.5.0

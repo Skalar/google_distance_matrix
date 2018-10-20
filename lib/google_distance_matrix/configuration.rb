@@ -84,7 +84,7 @@ module GoogleDistanceMatrix
       API_DEFAULTS.each_pair do |attr_name, value|
         self[attr_name] = begin
                             value.dup
-                          rescue
+                          rescue StandardError
                             value
                           end
       end
@@ -105,10 +105,7 @@ module GoogleDistanceMatrix
         attr_and_value[1].nil? || param_same_as_api_default?(attr_and_value)
       end
 
-      if google_business_api_client_id.present?
-        out << ['client', google_business_api_client_id]
-      end
-
+      out << ['client', google_business_api_client_id] if google_business_api_client_id.present?
       out << ['key', google_api_key] if google_api_key.present?
 
       out
