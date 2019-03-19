@@ -3,7 +3,8 @@
 require 'spec_helper'
 
 describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
-  let(:origin_1) { GoogleDistanceMatrix::Place.new address: 'Karl Johans gate, Oslo' }
+  let(:origin_1_attributes) { { address: 'Karl Johans gate, Oslo' } }
+  let(:origin_1) { GoogleDistanceMatrix::Place.new origin_1_attributes }
   let(:origin_2) { GoogleDistanceMatrix::Place.new address: 'Askerveien 1, Asker' }
 
   let(:destination_1) { GoogleDistanceMatrix::Place.new address: 'Drammensveien 1, Oslo' }
@@ -65,6 +66,13 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
 
       it 'returns routes for given origin' do
         routes = subject.routes_for origin_1
+
+        expect(routes.length).to eq 2
+        expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true
+      end
+
+      it 'still returns routes for origin if it has same address but different object_id' do
+        routes = subject.routes_for GoogleDistanceMatrix::Place.new origin_1_attributes
 
         expect(routes.length).to eq 2
         expect(routes.map(&:origin).all? { |o| o == origin_1 }).to be true

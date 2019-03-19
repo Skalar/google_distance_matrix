@@ -95,4 +95,12 @@ describe GoogleDistanceMatrix::Place do
         .to_not be_eql described_class.new(lat: lat, lng: lng + 1)
     end
   end
+
+  describe '#==' do
+    it 'is considered equal when places are compared with ==' do
+      expect(described_class.new(address: address) ==
+             GoogleDistanceMatrix::Place.new(address: address))
+        .to be_truthy
+    end
+  end
 end
