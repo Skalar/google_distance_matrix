@@ -1,5 +1,9 @@
-## v.0.6.0 (to be released)
+## v.0.6.1 (to be released)
 
+
+## v.0.6.0
+
+* Depend on activemodel & activesupport < 5.3 (by brauliomartinezlm)
 * Tested with Ruby 2.5.
 * Dropped support for Ruby 2.2 and below.
 * Added support for `channel` (by michaelgpearce)
