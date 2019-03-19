@@ -83,6 +83,17 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
         expect(routes.length).to eq 2
         expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
       end
+
+      context 'place built from hash' do
+        let(:destination_2_built_from) { { address: 'Skjellestadhagen, Heggedal' } }
+
+        it 'returns routes for given hash a place was built from' do
+          routes = subject.routes_for destination_2_built_from
+
+          expect(routes.length).to eq 2
+          expect(routes.map(&:destination).all? { |d| d == destination_2 }).to be true
+        end
+      end
     end
 
     describe '#routes_for!' do
@@ -102,6 +113,16 @@ describe GoogleDistanceMatrix::RoutesFinder, :request_recordings do
         route = subject.route_for(origin: origin_1, destination: destination_2_built_from)
         expect(route.origin).to eq origin_1
         expect(route.destination).to eq destination_2
+      end
+
+      context 'place built from hash' do
+        let(:destination_2_built_from) { { address: 'Skjellestadhagen, Heggedal' } }
+
+        it 'returns route when you give it the hash the place was built from' do
+          route = subject.route_for(origin: origin_1, destination: destination_2_built_from)
+          expect(route.origin).to eq origin_1
+          expect(route.destination).to eq destination_2
+        end
       end
 
       it 'fails with argument error if origin is missing' do

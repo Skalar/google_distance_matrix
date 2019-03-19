@@ -22,6 +22,7 @@ module GoogleDistanceMatrix
       if respond_to_needed_attributes? attributes_or_object
         extract_and_assign_attributes_from_object attributes_or_object
       elsif attributes_or_object.is_a? Hash
+        @extracted_attributes_from = attributes_or_object.with_indifferent_access
         assign_attributes attributes_or_object
       else
         raise ArgumentError, 'Must be either hash or object responding to lat, lng or address. '
