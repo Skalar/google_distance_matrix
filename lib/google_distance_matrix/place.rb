@@ -37,12 +37,15 @@ module GoogleDistanceMatrix
     end
 
     def eql?(other)
+      return false unless other.is_a? self.class
+
       if address.present?
         address == other.address
       else
         lat_lng == other.lat_lng
       end
     end
+    alias == eql?
 
     def lat_lng?
       lat.present? && lng.present?
