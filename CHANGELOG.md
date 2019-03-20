@@ -1,4 +1,6 @@
-## v.0.6.1 (to be released)
+## v.0.6.2 (to be released)
+
+## v.0.6.1
 
 * fix: when matrix places were built from hashes, passing hashes to route/s_for doesnt't work (by brauliomartinezlm)
 * fix: place comparison was not working with == (by brauliomartinezlm)
