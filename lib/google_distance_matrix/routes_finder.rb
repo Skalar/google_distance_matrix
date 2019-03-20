@@ -142,6 +142,8 @@ module GoogleDistanceMatrix
       if object.is_a? Place
         object
       else
+        object = object.with_indifferent_access if object.is_a? Hash
+
         find_place_for_object(origins, object) ||
           find_place_for_object(destinations, object)
       end
