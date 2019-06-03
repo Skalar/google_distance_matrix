@@ -1,5 +1,7 @@
 ## v.0.6.2 (to be released)
 
+* chore: bumped dependency support up to Rails 6 (by zackchandler)
+
 ## v.0.6.1
 
 * fix: when matrix places were built from hashes, passing hashes to route/s_for doesnt't work (by brauliomartinezlm)
