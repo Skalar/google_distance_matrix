@@ -11,9 +11,6 @@ pull the distance matrix from Google.
 Once you have the matrix you can fetch all routes from a given
 origin or to a given destination.
 
-The matrix may also be used as a data set for traveling salesman problem,
-but to solve it you may look at <http://ai4r.org/>.
-
 
 
 
