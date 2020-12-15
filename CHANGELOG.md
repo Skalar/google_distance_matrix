@@ -1,5 +1,7 @@
-## v.0.6.3 (to be released)
-ß
+## v.0.6.3
+
+* chore: bumped dependency support up to Rails 6.1 (by mintyfresh)
+
 ## v.0.6.2
 
 * chore: bumped dependency support up to Rails 6 (by zackchandler)
