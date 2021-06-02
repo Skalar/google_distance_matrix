@@ -19,7 +19,7 @@ module GoogleDistanceMatrix
 
     def get(url, options = {})
       cache.fetch self.class.key(url, options.fetch(:configuration)) do
-        client.get url, options
+        client.get url, **options
       end
     end
   end
