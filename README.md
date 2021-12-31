@@ -1,6 +1,6 @@
 # GoogleDistanceMatrix
 
-[![Build Status](https://travis-ci.org/Skalar/google_distance_matrix.svg?branch=master)](https://travis-ci.org/Skalar/google_distance_matrix)
+![Build Status](https://github.com/Skalar/google_distance_matrix/actions/workflows/ruby/badge.svg)
 
 Ruby client for the [Google Distance Matrix API](https://developers.google.com/maps/documentation/distance-matrix/intro).
 
