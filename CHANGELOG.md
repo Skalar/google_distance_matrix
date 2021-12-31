@@ -1,3 +1,7 @@
+## v.0.6.5
+
+* chore: bumped dependency support up to Rails 7 (by justisb)
+
 ## v.0.6.4
 
 * fix: no longer throwing "Wrong number of arguments" when using the cache (by brianlow)
