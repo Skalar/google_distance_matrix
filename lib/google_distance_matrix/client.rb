@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'net/http'
+
 module GoogleDistanceMatrix
   # HTTP client making request to Google's API
   class Client
