@@ -6,9 +6,6 @@ require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.rspec_opts = ['-c', '-f progress', '-r ./spec/spec_helper.rb']
-  t.pattern = 'spec/**/*_spec.rb'
-end
+RSpec::Core::RakeTask.new(:spec)
 
 task default: %i[rubocop spec]
