@@ -1,3 +1,7 @@
+## v.0.6.7
+
+* chore: bumped dependency support up to Rails 7.1 (by justisb)
+
 ## v.0.6.6
 
 * chore: require net/http in client.rb (#57)
