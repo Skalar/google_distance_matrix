@@ -18,6 +18,10 @@ module GoogleDistanceMatrix
       def error(msg)
         raise msg
       end
+
+      def level
+        1
+      end
     end
 
     # Little helper to clean up examples

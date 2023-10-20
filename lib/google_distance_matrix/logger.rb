@@ -24,7 +24,7 @@ module GoogleDistanceMatrix
     end
 
     def level
-      backend&.level
+      backend&.level || 1
     end
 
     private
