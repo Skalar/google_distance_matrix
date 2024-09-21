@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '>= 3.2.13', '< 7.2'
   spec.add_dependency 'google_business_api_url_signer', '~> 0.1.3'
 
+  spec.add_development_dependency 'appraisal'
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec', '~> 3.12.0'
