@@ -12,7 +12,7 @@ describe GoogleDistanceMatrix::ClientCache do
 
   subject { described_class.new client, cache }
 
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   describe '::key' do
     it 'returns a digest of given URL' do
       key = described_class.key 'some url with secret parts', config
@@ -29,7 +29,7 @@ describe GoogleDistanceMatrix::ClientCache do
 
       expect(subject.get(url, options)).to eq 'cached-data'
     end
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
 
     it 'asks client when cache miss' do
       expect(client).to receive(:get).with(url, options).and_return 'api-data'

@@ -81,7 +81,6 @@ module GoogleDistanceMatrix
     end
 
     # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/AbcSize
     def places_to_param(places)
       places_to_param_config = { lat_lng_scale: configuration.lat_lng_scale }
 
@@ -102,7 +101,6 @@ module GoogleDistanceMatrix
       out.join(DELIMITER)
     end
     # rubocop:enable Metrics/MethodLength
-    # rubocop:enable Metrics/AbcSize
 
     def protocol
       configuration.protocol + '://'

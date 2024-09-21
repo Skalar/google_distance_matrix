@@ -14,6 +14,7 @@ module GoogleDistanceMatrix
     class ValueEncoder
       # rubocop:disable Metrics/MethodLength
       # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
       def encode(value)
         negative = value < 0
         value = value.abs
@@ -49,6 +50,7 @@ module GoogleDistanceMatrix
         # step 11: Convert to ASCII
         chunks_of_5_bits.map(&:chr)
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/AbcSize
 

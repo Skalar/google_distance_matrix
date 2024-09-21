@@ -32,8 +32,8 @@ module GoogleDistanceMatrix
       end
 
       handle response, url
-    rescue Timeout::Error => error
-      raise ServerError, error
+    rescue Timeout::Error => e
+      raise ServerError, e
     end
 
     private
