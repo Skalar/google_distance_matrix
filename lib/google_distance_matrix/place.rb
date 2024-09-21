@@ -95,8 +95,6 @@ module GoogleDistanceMatrix
       @lng = attributes[:lng]
     end
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Style/GuardClause
     def validate_attributes
       unless address.present? || (lat.present? && lng.present?)
@@ -107,8 +105,6 @@ module GoogleDistanceMatrix
         raise ArgumentError, 'Cannot provide address, lat and lng.'
       end
     end
-    # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Style/GuardClause
   end
 end

@@ -1,6 +1,9 @@
-Metrics/LineLength:
+AllCops:
+  NewCops: disable
+
+Layout/LineLength:
   Max: 100
-  
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
