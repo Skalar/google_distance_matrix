@@ -103,7 +103,7 @@ routes in your result set for the called method are ok.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'google_distance_matrix'
+gem 'google_distance_matrix'‚ '~> 0.7.0'
 ```
 And then execute:
 
@@ -112,6 +112,15 @@ And then execute:
 Or install it yourself as:
 
     $ gem install google_distance_matrix
+
+
+### Ruby 2.x support
+
+Legacy systems that needs to run on unsupported rubies can depend on `v0.6.7`, which is the last supported version for Ruby 2.
+
+```ruby
+gem 'google_distance_matrix', '0.6.7'
+```
 
 
 ## Configuration

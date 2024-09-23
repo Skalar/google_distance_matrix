@@ -1,3 +1,8 @@
+## v.0.7.0
+
+* chore: bumped dependency support up to Rails 7.2 (by yenshirak)
+* dropped support for Ruby 2.x
+
 ## v.0.6.7
 
 * chore: bumped dependency support up to Rails 7.1 (by justisb)
