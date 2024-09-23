@@ -1,5 +1,7 @@
 AllCops:
   NewCops: disable
+  Exclude:
+    - 'gemfiles/*'
 
 Layout/LineLength:
   Max: 100
