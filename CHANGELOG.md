@@ -1,3 +1,7 @@
+## v.0.7.1
+
+* added support for Rails 8, dropped upper version constraint (#64)
+
 ## v.0.7.0
 
 * chore: bumped dependency support up to Rails 7.2 (by yenshirak)
