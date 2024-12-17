@@ -7,6 +7,6 @@ gemspec
 
 gem 'rake'
 gem 'rspec', '~> 3.13.0'
-gem 'rubocop', '~> 0.93.1'
+gem 'rubocop', '~> 1.69.2'
 gem 'shoulda-matchers', '~> 6.0'
 gem 'webmock', '~> 3.24.0'
