@@ -21,8 +21,8 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 3.0'
 
-  spec.add_dependency 'activemodel', '>= 3.2.13', '< 8.1'
-  spec.add_dependency 'activesupport', '>= 3.2.13', '< 8.1'
+  spec.add_dependency 'activemodel', '>= 3.2.13'
+  spec.add_dependency 'activesupport', '>= 3.2.13'
   spec.add_dependency 'google_business_api_url_signer', '~> 0.1.3'
 
   spec.add_development_dependency 'bundler'
